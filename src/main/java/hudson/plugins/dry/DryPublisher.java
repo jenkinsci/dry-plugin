@@ -17,17 +17,18 @@ import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
- * Publishes the results of the PMD analysis  (freestyle project type).
+ * Publishes the results of the DRY analysis  (freestyle project type).
  *
  * @author Ulli Hafner
  */
-public class PmdPublisher extends HealthAwarePublisher {
+public class DryPublisher extends HealthAwarePublisher {
     /** Unique ID of this class. */
     private static final long serialVersionUID = 6711252664481150129L;
-    /** Default PMD pattern. */
+    /** Default DRY pattern. */
+    // FIXME. pattern
     private static final String DEFAULT_PATTERN = "**/pmd.xml";
     /** Descriptor of this publisher. */
-    public static final PmdDescriptor PMD_DESCRIPTOR = new PmdDescriptor();
+    public static final DryDescriptor DRY_DESCRIPTOR = new DryDescriptor();
     /** Ant file-set pattern of files to work with. */
     private final String pattern;
 
@@ -35,7 +36,7 @@ public class PmdPublisher extends HealthAwarePublisher {
      * Creates a new instance of <code>PmdPublisher</code>.
      *
      * @param pattern
-     *            Ant file-set pattern to scan for PMD files
+     *            Ant file-set pattern to scan for DRY files
      * @param threshold
      *            Bug threshold to be reached if a build should be considered as
      *            unstable.
@@ -56,9 +57,9 @@ public class PmdPublisher extends HealthAwarePublisher {
     // CHECKSTYLE:OFF
     @SuppressWarnings("PMD.ExcessiveParameterList")
     @DataBoundConstructor
-    public PmdPublisher(final String pattern, final String threshold, final String healthy, final String unHealthy,
+    public DryPublisher(final String pattern, final String threshold, final String healthy, final String unHealthy,
             final String height, final String thresholdLimit, final String defaultEncoding) {
-        super(threshold, healthy, unHealthy, height, thresholdLimit, defaultEncoding, "PMD");
+        super(threshold, healthy, unHealthy, height, thresholdLimit, defaultEncoding, "DRY");
         this.pattern = pattern;
     }
     // CHECKSTYLE:ON
@@ -75,25 +76,25 @@ public class PmdPublisher extends HealthAwarePublisher {
     /** {@inheritDoc} */
     @Override
     public Action getProjectAction(final AbstractProject<?, ?> project) {
-        return new PmdProjectAction(project, getTrendHeight());
+        return new DryProjectAction(project, getTrendHeight());
     }
 
     /** {@inheritDoc} */
     @Override
     public ParserResult perform(final AbstractBuild<?, ?> build, final PrintStream logger) throws InterruptedException, IOException {
-        log(logger, "Collecting pmd analysis files...");
-        FilesParser pmdCollector = new FilesParser(logger, StringUtils.defaultIfEmpty(getPattern(), DEFAULT_PATTERN), new PmdParser(),
+        log(logger, "Collecting duplicate code analysis files...");
+        FilesParser dryCollector = new FilesParser(logger, StringUtils.defaultIfEmpty(getPattern(), DEFAULT_PATTERN), new PmdParser(),
                 isMavenBuild(build), isAntBuild(build));
 
-        ParserResult project = build.getProject().getWorkspace().act(pmdCollector);
-        PmdResult result = new PmdResultBuilder().build(build, project, getDefaultEncoding());
-        build.getActions().add(new PmdResultAction(build, this, result));
+        ParserResult project = build.getProject().getWorkspace().act(dryCollector);
+        DryResult result = new DryResultBuilder().build(build, project, getDefaultEncoding());
+        build.getActions().add(new DryResultAction(build, this, result));
 
         return project;
     }
 
     /** {@inheritDoc} */
     public Descriptor<Publisher> getDescriptor() {
-        return PMD_DESCRIPTOR;
+        return DRY_DESCRIPTOR;
     }
 }

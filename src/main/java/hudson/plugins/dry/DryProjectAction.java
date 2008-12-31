@@ -4,13 +4,13 @@ import hudson.model.AbstractProject;
 import hudson.plugins.dry.util.AbstractProjectAction;
 
 /**
- * Entry point to visualize the PMD trend graph in the project screen.
+ * Entry point to visualize the DRY trend graph in the project screen.
  * Drawing of the graph is delegated to the associated
- * {@link PmdResultAction}.
+ * {@link DryResultAction}.
  *
  * @author Ulli Hafner
  */
-public class PmdProjectAction extends AbstractProjectAction<PmdResultAction> {
+public class DryProjectAction extends AbstractProjectAction<DryResultAction> {
     /** Unique identifier of this class. */
     private static final long serialVersionUID = -654316141132780561L;
 
@@ -22,25 +22,25 @@ public class PmdProjectAction extends AbstractProjectAction<PmdResultAction> {
      * @param height
      *            the height of the trend graph
      */
-    public PmdProjectAction(final AbstractProject<?, ?> project, final int height) {
-        super(project, PmdResultAction.class, PmdPublisher.PMD_DESCRIPTOR, height);
+    public DryProjectAction(final AbstractProject<?, ?> project, final int height) {
+        super(project, DryResultAction.class, DryPublisher.DRY_DESCRIPTOR, height);
     }
 
     /** {@inheritDoc} */
     public String getDisplayName() {
-        return Messages.PMD_ProjectAction_Name();
+        return Messages.DRY_ProjectAction_Name();
     }
 
     /** {@inheritDoc} */
     @Override
     public String getCookieName() {
-        return "PMD_displayMode";
+        return "DRY_displayMode";
     }
 
     /** {@inheritDoc} */
     @Override
     public String getTrendName() {
-        return Messages.PMD_Trend_Name();
+        return Messages.DRY_Trend_Name();
     }
 }
 

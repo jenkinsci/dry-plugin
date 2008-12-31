@@ -2,8 +2,6 @@ package hudson.plugins.dry;
 
 import static org.easymock.EasyMock.*;
 import static org.easymock.classextension.EasyMock.*;
-import hudson.plugins.dry.PmdResult;
-import hudson.plugins.dry.ResultSummary;
 import hudson.plugins.dry.util.AbstractEnglishLocaleTest;
 import junit.framework.Assert;
 
@@ -18,7 +16,7 @@ public class ResultSummaryTest extends AbstractEnglishLocaleTest {
      */
     @Test
     public void test0WarningsIn0File() {
-        checkSummaryText(0, 0, "PMD: 0 warnings in 0 PMD files.");
+        checkSummaryText(0, 0, "DRY: 0 warnings in 0 analysis files.");
     }
 
     /**
@@ -26,7 +24,7 @@ public class ResultSummaryTest extends AbstractEnglishLocaleTest {
      */
     @Test
     public void test0WarningsIn1File() {
-        checkSummaryText(0, 1, "PMD: 0 warnings in 1 PMD file.");
+        checkSummaryText(0, 1, "DRY: 0 warnings in 1 analysis file.");
     }
 
     /**
@@ -34,7 +32,7 @@ public class ResultSummaryTest extends AbstractEnglishLocaleTest {
      */
     @Test
     public void test0WarningsIn5Files() {
-        checkSummaryText(0, 5, "PMD: 0 warnings in 5 PMD files.");
+        checkSummaryText(0, 5, "DRY: 0 warnings in 5 analysis files.");
     }
 
     /**
@@ -42,7 +40,7 @@ public class ResultSummaryTest extends AbstractEnglishLocaleTest {
      */
     @Test
     public void test1WarningIn2Files() {
-        checkSummaryText(1, 2, "PMD: <a href=\"pmdResult\">1 warning</a> in 2 PMD files.");
+        checkSummaryText(1, 2, "DRY: <a href=\"dryResult\">1 warning</a> in 2 analysis files.");
     }
 
     /**
@@ -50,7 +48,7 @@ public class ResultSummaryTest extends AbstractEnglishLocaleTest {
      */
     @Test
     public void test5WarningsIn1File() {
-        checkSummaryText(5, 1, "PMD: <a href=\"pmdResult\">5 warnings</a> in 1 PMD file.");
+        checkSummaryText(5, 1, "DRY: <a href=\"dryResult\">5 warnings</a> in 1 analysis file.");
     }
 
     /**
@@ -65,7 +63,7 @@ public class ResultSummaryTest extends AbstractEnglishLocaleTest {
      *            the expected message
      */
     private void checkSummaryText(final int numberOfWarnings, final int numberOfFiles, final String expectedMessage) {
-        PmdResult result = createMock(PmdResult.class);
+        DryResult result = createMock(DryResult.class);
         expect(result.getNumberOfAnnotations()).andReturn(numberOfWarnings).anyTimes();
         expect(result.getNumberOfModules()).andReturn(numberOfFiles).anyTimes();
 
@@ -89,7 +87,7 @@ public class ResultSummaryTest extends AbstractEnglishLocaleTest {
      */
     @Test
     public void testOnly1New() {
-        checkDeltaText(0, 1, "<li><a href=\"pmdResult/new\">1 new warning</a></li>");
+        checkDeltaText(0, 1, "<li><a href=\"dryResult/new\">1 new warning</a></li>");
     }
 
     /**
@@ -97,7 +95,7 @@ public class ResultSummaryTest extends AbstractEnglishLocaleTest {
      */
     @Test
     public void testOnly5New() {
-        checkDeltaText(0, 5, "<li><a href=\"pmdResult/new\">5 new warnings</a></li>");
+        checkDeltaText(0, 5, "<li><a href=\"dryResult/new\">5 new warnings</a></li>");
     }
 
     /**
@@ -105,7 +103,7 @@ public class ResultSummaryTest extends AbstractEnglishLocaleTest {
      */
     @Test
     public void testOnly1Fixed() {
-        checkDeltaText(1, 0, "<li><a href=\"pmdResult/fixed\">1 fixed warning</a></li>");
+        checkDeltaText(1, 0, "<li><a href=\"dryResult/fixed\">1 fixed warning</a></li>");
     }
 
     /**
@@ -113,7 +111,7 @@ public class ResultSummaryTest extends AbstractEnglishLocaleTest {
      */
     @Test
     public void testOnly5Fixed() {
-        checkDeltaText(5, 0, "<li><a href=\"pmdResult/fixed\">5 fixed warnings</a></li>");
+        checkDeltaText(5, 0, "<li><a href=\"dryResult/fixed\">5 fixed warnings</a></li>");
     }
 
     /**
@@ -122,8 +120,8 @@ public class ResultSummaryTest extends AbstractEnglishLocaleTest {
     @Test
     public void test5New5Fixed() {
         checkDeltaText(5, 5,
-                "<li><a href=\"pmdResult/new\">5 new warnings</a></li>"
-                + "<li><a href=\"pmdResult/fixed\">5 fixed warnings</a></li>");
+                "<li><a href=\"dryResult/new\">5 new warnings</a></li>"
+                + "<li><a href=\"dryResult/fixed\">5 fixed warnings</a></li>");
     }
 
     /**
@@ -132,8 +130,8 @@ public class ResultSummaryTest extends AbstractEnglishLocaleTest {
     @Test
     public void test5New1Fixed() {
         checkDeltaText(1, 5,
-        "<li><a href=\"pmdResult/new\">5 new warnings</a></li>"
-        + "<li><a href=\"pmdResult/fixed\">1 fixed warning</a></li>");
+        "<li><a href=\"dryResult/new\">5 new warnings</a></li>"
+        + "<li><a href=\"dryResult/fixed\">1 fixed warning</a></li>");
     }
 
     /**
@@ -142,8 +140,8 @@ public class ResultSummaryTest extends AbstractEnglishLocaleTest {
     @Test
     public void test1New5Fixed() {
         checkDeltaText(5, 1,
-                "<li><a href=\"pmdResult/new\">1 new warning</a></li>"
-                + "<li><a href=\"pmdResult/fixed\">5 fixed warnings</a></li>");
+                "<li><a href=\"dryResult/new\">1 new warning</a></li>"
+                + "<li><a href=\"dryResult/fixed\">5 fixed warnings</a></li>");
     }
 
     /**
@@ -152,8 +150,8 @@ public class ResultSummaryTest extends AbstractEnglishLocaleTest {
     @Test
     public void test1New1Fixed() {
         checkDeltaText(1, 1,
-                "<li><a href=\"pmdResult/new\">1 new warning</a></li>"
-                + "<li><a href=\"pmdResult/fixed\">1 fixed warning</a></li>");
+                "<li><a href=\"dryResult/new\">1 new warning</a></li>"
+                + "<li><a href=\"dryResult/fixed\">1 fixed warning</a></li>");
     }
 
     /**
@@ -168,7 +166,7 @@ public class ResultSummaryTest extends AbstractEnglishLocaleTest {
      *            the expected message
      */
     private void checkDeltaText(final int numberOfFixedWarnings, final int numberOfNewWarnings, final String expectedMessage) {
-        PmdResult result = createMock(PmdResult.class);
+        DryResult result = createMock(DryResult.class);
         expect(result.getNumberOfFixedWarnings()).andReturn(numberOfFixedWarnings).anyTimes();
         expect(result.getNumberOfNewWarnings()).andReturn(numberOfNewWarnings).anyTimes();
 

@@ -15,13 +15,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A {@link PmdResultAction} for native maven jobs. This action
+ * A {@link DryResultAction} for native maven jobs. This action
  * additionally provides result aggregation for sub-modules and for the main
  * project.
  *
  * @author Ulli Hafner
  */
-public class MavenPmdResultAction extends PmdResultAction implements AggregatableAction, MavenAggregatedReport {
+public class MavenDryResultAction extends DryResultAction implements AggregatableAction, MavenAggregatedReport {
     /** Unique identifier of this class. */
     private static final long serialVersionUID = 1273798369273225973L;
     /** Determines the height of the trend graph. */
@@ -41,7 +41,7 @@ public class MavenPmdResultAction extends PmdResultAction implements Aggregatabl
      * @param defaultEncoding
      *            the default encoding to be used when reading and parsing files
      */
-    public MavenPmdResultAction(final AbstractBuild<?, ?> owner, final HealthDescriptor healthDescriptor, final String height, final String defaultEncoding) {
+    public MavenDryResultAction(final AbstractBuild<?, ?> owner, final HealthDescriptor healthDescriptor, final String height, final String defaultEncoding) {
         super(owner, healthDescriptor);
         this.height = height;
         this.defaultEncoding = defaultEncoding;
@@ -61,7 +61,7 @@ public class MavenPmdResultAction extends PmdResultAction implements Aggregatabl
      * @param result
      *            the result in this build
      */
-    public MavenPmdResultAction(final AbstractBuild<?, ?> owner, final HealthDescriptor healthDescriptor, final String height, final String defaultEncoding, final PmdResult result) {
+    public MavenDryResultAction(final AbstractBuild<?, ?> owner, final HealthDescriptor healthDescriptor, final String height, final String defaultEncoding, final DryResult result) {
         super(owner, healthDescriptor, result);
         this.height = height;
         this.defaultEncoding = defaultEncoding;
@@ -69,12 +69,12 @@ public class MavenPmdResultAction extends PmdResultAction implements Aggregatabl
 
     /** {@inheritDoc} */
     public MavenAggregatedReport createAggregatedAction(final MavenModuleSetBuild build, final Map<MavenModule, List<MavenBuild>> moduleBuilds) {
-        return new MavenPmdResultAction(build, getHealthDescriptor(), height, defaultEncoding);
+        return new MavenDryResultAction(build, getHealthDescriptor(), height, defaultEncoding);
     }
 
     /** {@inheritDoc} */
     public Action getProjectAction(final MavenModuleSet moduleSet) {
-        return new PmdProjectAction(moduleSet, TrendReportHeightValidator.defaultHeight(height));
+        return new DryProjectAction(moduleSet, TrendReportHeightValidator.defaultHeight(height));
     }
 
     /** {@inheritDoc} */
@@ -94,7 +94,7 @@ public class MavenPmdResultAction extends PmdResultAction implements Aggregatabl
      *      Newly completed build.
      */
     public void update(final Map<MavenModule, List<MavenBuild>> moduleBuilds, final MavenBuild newBuild) {
-        setResult(new PmdResultBuilder().build(getOwner(), createAggregatedResult(moduleBuilds), defaultEncoding));
+        setResult(new DryResultBuilder().build(getOwner(), createAggregatedResult(moduleBuilds), defaultEncoding));
     }
 }
 

@@ -7,12 +7,12 @@ import hudson.plugins.dry.util.ParserResult;
 import hudson.plugins.dry.util.model.JavaProject;
 
 /**
- * Represents the results of the PMD analysis. One instance of this class is persisted for
+ * Represents the results of the DRY analysis. One instance of this class is persisted for
  * each build via an XML file.
  *
  * @author Ulli Hafner
  */
-public class PmdResult extends AnnotationsBuildResult {
+public class DryResult extends AnnotationsBuildResult {
     /** Unique identifier of this class. */
     private static final long serialVersionUID = 2768250056765266658L;
     static {
@@ -29,7 +29,7 @@ public class PmdResult extends AnnotationsBuildResult {
      * @param result
      *            the parsed result with all annotations
      */
-    public PmdResult(final AbstractBuild<?, ?> build, final String defaultEncoding, final ParserResult result) {
+    public DryResult(final AbstractBuild<?, ?> build, final String defaultEncoding, final ParserResult result) {
         super(build, defaultEncoding, result);
     }
 
@@ -45,7 +45,7 @@ public class PmdResult extends AnnotationsBuildResult {
      * @param previous
      *            the result of the previous build
      */
-    public PmdResult(final AbstractBuild<?, ?> build, final String defaultEncoding, final ParserResult result, final PmdResult previous) {
+    public DryResult(final AbstractBuild<?, ?> build, final String defaultEncoding, final ParserResult result, final DryResult previous) {
         super(build, defaultEncoding, result, previous);
     }
 
@@ -63,7 +63,7 @@ public class PmdResult extends AnnotationsBuildResult {
     public String getDetails() {
         String message = ResultSummary.createDeltaMessage(this);
         if (getNumberOfAnnotations() == 0 && getDelta() == 0) {
-            message += "<li>" + Messages.PMD_ResultAction_NoWarningsSince(getZeroWarningsSinceBuild()) + "</li>";
+            message += "<li>" + Messages.DRY_ResultAction_NoWarningsSince(getZeroWarningsSinceBuild()) + "</li>";
             message += createHighScoreMessage();
         }
         return message;
@@ -78,19 +78,19 @@ public class PmdResult extends AnnotationsBuildResult {
         if (isNewZeroWarningsHighScore()) {
             long days = getDays(getZeroWarningsHighScore());
             if (days == 1) {
-                return "<li>" + Messages.PMD_ResultAction_OneHighScore() + "</li>";
+                return "<li>" + Messages.DRY_ResultAction_OneHighScore() + "</li>";
             }
             else {
-                return "<li>" + Messages.PMD_ResultAction_MultipleHighScore(days) + "</li>";
+                return "<li>" + Messages.DRY_ResultAction_MultipleHighScore(days) + "</li>";
             }
         }
         else {
             long days = getDays(getHighScoreGap());
             if (days == 1) {
-                return "<li>" + Messages.PMD_ResultAction_OneNoHighScore() + "</li>";
+                return "<li>" + Messages.DRY_ResultAction_OneNoHighScore() + "</li>";
             }
             else {
-                return "<li>" + Messages.PMD_ResultAction_MultipleNoHighScore(days) + "</li>";
+                return "<li>" + Messages.DRY_ResultAction_MultipleNoHighScore(days) + "</li>";
             }
         }
     }
@@ -98,12 +98,12 @@ public class PmdResult extends AnnotationsBuildResult {
     /** {@inheritDoc} */
     @Override
     protected String getSerializationFileName() {
-        return "pmd-warnings.xml";
+        return "dry-warnings.xml";
     }
 
     /** {@inheritDoc} */
     public String getDisplayName() {
-        return Messages.PMD_ProjectAction_Name();
+        return Messages.DRY_ProjectAction_Name();
     }
 
     /**
@@ -114,7 +114,7 @@ public class PmdResult extends AnnotationsBuildResult {
      */
     @Override
     public JavaProject getPreviousResult() {
-        PmdResultAction action = getOwner().getAction(PmdResultAction.class);
+        DryResultAction action = getOwner().getAction(DryResultAction.class);
         if (action.hasPreviousResultAction()) {
             return action.getPreviousResultAction().getResult().getProject();
         }
@@ -130,6 +130,6 @@ public class PmdResult extends AnnotationsBuildResult {
      */
     @Override
     public boolean hasPreviousResult() {
-        return getOwner().getAction(PmdResultAction.class).hasPreviousResultAction();
+        return getOwner().getAction(DryResultAction.class).hasPreviousResultAction();
     }
 }

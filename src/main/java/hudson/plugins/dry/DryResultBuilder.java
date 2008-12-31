@@ -4,14 +4,14 @@ import hudson.model.AbstractBuild;
 import hudson.plugins.dry.util.ParserResult;
 
 /**
- * Creates a new PMD result based on the values of a previous build and the
+ * Creates a new DRY result based on the values of a previous build and the
  * current project.
  *
  * @author Ulli Hafner
  */
-public class PmdResultBuilder {
+public class DryResultBuilder {
     /**
-     * Creates a result that persists the PMD information for the
+     * Creates a result that persists the DRY information for the
      * specified build.
      *
      * @param build
@@ -22,17 +22,17 @@ public class PmdResultBuilder {
      *            the default encoding to be used when reading and parsing files
      * @return the result action
      */
-    public PmdResult build(final AbstractBuild<?, ?> build, final ParserResult result, final String defaultEncoding) {
+    public DryResult build(final AbstractBuild<?, ?> build, final ParserResult result, final String defaultEncoding) {
         Object previous = build.getPreviousBuild();
         while (previous instanceof AbstractBuild<?, ?>) {
             AbstractBuild<?, ?> previousBuild = (AbstractBuild<?, ?>)previous;
-            PmdResultAction previousAction = previousBuild.getAction(PmdResultAction.class);
+            DryResultAction previousAction = previousBuild.getAction(DryResultAction.class);
             if (previousAction != null) {
-                return new PmdResult(build, defaultEncoding, result, previousAction.getResult());
+                return new DryResult(build, defaultEncoding, result, previousAction.getResult());
             }
             previous = previousBuild.getPreviousBuild();
         }
-        return new PmdResult(build, defaultEncoding, result);
+        return new DryResult(build, defaultEncoding, result);
     }
 }
 

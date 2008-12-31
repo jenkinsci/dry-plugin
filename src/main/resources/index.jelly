@@ -1,4 +1,4 @@
 <div>
-  This plug-in collects the <a href="http://pmd.sourceforge.net/">PMD</a> analysis
+  This plug-in collects the suplicate code analysis
   results of the project modules and visualizes the found warnings.
 </div>

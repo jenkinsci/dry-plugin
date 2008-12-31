@@ -3,9 +3,9 @@
   xmlns:i="jelly:fmt" xmlns:local="local">
   <st:header name="Content-Type" value="text/html;charset=UTF-8" />
   <j:if test="${it.hasAnnotations()}">
-    <script type="text/javascript" src="${rootURL}/plugin/pmd/yui/utilities.js"></script>
-    <script type="text/javascript" src="${rootURL}/plugin/pmd/yui/tabview-min.js"></script>
-    <script type="text/javascript" src="${rootURL}/plugin/pmd/yui/dispatcher-min.js"></script>
+    <script type="text/javascript" src="${rootURL}/plugin/dry/yui/utilities.js"></script>
+    <script type="text/javascript" src="${rootURL}/plugin/dry/yui/tabview-min.js"></script>
+    <script type="text/javascript" src="${rootURL}/plugin/dry/yui/dispatcher-min.js"></script>
 
     <script type="text/javascript">
       var myTabs = new YAHOO.widget.TabView("statistics");

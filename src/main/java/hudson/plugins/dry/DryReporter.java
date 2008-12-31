@@ -18,17 +18,18 @@ import org.apache.maven.project.MavenProject;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
- * Publishes the results of the PMD analysis  (maven 2 project type).
+ * Publishes the results of the DRY analysis  (maven 2 project type).
  *
  * @author Ulli Hafner
  */
-public class PmdReporter extends HealthAwareMavenReporter {
+public class DryReporter extends HealthAwareMavenReporter {
     /** Unique identifier of this class. */
     private static final long serialVersionUID = 2272875032054063496L;
     /** Descriptor of this publisher. */
-    public static final PmdReporterDescriptor PMD_SCANNER_DESCRIPTOR = new PmdReporterDescriptor(PmdPublisher.PMD_DESCRIPTOR);
-    /** Default PMD pattern. */
-    private static final String PMD_XML_FILE = "pmd.xml";
+    public static final DryReporterDescriptor DRY_SCANNER_DESCRIPTOR = new DryReporterDescriptor(DryPublisher.DRY_DESCRIPTOR);
+    /** Default DRY pattern. */
+    // FIXME:new pattern
+    private static final String DRY_XML_FILE = "pmd.xml";
     /** Ant file-set pattern of files to work with. */
     @SuppressWarnings("unused")
     private String pattern; // obsolete since release 2.5
@@ -52,48 +53,49 @@ public class PmdReporter extends HealthAwareMavenReporter {
      *            evaluating the build stability and health
      */
     @DataBoundConstructor
-    public PmdReporter(final String threshold, final String healthy, final String unHealthy, final String height, final String thresholdLimit) {
-        super(threshold, healthy, unHealthy, height, thresholdLimit, "PMD");
+    public DryReporter(final String threshold, final String healthy, final String unHealthy, final String height, final String thresholdLimit) {
+        super(threshold, healthy, unHealthy, height, thresholdLimit, "DRY");
     }
 
     /** {@inheritDoc} */
     @Override
     protected boolean acceptGoal(final String goal) {
+        // FIXME: which target?
         return "pmd".equals(goal) || "site".equals(goal);
     }
 
     /** {@inheritDoc} */
     @Override
     public ParserResult perform(final MavenBuildProxy build, final MavenProject pom, final MojoInfo mojo, final PrintStream logger) throws InterruptedException, IOException {
-        FilesParser pmdCollector = new FilesParser(logger, PMD_XML_FILE, new PmdParser(), true, false);
+        FilesParser dryCollector = new FilesParser(logger, DRY_XML_FILE, new PmdParser(), true, false);
 
-        return getTargetPath(pom).act(pmdCollector);
+        return getTargetPath(pom).act(dryCollector);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void persistResult(final ParserResult project, final MavenBuild build) {
-        PmdResult result = new PmdResultBuilder().build(build, project, getDefaultEncoding());
-        build.getActions().add(new MavenPmdResultAction(build, this, getHeight(), getDefaultEncoding(), result));
-        build.registerAsProjectAction(PmdReporter.this);
+        DryResult result = new DryResultBuilder().build(build, project, getDefaultEncoding());
+        build.getActions().add(new MavenDryResultAction(build, this, getHeight(), getDefaultEncoding(), result));
+        build.registerAsProjectAction(DryReporter.this);
     }
 
     /** {@inheritDoc} */
     @Override
     public Action getProjectAction(final MavenModule module) {
-        return new PmdProjectAction(module, getTrendHeight());
+        return new DryProjectAction(module, getTrendHeight());
     }
 
     /** {@inheritDoc} */
     @Override
     protected Class<? extends Action> getResultActionClass() {
-        return MavenPmdResultAction.class;
+        return MavenDryResultAction.class;
     }
 
     /** {@inheritDoc} */
     @Override
     public MavenReporterDescriptor getDescriptor() {
-        return PMD_SCANNER_DESCRIPTOR;
+        return DRY_SCANNER_DESCRIPTOR;
     }
 }
 
