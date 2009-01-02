@@ -16,7 +16,7 @@ public class ResultSummaryTest extends AbstractEnglishLocaleTest {
      */
     @Test
     public void test0WarningsIn0File() {
-        checkSummaryText(0, 0, "DRY: 0 warnings in 0 analysis files.");
+        checkSummaryText(0, 0, ": 0 warnings in 0 analysis files.");
     }
 
     /**
@@ -24,7 +24,7 @@ public class ResultSummaryTest extends AbstractEnglishLocaleTest {
      */
     @Test
     public void test0WarningsIn1File() {
-        checkSummaryText(0, 1, "DRY: 0 warnings in 1 analysis file.");
+        checkSummaryText(0, 1, ": 0 warnings in 1 analysis file.");
     }
 
     /**
@@ -32,7 +32,7 @@ public class ResultSummaryTest extends AbstractEnglishLocaleTest {
      */
     @Test
     public void test0WarningsIn5Files() {
-        checkSummaryText(0, 5, "DRY: 0 warnings in 5 analysis files.");
+        checkSummaryText(0, 5, ": 0 warnings in 5 analysis files.");
     }
 
     /**
@@ -40,7 +40,7 @@ public class ResultSummaryTest extends AbstractEnglishLocaleTest {
      */
     @Test
     public void test1WarningIn2Files() {
-        checkSummaryText(1, 2, "DRY: <a href=\"dryResult\">1 warning</a> in 2 analysis files.");
+        checkSummaryText(1, 2, ": <a href=\"dryResult\">1 warning</a> in 2 analysis files.");
     }
 
     /**
@@ -48,7 +48,7 @@ public class ResultSummaryTest extends AbstractEnglishLocaleTest {
      */
     @Test
     public void test5WarningsIn1File() {
-        checkSummaryText(5, 1, "DRY: <a href=\"dryResult\">5 warnings</a> in 1 analysis file.");
+        checkSummaryText(5, 1, ": <a href=\"dryResult\">5 warnings</a> in 1 analysis file.");
     }
 
     /**
@@ -69,7 +69,7 @@ public class ResultSummaryTest extends AbstractEnglishLocaleTest {
 
         replay(result);
 
-        Assert.assertEquals("Wrong summary message created.", expectedMessage, ResultSummary.createSummary(result));
+        Assert.assertEquals("Wrong summary message created.", Messages.DRY_ProjectAction_Name() + expectedMessage, ResultSummary.createSummary(result));
 
         verify(result);
     }

@@ -1,5 +1,6 @@
 package hudson.plugins.dry.parser;
 
+import hudson.plugins.dry.Messages;
 import hudson.plugins.dry.util.model.AbstractAnnotation;
 import hudson.plugins.dry.util.model.Priority;
 
@@ -7,8 +8,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
+
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+
 /**
- * A serializable Java Bean class representing a warning.
+ * A serializable Java Bean class representing a duplicate code warning.
  * <p>
  * Note: this class has a natural ordering that is inconsistent with equals.
  * </p>
@@ -20,13 +25,22 @@ public class DuplicateCode extends AbstractAnnotation {
     private static final long serialVersionUID = -6231614169627992548L;
 
     /** The links to the other code duplications. */
+    @SuppressWarnings("Se")
     private final Set<DuplicateCode> links = new HashSet<DuplicateCode>();
 
     /**
      * Creates a new instance of {@link DuplicateCode}.
+     *
+     * @param firstLine
+     *            the starting line of the duplication
+     * @param numberOfLines
+     *            total number of duplicate lines
+     * @param fileName
+     *            name of the file that contains the duplication
      */
     public DuplicateCode(final int firstLine, final int numberOfLines, final String fileName) {
-        super(Priority.NORMAL, "", firstLine, firstLine +  numberOfLines - 1, "Duplicate Code", "");
+        super(Priority.NORMAL, Messages.DRY_Warning_Message(numberOfLines),
+                firstLine, firstLine +  numberOfLines - 1, "Duplicate Code", StringUtils.EMPTY);
 
         setFileName(fileName);
     }

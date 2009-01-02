@@ -1,7 +1,5 @@
 package hudson.plugins.dry;
 
-
-
 /**
  * Represents the result summary of the DRY parser. This summary will be
  * shown in the summary.jelly script of the DRY result action.
@@ -20,7 +18,8 @@ public final class ResultSummary {
         StringBuilder summary = new StringBuilder();
         int bugs = result.getNumberOfAnnotations();
 
-        summary.append("DRY: ");
+        summary.append(Messages.DRY_ProjectAction_Name());
+        summary.append(": ");
         if (bugs > 0) {
             summary.append("<a href=\"dryResult\">");
         }
