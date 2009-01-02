@@ -6,7 +6,7 @@ import hudson.maven.MavenModule;
 import hudson.maven.MavenReporterDescriptor;
 import hudson.maven.MojoInfo;
 import hudson.model.Action;
-import hudson.plugins.dry.parser.PmdParser;
+import hudson.plugins.dry.parser.CpdParser;
 import hudson.plugins.dry.util.FilesParser;
 import hudson.plugins.dry.util.HealthAwareMavenReporter;
 import hudson.plugins.dry.util.ParserResult;
@@ -67,7 +67,7 @@ public class DryReporter extends HealthAwareMavenReporter {
     /** {@inheritDoc} */
     @Override
     public ParserResult perform(final MavenBuildProxy build, final MavenProject pom, final MojoInfo mojo, final PrintStream logger) throws InterruptedException, IOException {
-        FilesParser dryCollector = new FilesParser(logger, DRY_XML_FILE, new PmdParser(), true, false);
+        FilesParser dryCollector = new FilesParser(logger, DRY_XML_FILE, new CpdParser(), true, false);
 
         return getTargetPath(pom).act(dryCollector);
     }

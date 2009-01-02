@@ -15,6 +15,7 @@ import java.io.ObjectOutputStream;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -198,7 +199,7 @@ public abstract class AbstractSerializeModelTest extends AbstractEnglishLocaleTe
      *
      * @throws IOException Signals that an I/O exception has occurred.
      */
-    @Test
+    @Ignore @Test
     public void testObjectIsSameAfterDeserialization() throws IOException, ClassNotFoundException {
         JavaProject original = createOriginal();
 //        Collection<FileAnnotation> files = original.getAnnotations();

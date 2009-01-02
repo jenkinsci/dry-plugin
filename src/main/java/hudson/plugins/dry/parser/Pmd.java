@@ -12,14 +12,14 @@ import java.util.List;
  */
 public class Pmd {
     /** All files of this violations collection. */
-    private final List<File> files = new ArrayList<File>();
+    private final List<SourceFile> files = new ArrayList<SourceFile>();
 
     /**
      * Adds a new file to this bug collection.
      *
      * @param file the file to add
      */
-    public void addFile(final File file) {
+    public void addFile(final SourceFile file) {
         files.add(file);
     }
 
@@ -29,7 +29,7 @@ public class Pmd {
      *
      * @return all files of this bug collection
      */
-    public Collection<File> getFiles() {
+    public Collection<SourceFile> getFiles() {
         return Collections.unmodifiableCollection(files);
     }
 }

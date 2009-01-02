@@ -2,7 +2,6 @@ package hudson.plugins.dry.parser;
 
 import hudson.plugins.dry.util.AnnotationParser;
 import hudson.plugins.dry.util.model.FileAnnotation;
-import hudson.plugins.dry.util.model.Priority;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,11 +16,11 @@ import org.apache.commons.digester.Digester;
 import org.xml.sax.SAXException;
 
 /**
- * A parser for PMD XML files.
+ * A parser for PMD's CPD XML files.
  *
  * @author Ulli Hafner
  */
-public class PmdParser implements AnnotationParser {
+public class CpdParser implements AnnotationParser {
     /** Unique ID of this class. */
     private static final long serialVersionUID = 6507147028628714706L;
 
@@ -42,7 +41,7 @@ public class PmdParser implements AnnotationParser {
      *            the file to parse
      * @param moduleName
      *            name of the maven module
-     * @return the parsed result (stored in the module instance)
+     * @return the parsed annotations
      * @throws InvocationTargetException
      *             if the file could not be parsed (wrap your exception in this exception)
      */
@@ -50,29 +49,27 @@ public class PmdParser implements AnnotationParser {
         try {
             Digester digester = new Digester();
             digester.setValidating(false);
-            digester.setClassLoader(PmdParser.class.getClassLoader());
+            digester.setClassLoader(CpdParser.class.getClassLoader());
 
-            String rootXPath = "pmd";
-            digester.addObjectCreate(rootXPath, Pmd.class);
-            digester.addSetProperties(rootXPath);
+            ArrayList<Duplication> duplications = new ArrayList<Duplication>();
+            digester.push(duplications);
 
-            String fileXPath = "pmd/file";
-            digester.addObjectCreate(fileXPath, hudson.plugins.dry.parser.File.class);
+            String duplicationXPath = "*/pmd-cpd/duplication";
+            digester.addObjectCreate(duplicationXPath, Duplication.class);
+            digester.addSetProperties(duplicationXPath);
+            digester.addSetNext(duplicationXPath, "add");
+
+            String fileXPath = "*/pmd-cpd/duplication/file";
+            digester.addObjectCreate(fileXPath, SourceFile.class);
             digester.addSetProperties(fileXPath);
-            digester.addSetNext(fileXPath, "addFile", hudson.plugins.dry.parser.File.class.getName());
+            digester.addSetNext(fileXPath, "addFile", SourceFile.class.getName());
 
-            String bugXPath = "pmd/file/violation";
-            digester.addObjectCreate(bugXPath, Violation.class);
-            digester.addSetProperties(bugXPath);
-            digester.addCallMethod(bugXPath, "setMessage", 0);
-            digester.addSetNext(bugXPath, "addViolation", Violation.class.getName());
-
-            Pmd module = (Pmd)digester.parse(file);
-            if (module == null) {
-                throw new SAXException("Input stream is not a PMD file.");
+            Object result = digester.parse(file);
+            if (result != duplications) {
+                throw new SAXException("Input stream is not a valid CPD file.");
             }
 
-            return convert(module, moduleName);
+            return convert(duplications, moduleName);
         }
         catch (IOException exception) {
             throw new InvocationTargetException(exception);
@@ -85,35 +82,24 @@ public class PmdParser implements AnnotationParser {
     /**
      * Converts the internal structure to the annotations API.
      *
-     * @param collection
+     * @param duplications
      *            the internal maven module
      * @param moduleName
      *            name of the maven module
      * @return a maven module of the annotations API
      */
-    private Collection<FileAnnotation> convert(final Pmd collection, final String moduleName) {
+    private Collection<FileAnnotation> convert(final ArrayList<Duplication> duplications, final String moduleName) {
         ArrayList<FileAnnotation> annotations = new ArrayList<FileAnnotation>();
 
-        for (hudson.plugins.dry.parser.File file : collection.getFiles()) {
-            for (Violation warning : file.getViolations()) {
-                Priority priority;
-                if (warning.getPriority() < 3) {
-                    priority = Priority.HIGH;
-                }
-                else if (warning.getPriority() >  3) {
-                    priority = Priority.LOW;
-                }
-                else {
-                    priority = Priority.NORMAL;
-                }
-                Bug bug = new Bug(priority, warning.getMessage() + ".", warning.getRuleset(), warning.getRule(),
-                            warning.getBeginline(), warning.getEndline());
-                bug.setPackageName(warning.getPackage());
-                bug.setModuleName(moduleName);
-                bug.setFileName(file.getName());
-
-                annotations.add(bug);
+        for (Duplication duplication : duplications) {
+            ArrayList<DuplicateCode> codeBlocks = new ArrayList<DuplicateCode>();
+            for (SourceFile file : duplication.getFiles()) {
+                codeBlocks.add(new DuplicateCode(file.getLine(), duplication.getLines(), file.getPath()));
             }
+            for (DuplicateCode block : codeBlocks) {
+                block.linkTo(codeBlocks);
+            }
+            annotations.addAll(codeBlocks);
         }
         return annotations;
     }

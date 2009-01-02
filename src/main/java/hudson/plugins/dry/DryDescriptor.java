@@ -12,8 +12,7 @@ public final class DryDescriptor extends PluginDescriptor {
     /** Plug-in name. */
     private static final String PLUGIN_NAME = "dry";
     /** Icon to use for the result and project action. */
-    // FIXME: new icon
-    private static final String ACTION_ICON = "/plugin/dry/icons/pmd-24x24.gif";
+    private static final String ACTION_ICON = "/plugin/dry/icons/dry-24x24.png";
 
     /**
      * Instantiates a new find bugs descriptor.

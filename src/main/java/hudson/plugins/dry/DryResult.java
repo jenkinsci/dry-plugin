@@ -1,7 +1,7 @@
 package hudson.plugins.dry;
 
 import hudson.model.AbstractBuild;
-import hudson.plugins.dry.parser.Bug;
+import hudson.plugins.dry.parser.DuplicateCode;
 import hudson.plugins.dry.util.AnnotationsBuildResult;
 import hudson.plugins.dry.util.ParserResult;
 import hudson.plugins.dry.util.model.JavaProject;
@@ -16,7 +16,7 @@ public class DryResult extends AnnotationsBuildResult {
     /** Unique identifier of this class. */
     private static final long serialVersionUID = 2768250056765266658L;
     static {
-        XSTREAM.alias("bug", Bug.class);
+        XSTREAM.alias("bug", DuplicateCode.class);
     }
 
     /**

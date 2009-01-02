@@ -1,6 +1,5 @@
 package hudson.plugins.dry.parser;
 
-import hudson.plugins.dry.parser.Bug;
 import hudson.plugins.dry.util.AnnotationDifferencer;
 import hudson.plugins.dry.util.AnnotationDifferencerTest;
 import hudson.plugins.dry.util.model.FileAnnotation;
@@ -14,8 +13,9 @@ public class BugsDifferencerTest extends AnnotationDifferencerTest {
     @Override
     public FileAnnotation createAnnotation(final String fileName, final Priority priority, final String message, final String category,
             final String type, final int start, final int end) {
-        Bug bug = new Bug(priority, message, message, message, start, end);
-        bug.setFileName(fileName);
+        DuplicateCode bug = new DuplicateCode(start, end - start + 1, fileName);
+        bug.setModuleName(message);
+        bug.setPackageName(type);
         return bug;
     }
 }

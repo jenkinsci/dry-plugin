@@ -4,7 +4,7 @@ import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.Action;
 import hudson.model.Descriptor;
-import hudson.plugins.dry.parser.PmdParser;
+import hudson.plugins.dry.parser.CpdParser;
 import hudson.plugins.dry.util.FilesParser;
 import hudson.plugins.dry.util.HealthAwarePublisher;
 import hudson.plugins.dry.util.ParserResult;
@@ -83,7 +83,7 @@ public class DryPublisher extends HealthAwarePublisher {
     @Override
     public ParserResult perform(final AbstractBuild<?, ?> build, final PrintStream logger) throws InterruptedException, IOException {
         log(logger, "Collecting duplicate code analysis files...");
-        FilesParser dryCollector = new FilesParser(logger, StringUtils.defaultIfEmpty(getPattern(), DEFAULT_PATTERN), new PmdParser(),
+        FilesParser dryCollector = new FilesParser(logger, StringUtils.defaultIfEmpty(getPattern(), DEFAULT_PATTERN), new CpdParser(),
                 isMavenBuild(build), isAntBuild(build));
 
         ParserResult project = build.getProject().getWorkspace().act(dryCollector);
