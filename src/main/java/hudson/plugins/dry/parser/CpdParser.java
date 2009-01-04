@@ -100,6 +100,7 @@ public class CpdParser implements AnnotationParser {
                 // TODO: check why PMD reports a length + 1
                 DuplicateCode annotation = new DuplicateCode(file.getLine(), duplication.getLines(), file.getPath());
                 annotation.setSourceCode(duplication.getCodeFragment());
+                annotation.setModuleName(moduleName);
                 codeBlocks.add(annotation);
             }
             for (DuplicateCode block : codeBlocks) {
