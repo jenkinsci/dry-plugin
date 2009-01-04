@@ -6,7 +6,6 @@ import hudson.plugins.dry.util.model.FileAnnotation;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -28,11 +27,50 @@ public class CpdParser implements AnnotationParser {
     /** {@inheritDoc} */
     public Collection<FileAnnotation> parse(final File file, final String moduleName) throws InvocationTargetException {
         try {
-            return parse(new FileInputStream(file), moduleName);
+            if (accepts(new FileInputStream(file))) {
+                return parse(new FileInputStream(file), moduleName);
+            }
+            else {
+                throw new IOException("Can't parse CPD file " + file.getAbsolutePath());
+            }
         }
-        catch (FileNotFoundException exception) {
+        catch (IOException exception) {
             throw new InvocationTargetException(exception);
         }
+    }
+
+
+    /**
+     * Returns whether this parser accepts the specified stream as a valid CPD
+     * file.
+     *
+     * @param file
+     *            the file to parse
+     * @return <code>true</code> if this parser accepts the specified stream as
+     *         a valid CPD file, false if the parser can'r read this file
+     */
+    public boolean accepts(final InputStream file) {
+        try {
+            Digester digester = new Digester();
+            digester.setValidating(false);
+            digester.setClassLoader(CpdParser.class.getClassLoader());
+
+            String duplicationXPath = "*/pmd-cpd";
+            digester.addObjectCreate(duplicationXPath, String.class);
+
+            Object result = digester.parse(file);
+            if (result instanceof String) {
+                return true;
+            }
+
+        }
+        catch (IOException exception) {
+            // ignore and return false
+        }
+        catch (SAXException exception) {
+            // ignore and return false
+        }
+        return false;
     }
 
     /**

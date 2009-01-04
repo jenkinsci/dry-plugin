@@ -3,6 +3,7 @@ package hudson.plugins.dry.parser;
 import static org.junit.Assert.*;
 import hudson.plugins.dry.util.model.FileAnnotation;
 
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Iterator;
@@ -27,6 +28,8 @@ public class CpdParserTest {
     private static final String WRONG_WARNING_PROPERTY = "Wrong warning property";
     /** Error message. */
     private static final String ERROR_MESSAGE = "Wrong number of warnings detected.";
+    /** Error message. */
+    private static final String VALID_CPD_FILE = "Parser does not accept valid CPD file.";
 
     /**
      * Parses the specified file.
@@ -37,7 +40,28 @@ public class CpdParserTest {
      *             in case of an error
      */
     private Collection<FileAnnotation> parseFile(final String fileName) throws InvocationTargetException {
-        return new CpdParser().parse(CpdParserTest.class.getResourceAsStream(fileName), "module");
+        return new CpdParser().parse(getResource(fileName), "module");
+    }
+
+    /**
+     * Checks if the specified file is a CPD file.
+     *
+     * @param fileName the file to read
+     * @return <code>true</code> if the file is a CPD file
+     */
+    private boolean acceptsFile(final String fileName) {
+        return new CpdParser().accepts(getResource(fileName));
+    }
+
+    /**
+     * Returns the specified resource as input stream.
+     *
+     * @param fileName
+     *            the file to read
+     * @return the input stream
+     */
+    private InputStream getResource(final String fileName) {
+        return CpdParserTest.class.getResourceAsStream(fileName);
     }
 
     /**
@@ -46,17 +70,19 @@ public class CpdParserTest {
     @Test
     public void scanFileWithTwoDuplications() throws InvocationTargetException {
         String fileName = "cpd.xml";
+        assertTrue(VALID_CPD_FILE, acceptsFile(fileName));
         Collection<FileAnnotation> annotations = parseFile(fileName);
 
         assertEquals(ERROR_MESSAGE, 4, annotations.size());
     }
 
     /**
-     * Checks whether we correctly detect 1 duplication (i.e., 1 warnings).
+     * Checks whether we correctly detect 1 duplication (i.e., 2 warnings).
      */
     @Test
     public void scanFileWithOneDuplication() throws InvocationTargetException {
         String fileName = "one-cpd.xml";
+        assertTrue(VALID_CPD_FILE, acceptsFile(fileName));
         Collection<FileAnnotation> annotations = parseFile(fileName);
 
         assertEquals(ERROR_MESSAGE, 2, annotations.size());
@@ -97,14 +123,11 @@ public class CpdParserTest {
     }
 
     /**
-     * Checks whether we throw an exception on the wrong type.
+     * Checks whether we don't accept a file of the wrong type.
      */
     @Test
-    public void scanOtherFile() throws InvocationTargetException {
-        String fileName = "otherfile.xml";
-
-        Collection<FileAnnotation> annotations = parseFile(fileName);
-        assertEquals(ERROR_MESSAGE, 0, annotations.size());
+    public void scanOtherFile() {
+        assertFalse("Parser does accept invalid CPD file.", acceptsFile("other.xml"));
     }
 }
 

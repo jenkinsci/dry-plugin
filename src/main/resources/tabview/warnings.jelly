@@ -11,33 +11,27 @@
     </tr>
     <tbody>
       <j:forEach var="warning" items="${it.container.annotations}">
+        <div tooltip="${warning.formattedSourceCode}" nodismiss="">
         <tr>
           <td class="pane">
-            <div tooltip="${warning.formattedSourceCode}" nodismiss="">
               <j:choose>
                 <j:when test="${it.isCurrent() and warning.canDisplayFile(it.owner)}">
                   <a href="source.${warning.key}/#${warning.primaryLineNumber}">${warning.shortFileName}</a>
                 </j:when>
                 <j:otherwise>${warning.shortFileName}</j:otherwise>
               </j:choose>
-            </div>
           </td>
           <td class="pane">
-            <div tooltip="${warning.formattedSourceCode}" nodismiss="">
               ${warning.primaryLineNumber}
-            </div>
           </td>
           <td class="pane">
-            <div tooltip="${warning.formattedSourceCode}" nodismiss="">
               ${warning.numberOfLines}
-            </div>
           </td>
           <td class="pane">
             <j:set var="linkCount" value="${0}" />
-              <div tooltip="${warning.formattedSourceCode}" nodismiss="">
               <j:forEach var="link" items="${warning.links}">
                 <j:if test="${linkCount > 0}">
-                  ,
+                  -
                 </j:if>
                 <j:choose>
                   <j:when test="${it.isCurrent() and link.canDisplayFile(it.owner)}">
@@ -47,9 +41,9 @@
                 </j:choose>
               <j:set var="linkCount" value="${linkCount + 1}" />
               </j:forEach>
-            </div>
           </td>
         </tr>
+        </div>
       </j:forEach>
     </tbody>
   </table>
