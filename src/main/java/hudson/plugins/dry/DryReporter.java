@@ -28,8 +28,7 @@ public class DryReporter extends HealthAwareMavenReporter {
     /** Descriptor of this publisher. */
     public static final DryReporterDescriptor DRY_SCANNER_DESCRIPTOR = new DryReporterDescriptor(DryPublisher.DRY_DESCRIPTOR);
     /** Default DRY pattern. */
-    // FIXME:new pattern
-    private static final String DRY_XML_FILE = "pmd.xml";
+    private static final String DRY_XML_FILE = "cpd.xml";
     /** Ant file-set pattern of files to work with. */
     @SuppressWarnings("unused")
     private String pattern; // obsolete since release 2.5
@@ -60,8 +59,7 @@ public class DryReporter extends HealthAwareMavenReporter {
     /** {@inheritDoc} */
     @Override
     protected boolean acceptGoal(final String goal) {
-        // FIXME: which target?
-        return "pmd".equals(goal) || "site".equals(goal);
+        return "cpd".equals(goal) || "site".equals(goal);
     }
 
     /** {@inheritDoc} */
