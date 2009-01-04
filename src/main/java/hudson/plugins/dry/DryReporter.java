@@ -18,7 +18,7 @@ import org.apache.maven.project.MavenProject;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
- * Publishes the results of the DRY analysis  (maven 2 project type).
+ * Publishes the results of the duplicate code analysis (maven 2 project type).
  *
  * @author Ulli Hafner
  */
@@ -29,9 +29,6 @@ public class DryReporter extends HealthAwareMavenReporter {
     public static final DryReporterDescriptor DRY_SCANNER_DESCRIPTOR = new DryReporterDescriptor(DryPublisher.DRY_DESCRIPTOR);
     /** Default DRY pattern. */
     private static final String DRY_XML_FILE = "cpd.xml";
-    /** Ant file-set pattern of files to work with. */
-    @SuppressWarnings("unused")
-    private String pattern; // obsolete since release 2.5
 
     /**
      * Creates a new instance of <code>PmdReporter</code>.

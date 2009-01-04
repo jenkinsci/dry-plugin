@@ -17,7 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
- * Publishes the results of the DRY analysis  (freestyle project type).
+ * Publishes the results of the duplicate code analysis (freestyle project type).
  *
  * @author Ulli Hafner
  */
@@ -25,8 +25,7 @@ public class DryPublisher extends HealthAwarePublisher {
     /** Unique ID of this class. */
     private static final long serialVersionUID = 6711252664481150129L;
     /** Default DRY pattern. */
-    // FIXME. pattern
-    private static final String DEFAULT_PATTERN = "**/pmd.xml";
+    private static final String DEFAULT_PATTERN = "**/cpd.xml";
     /** Descriptor of this publisher. */
     public static final DryDescriptor DRY_DESCRIPTOR = new DryDescriptor();
     /** Ant file-set pattern of files to work with. */
