@@ -55,10 +55,10 @@ public class DuplicateCode extends AbstractAnnotation {
                 firstLine, firstLine +  numberOfLines - 1, "Duplicate Code", StringUtils.EMPTY);
 
         setFileName(fileName);
-        if (numberOfLines > 100) {
+        if (numberOfLines > 50) {
             setPriority(Priority.HIGH);
         }
-        else if (numberOfLines > 10) {
+        else if (numberOfLines > 25) {
             setPriority(Priority.NORMAL);
         }
         else {

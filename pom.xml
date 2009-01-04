@@ -13,7 +13,7 @@
   <name>Hudson Duplicate Code Plug-in</name>
   <version>1.0-SNAPSHOT</version>
   <url>http://hudson.gotdns.com/wiki/display/HUDSON/DRY+Plugin</url>
-  <description>This plug-in generates reports of duplicate code in a project.</description>
+  <description>This plug-in generates reports of duplicated code in a project.</description>
 
   <licenses>
     <license>
