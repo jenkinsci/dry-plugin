@@ -1,6 +1,7 @@
 package hudson.plugins.dry.parser;
 
 import hudson.plugins.dry.util.AnnotationParser;
+import hudson.plugins.dry.util.JavaPackageDetector;
 import hudson.plugins.dry.util.model.FileAnnotation;
 
 import java.io.File;
@@ -89,15 +90,20 @@ public class CpdParser implements AnnotationParser {
      * @return a maven module of the annotations API
      */
     private Collection<FileAnnotation> convert(final ArrayList<Duplication> duplications, final String moduleName) {
+        JavaPackageDetector javaPackageDetector = new JavaPackageDetector();
         ArrayList<FileAnnotation> annotations = new ArrayList<FileAnnotation>();
 
         for (Duplication duplication : duplications) {
             ArrayList<DuplicateCode> codeBlocks = new ArrayList<DuplicateCode>();
             for (SourceFile file : duplication.getFiles()) {
-                codeBlocks.add(new DuplicateCode(file.getLine(), duplication.getLines(), file.getPath()));
+                // TODO: check why PMD reports a length + 1
+                codeBlocks.add(new DuplicateCode(file.getLine(), duplication.getLines() - 1, file.getPath()));
             }
             for (DuplicateCode block : codeBlocks) {
                 block.linkTo(codeBlocks);
+
+                String packageName = javaPackageDetector.detectPackageName(block.getFileName());
+                block.setPackageName(packageName);
             }
             annotations.addAll(codeBlocks);
         }
@@ -106,7 +112,7 @@ public class CpdParser implements AnnotationParser {
 
     /** {@inheritDoc} */
     public String getName() {
-        return "PMD";
+        return "CPD";
     }
 }
 

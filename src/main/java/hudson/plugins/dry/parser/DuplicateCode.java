@@ -5,6 +5,8 @@ import hudson.plugins.dry.util.model.AbstractAnnotation;
 import hudson.plugins.dry.util.model.Priority;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -45,6 +47,15 @@ public class DuplicateCode extends AbstractAnnotation {
         setFileName(fileName);
     }
 
+    /**
+     * Returns the total number of duplicate lines.
+     *
+     * @return the number of duplicate lines
+     */
+    public int getNumberOfLines() {
+        return getLineRanges().iterator().next().getEnd() - getPrimaryLineNumber() + 1;
+    }
+
     /** {@inheritDoc} */
     public String getToolTip() {
         return "Duplicate Code Tool Tip";
@@ -58,6 +69,15 @@ public class DuplicateCode extends AbstractAnnotation {
     public void linkTo(final ArrayList<DuplicateCode> codeBlocks) {
         links.addAll(codeBlocks);
         links.remove(this);
+    }
+
+    /**
+     * Returns the links to the duplicated code in other files.
+     *
+     * @return the links
+     */
+    public Collection<DuplicateCode> getLinks() {
+        return Collections.unmodifiableCollection(links);
     }
 }
 
