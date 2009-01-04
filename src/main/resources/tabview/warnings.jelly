@@ -6,43 +6,40 @@
     <tr>
       <td class="pane-header">${%File}</td>
       <td class="pane-header">${%Line}</td>
-      <td class="pane-header">${%Priority}</td>
-      <td class="pane-header">${%Type}</td>
-      <td class="pane-header">${%Category}</td>
+      <td class="pane-header">${%Number of lines}</td>
+      <td class="pane-header">${%Duplicated in}</td>
     </tr>
     <tbody>
       <j:forEach var="warning" items="${it.container.annotations}">
         <tr>
           <td class="pane">
-            <div tooltip="${warning.message}">
+            <j:choose>
+              <j:when test="${it.isCurrent() and warning.canDisplayFile(it.owner)}">
+                <a href="source.${warning.key}/#${warning.primaryLineNumber}">${warning.shortFileName}</a>
+              </j:when>
+              <j:otherwise>${warning.shortFileName}</j:otherwise>
+            </j:choose>
+          </td>
+          <td class="pane">
+              ${warning.primaryLineNumber}
+          </td>
+          <td class="pane">
+              ${warning.numberOfLines}
+          </td>
+          <td class="pane">
+            <j:set var="linkCount" value="${0}" />
+            <j:forEach var="link" items="${warning.links}">
+              <j:if test="${linkCount > 0}">
+                ,
+              </j:if>
               <j:choose>
-                <j:when test="${it.isCurrent() and warning.canDisplayFile(it.owner)}">
-                  <a href="source.${warning.key}/#${warning.primaryLineNumber}">${warning.shortFileName}</a>
+                <j:when test="${it.isCurrent() and link.canDisplayFile(it.owner)}">
+                  <a href="source.${link.key}/#${link.primaryLineNumber}">${link.shortFileName}</a>
                 </j:when>
-                <j:otherwise>${warning.shortFileName}</j:otherwise>
+                <j:otherwise>${link.shortFileName}</j:otherwise>
               </j:choose>
-            </div>
-          </td>
-          <td class="pane">
-            <div tooltip="${warning.message}">
-              <j:choose>
-                <j:when test="${warning.primaryLineNumber &lt; 1}">
-                  -
-                </j:when>
-                <j:otherwise>
-                  ${warning.primaryLineNumber}
-                </j:otherwise>
-              </j:choose>
-             </div>
-          </td>
-          <td class="pane">
-            <div tooltip="${warning.message}"> ${warning.priority.localizedString} </div>
-          </td>
-          <td class="pane">
-            <div tooltip="${warning.message}"> ${warning.type} </div>
-          </td>
-          <td class="pane">
-            <div tooltip="${warning.message}"> ${warning.category} </div>
+            <j:set var="linkCount" value="${linkCount + 1}" />
+            </j:forEach>
           </td>
         </tr>
       </j:forEach>
