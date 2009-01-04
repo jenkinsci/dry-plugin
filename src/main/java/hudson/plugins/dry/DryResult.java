@@ -16,7 +16,7 @@ public class DryResult extends AnnotationsBuildResult {
     /** Unique identifier of this class. */
     private static final long serialVersionUID = 2768250056765266658L;
     static {
-        XSTREAM.alias("bug", DuplicateCode.class);
+        XSTREAM.alias("dry", DuplicateCode.class);
     }
 
     /**

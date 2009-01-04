@@ -51,10 +51,19 @@ public class DuplicateCode extends AbstractAnnotation {
      *            name of the file that contains the duplication
      */
     public DuplicateCode(final int firstLine, final int numberOfLines, final String fileName) {
-        super(Priority.NORMAL, Messages.DRY_Warning_Message(numberOfLines),
+        super(Messages.DRY_Warning_Message(numberOfLines),
                 firstLine, firstLine +  numberOfLines - 1, "Duplicate Code", StringUtils.EMPTY);
 
         setFileName(fileName);
+        if (numberOfLines > 100) {
+            setPriority(Priority.HIGH);
+        }
+        else if (numberOfLines > 10) {
+            setPriority(Priority.NORMAL);
+        }
+        else {
+            setPriority(Priority.LOW);
+        }
     }
 
     /**
@@ -137,7 +146,7 @@ public class DuplicateCode extends AbstractAnnotation {
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = (getFileName() == null) ? 0 : getFileName().hashCode();
+        int result = super.hashCode();
         result = prime * result + ((sourceCode == null) ? 0 : sourceCode.hashCode());
         return result;
     }
@@ -148,21 +157,13 @@ public class DuplicateCode extends AbstractAnnotation {
         if (this == obj) {
             return true;
         }
-        if (obj == null) {
+        if (!super.equals(obj)) {
             return false;
         }
         if (getClass() != obj.getClass()) {
             return false;
         }
         DuplicateCode other = (DuplicateCode)obj;
-        if (getFileName() == null) {
-            if (other.getFileName() != null) {
-                return false;
-            }
-        }
-        else if (!getFileName().equals(other.getFileName())) {
-            return false;
-        }
         if (sourceCode == null) {
             if (other.sourceCode != null) {
                 return false;

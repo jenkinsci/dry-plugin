@@ -1,6 +1,7 @@
 package hudson.plugins.dry.parser;
 
 import hudson.XmlFile;
+import hudson.plugins.dry.Messages;
 import hudson.plugins.dry.util.model.AbstractAnnotation;
 import hudson.plugins.dry.util.model.AbstractSerializeModelTest;
 import hudson.plugins.dry.util.model.AnnotationStream;
@@ -16,7 +17,6 @@ import java.net.URISyntaxException;
 
 import junit.framework.Assert;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.thoughtworks.xstream.XStream;
@@ -26,12 +26,12 @@ import com.thoughtworks.xstream.XStream;
  *
  * @see <a href="http://www.ibm.com/developerworks/library/j-serialtest.html">Testing object serialization</a>
  */
-public class BugSerializeModelTest extends AbstractSerializeModelTest {
+public class DuplicationSerializeModelTest extends AbstractSerializeModelTest {
     /** Serialization provider. */
     private static final XStream XSTREAM = new AnnotationStream();
 
     static {
-        XSTREAM.alias("bug", DuplicateCode.class);
+        XSTREAM.alias("dry", DuplicateCode.class);
     }
 
     /**
@@ -43,7 +43,7 @@ public class BugSerializeModelTest extends AbstractSerializeModelTest {
     @Override
     protected void verifyFirstAnnotation(final AbstractAnnotation annotation) {
         DuplicateCode bug = (DuplicateCode)annotation;
-        Assert.assertEquals("Wrong detail message." , TEST_TASK1, bug.getMessage());
+        Assert.assertEquals("Wrong detail message." , Messages.DRY_Warning_Message(1), bug.getMessage());
     }
 
     /**
@@ -55,11 +55,24 @@ public class BugSerializeModelTest extends AbstractSerializeModelTest {
      *            the message
      * @param priority
      *            the priority
+     * @param fileName
+     *            the file name
+     * @param packageName
+     *            the package name
+     * @param moduleName
+     *            the module name
      * @return the annotation
      */
     @Override
-    protected AbstractAnnotation createAnnotation(final int line, final String message, final Priority priority) {
-        return new DuplicateCode(line, 1, message);
+    protected AbstractAnnotation createAnnotation(final int line, final String message, final Priority priority, final String fileName, final String packageName, final String moduleName) {
+        DuplicateCode duplicateCode = new DuplicateCode(line, 1, message);
+        duplicateCode.setFileName(fileName);
+        duplicateCode.setPackageName(packageName);
+        duplicateCode.setModuleName(moduleName);
+        duplicateCode.setPriority(priority);
+        duplicateCode.setSourceCode(message);
+
+        return duplicateCode;
     }
 
     /**
@@ -67,9 +80,9 @@ public class BugSerializeModelTest extends AbstractSerializeModelTest {
      *
      * @throws IOException Signals that an I/O exception has occurred.
      */
-    @Ignore @Test
+    @Test
     public void ensureSameSerialization() throws IOException, ClassNotFoundException {
-        InputStream inputStream = BugSerializeModelTest.class.getResourceAsStream("project.ser");
+        InputStream inputStream = DuplicationSerializeModelTest.class.getResourceAsStream("project.ser");
         ObjectInputStream objectStream = new ObjectInputStream(inputStream);
         Object deserialized = objectStream.readObject();
         JavaProject project = (JavaProject) deserialized;
@@ -83,9 +96,9 @@ public class BugSerializeModelTest extends AbstractSerializeModelTest {
      * @throws IOException Signals that an I/O exception has occurred.
      * @throws URISyntaxException if URI is wrong
      */
-    @Ignore @Test
+    @Test
     public void ensureSameXmlSerialization() throws IOException, URISyntaxException {
-        XmlFile xmlFile = createXmlFile(new File(BugSerializeModelTest.class.getResource("project.ser.xml").toURI()));
+        XmlFile xmlFile = createXmlFile(new File(DuplicationSerializeModelTest.class.getResource("project.ser.xml").toURI()));
         Object deserialized = xmlFile.read();
 
         FileAnnotation[] files = (FileAnnotation[]) deserialized;
