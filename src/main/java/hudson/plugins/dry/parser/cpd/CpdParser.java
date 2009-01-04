@@ -1,11 +1,10 @@
-package hudson.plugins.dry.parser;
+package hudson.plugins.dry.parser.cpd;
 
-import hudson.plugins.dry.util.AnnotationParser;
+import hudson.plugins.dry.parser.AbstractDryParser;
+import hudson.plugins.dry.parser.DuplicateCode;
 import hudson.plugins.dry.util.JavaPackageDetector;
 import hudson.plugins.dry.util.model.FileAnnotation;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -20,35 +19,12 @@ import org.xml.sax.SAXException;
  *
  * @author Ulli Hafner
  */
-public class CpdParser implements AnnotationParser {
+public class CpdParser extends AbstractDryParser {
     /** Unique ID of this class. */
     private static final long serialVersionUID = 6507147028628714706L;
 
     /** {@inheritDoc} */
-    public Collection<FileAnnotation> parse(final File file, final String moduleName) throws InvocationTargetException {
-        try {
-            if (accepts(new FileInputStream(file))) {
-                return parse(new FileInputStream(file), moduleName);
-            }
-            else {
-                throw new IOException("Can't parse CPD file " + file.getAbsolutePath());
-            }
-        }
-        catch (IOException exception) {
-            throw new InvocationTargetException(exception);
-        }
-    }
-
-
-    /**
-     * Returns whether this parser accepts the specified stream as a valid CPD
-     * file.
-     *
-     * @param file
-     *            the file to parse
-     * @return <code>true</code> if this parser accepts the specified stream as
-     *         a valid CPD file, false if the parser can'r read this file
-     */
+    @Override
     public boolean accepts(final InputStream file) {
         try {
             Digester digester = new Digester();
@@ -73,17 +49,8 @@ public class CpdParser implements AnnotationParser {
         return false;
     }
 
-    /**
-     * Returns the annotations found in the specified file.
-     *
-     * @param file
-     *            the file to parse
-     * @param moduleName
-     *            name of the maven module
-     * @return the parsed annotations
-     * @throws InvocationTargetException
-     *             if the file could not be parsed (wrap your exception in this exception)
-     */
+    /** {@inheritDoc} */
+    @Override
     public Collection<FileAnnotation> parse(final InputStream file, final String moduleName) throws InvocationTargetException {
         try {
             Digester digester = new Digester();

@@ -1,4 +1,4 @@
-package hudson.plugins.dry.parser;
+package hudson.plugins.dry.parser.cpd;
 
 import java.util.ArrayList;
 import java.util.Collection;

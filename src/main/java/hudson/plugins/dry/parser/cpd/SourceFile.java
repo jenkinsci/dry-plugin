@@ -1,4 +1,4 @@
-package hudson.plugins.dry.parser;
+package hudson.plugins.dry.parser.cpd;
 
 /**
  * Java Bean class for a file of the PMD CPD format.

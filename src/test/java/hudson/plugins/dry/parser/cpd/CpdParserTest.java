@@ -1,6 +1,7 @@
-package hudson.plugins.dry.parser;
+package hudson.plugins.dry.parser.cpd;
 
 import static org.junit.Assert.*;
+import hudson.plugins.dry.parser.DuplicateCode;
 import hudson.plugins.dry.util.model.FileAnnotation;
 
 import java.io.InputStream;
