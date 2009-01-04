@@ -4,6 +4,9 @@ import hudson.plugins.dry.Messages;
 import hudson.plugins.dry.util.model.AbstractAnnotation;
 import hudson.plugins.dry.util.model.Priority;
 
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -12,6 +15,11 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
+import de.java2html.converter.JavaSource2HTMLConverter;
+import de.java2html.javasource.JavaSource;
+import de.java2html.javasource.JavaSourceParser;
+import de.java2html.options.JavaSourceConversionOptions;
+import de.java2html.util.IllegalConfigurationException;
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
 /**
@@ -89,6 +97,31 @@ public class DuplicateCode extends AbstractAnnotation {
      */
     public String getSourceCode() {
         return sourceCode;
+    }
+
+    /**
+     * Returns the duplicate source code fragment as formatted HTML string.
+     *
+     * @return the duplicate source code fragment
+     */
+    public String getFormattedSourceCode() {
+        try {
+            JavaSource source = new JavaSourceParser().parse(new StringReader(sourceCode));
+            JavaSource2HTMLConverter converter = new JavaSource2HTMLConverter();
+            StringWriter writer = new StringWriter();
+            JavaSourceConversionOptions options = JavaSourceConversionOptions.getDefault();
+            options.setShowLineNumbers(false);
+            options.setAddLineAnchors(false);
+            converter.convert(source, options, writer);
+
+            return writer.toString();
+        }
+        catch (IllegalConfigurationException exception) {
+            return sourceCode;
+        }
+        catch (IOException exception) {
+            return sourceCode;
+        }
     }
 
     /**
