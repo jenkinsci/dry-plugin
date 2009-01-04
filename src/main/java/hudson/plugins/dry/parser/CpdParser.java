@@ -46,7 +46,7 @@ public class CpdParser implements AnnotationParser {
      * @throws InvocationTargetException
      *             if the file could not be parsed (wrap your exception in this exception)
      */
-    public Collection<FileAnnotation>  parse(final InputStream file, final String moduleName) throws InvocationTargetException {
+    public Collection<FileAnnotation> parse(final InputStream file, final String moduleName) throws InvocationTargetException {
         try {
             Digester digester = new Digester();
             digester.setValidating(false);
@@ -58,9 +58,10 @@ public class CpdParser implements AnnotationParser {
             String duplicationXPath = "*/pmd-cpd/duplication";
             digester.addObjectCreate(duplicationXPath, Duplication.class);
             digester.addSetProperties(duplicationXPath);
+            digester.addCallMethod(duplicationXPath + "/codefragment", "setCodeFragment", 0);
             digester.addSetNext(duplicationXPath, "add");
 
-            String fileXPath = "*/pmd-cpd/duplication/file";
+            String fileXPath = duplicationXPath + "/file";
             digester.addObjectCreate(fileXPath, SourceFile.class);
             digester.addSetProperties(fileXPath);
             digester.addSetNext(fileXPath, "addFile", SourceFile.class.getName());
@@ -97,7 +98,9 @@ public class CpdParser implements AnnotationParser {
             ArrayList<DuplicateCode> codeBlocks = new ArrayList<DuplicateCode>();
             for (SourceFile file : duplication.getFiles()) {
                 // TODO: check why PMD reports a length + 1
-                codeBlocks.add(new DuplicateCode(file.getLine(), duplication.getLines() - 1, file.getPath()));
+                DuplicateCode annotation = new DuplicateCode(file.getLine(), duplication.getLines(), file.getPath());
+                annotation.setSourceCode(duplication.getCodeFragment());
+                codeBlocks.add(annotation);
             }
             for (DuplicateCode block : codeBlocks) {
                 block.linkTo(codeBlocks);
@@ -115,4 +118,3 @@ public class CpdParser implements AnnotationParser {
         return "CPD";
     }
 }
-

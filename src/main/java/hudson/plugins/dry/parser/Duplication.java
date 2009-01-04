@@ -15,6 +15,8 @@ public class Duplication {
     private int lines;
     /** Number of duplicate tokens. */
     private int tokens;
+    /** The duplicated code fragment. */
+    private String codeFragment;
 
     /** All files of this duplication. */
     private final List<SourceFile> files = new ArrayList<SourceFile>();
@@ -40,7 +42,7 @@ public class Duplication {
     }
 
     /**
-     * Returns the lines.
+     * Returns the number of duplicate lines.
      *
      * @return the lines
      */
@@ -49,7 +51,7 @@ public class Duplication {
     }
 
     /**
-     * Sets the lines to the specified value.
+     * Sets the number of duplicate lines to the specified value.
      *
      * @param lines the value to set
      */
@@ -58,7 +60,7 @@ public class Duplication {
     }
 
     /**
-     * Returns the tokens.
+     * Returns the number of duplicate tokens.
      *
      * @return the tokens
      */
@@ -67,12 +69,30 @@ public class Duplication {
     }
 
     /**
-     * Sets the tokens to the specified value.
+     * Sets the number of duplicate tokens to the specified value.
      *
      * @param tokens the value to set
      */
     public void setTokens(final int tokens) {
         this.tokens = tokens;
+    }
+
+    /**
+     * Returns the duplicate code fragment.
+     *
+     * @return the duplicate code fragment
+     */
+    public String getCodeFragment() {
+        return codeFragment;
+    }
+
+    /**
+     * Sets the duplicate code fragment to the specified value.
+     *
+     * @param codeFragment the value to set
+     */
+    public void setCodeFragment(final String codeFragment) {
+        this.codeFragment = codeFragment;
     }
 }
 

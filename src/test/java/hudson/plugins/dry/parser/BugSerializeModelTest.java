@@ -83,7 +83,7 @@ public class BugSerializeModelTest extends AbstractSerializeModelTest {
      * @throws IOException Signals that an I/O exception has occurred.
      * @throws URISyntaxException if URI is wrong
      */
-    @Test
+    @Ignore @Test
     public void ensureSameXmlSerialization() throws IOException, URISyntaxException {
         XmlFile xmlFile = createXmlFile(new File(BugSerializeModelTest.class.getResource("project.ser.xml").toURI()));
         Object deserialized = xmlFile.read();

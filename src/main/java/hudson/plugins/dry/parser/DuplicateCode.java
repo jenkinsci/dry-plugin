@@ -29,6 +29,8 @@ public class DuplicateCode extends AbstractAnnotation {
     /** The links to the other code duplications. */
     @SuppressWarnings("Se")
     private final Set<DuplicateCode> links = new HashSet<DuplicateCode>();
+    /** The duplicate source code fragment. */
+    private String sourceCode;
 
     /**
      * Creates a new instance of {@link DuplicateCode}.
@@ -78,6 +80,65 @@ public class DuplicateCode extends AbstractAnnotation {
      */
     public Collection<DuplicateCode> getLinks() {
         return Collections.unmodifiableCollection(links);
+    }
+
+   /**
+     * Returns the duplicate source code fragment.
+     *
+     * @return the duplicate source code fragment
+     */
+    public String getSourceCode() {
+        return sourceCode;
+    }
+
+    /**
+     * Sets the duplicate source code fragment to the specified value.
+     *
+     * @param sourceCode the duplicate code fragment
+     */
+    public void setSourceCode(final String sourceCode) {
+        this.sourceCode = sourceCode;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = (getFileName() == null) ? 0 : getFileName().hashCode();
+        result = prime * result + ((sourceCode == null) ? 0 : sourceCode.hashCode());
+        return result;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        DuplicateCode other = (DuplicateCode)obj;
+        if (getFileName() == null) {
+            if (other.getFileName() != null) {
+                return false;
+            }
+        }
+        else if (!getFileName().equals(other.getFileName())) {
+            return false;
+        }
+        if (sourceCode == null) {
+            if (other.sourceCode != null) {
+                return false;
+            }
+        }
+        else if (!sourceCode.equals(other.sourceCode)) {
+            return false;
+        }
+        return true;
     }
 }
 
