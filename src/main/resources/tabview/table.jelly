@@ -11,15 +11,28 @@
     </tr>
     <tbody>
       <j:forEach var="warning" items="${annotations}">
-        <div tooltip="${warning.formattedSourceCode}" nodismiss="">
         <tr>
           <td class="pane">
-              <j:choose>
-                <j:when test="${it.isCurrent() and warning.canDisplayFile(it.owner)}">
-                  <a href="source.${warning.key}/#${warning.primaryLineNumber}">${warning.shortFileName}</a>
-                </j:when>
-                <j:otherwise>${warning.shortFileName}</j:otherwise>
-              </j:choose>
+            <j:choose>
+              <j:when test="${warning.size() &lt; 50}">
+                <div tooltip="${warning.formattedSourceCode}" nodismiss="">
+                  <j:choose>
+                    <j:when test="${it.isCurrent() and warning.canDisplayFile(it.owner)}">
+                      <a href="source.${warning.key}/#${warning.primaryLineNumber}">${warning.shortFileName}</a>
+                    </j:when>
+                    <j:otherwise>${warning.shortFileName}</j:otherwise>
+                  </j:choose>
+                </div>
+              </j:when>
+              <j:otherwise>
+                <j:choose>
+                  <j:when test="${it.isCurrent() and warning.canDisplayFile(it.owner)}">
+                    <a href="source.${warning.key}/#${warning.primaryLineNumber}">${warning.shortFileName}</a>
+                  </j:when>
+                  <j:otherwise>${warning.shortFileName}</j:otherwise>
+                </j:choose>
+              </j:otherwise>
+            </j:choose>
           </td>
           <td class="pane">
               ${warning.primaryLineNumber}
@@ -28,6 +41,7 @@
               ${warning.numberOfLines}
           </td>
           <td class="pane">
+            <div tooltip="${warning.formattedSourceCode}" nodismiss="">
             <j:set var="linkCount" value="${0}" />
               <j:forEach var="link" items="${warning.links}">
                 <j:if test="${linkCount > 0}">
@@ -41,9 +55,9 @@
                 </j:choose>
               <j:set var="linkCount" value="${linkCount + 1}" />
               </j:forEach>
+            </div>
           </td>
         </tr>
-        </div>
       </j:forEach>
     </tbody>
   </table>

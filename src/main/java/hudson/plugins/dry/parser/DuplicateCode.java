@@ -75,6 +75,24 @@ public class DuplicateCode extends AbstractAnnotation {
         return getLineRanges().iterator().next().getEnd() - getPrimaryLineNumber() + 1;
     }
 
+    /**
+     * Returns the total number of duplicate lines.
+     *
+     * @return the number of duplicate lines
+     */
+    public int size() {
+        return getNumberOfLines();
+    }
+
+    /**
+     * Returns the total number of duplicate lines.
+     *
+     * @return the number of duplicate lines
+     */
+    public int length() {
+        return getNumberOfLines();
+    }
+
     /** {@inheritDoc} */
     public String getToolTip() {
         return "Duplicate Code Tool Tip";
