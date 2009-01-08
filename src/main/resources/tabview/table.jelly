@@ -45,7 +45,7 @@
             <j:set var="linkCount" value="${0}" />
               <j:forEach var="link" items="${warning.links}">
                 <j:if test="${linkCount > 0}">
-                  <p/>
+                  <br/>
                 </j:if>
                 <j:choose>
                   <j:when test="${it.isCurrent() and link.canDisplayFile(it.owner)}">
