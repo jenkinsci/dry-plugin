@@ -1,6 +1,6 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
   xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
-  xmlns:i="jelly:fmt" xmlns:local="local">
+  xmlns:i="jelly:fmt" xmlns:local="local" xmlns:dry="/dry">
   <st:header name="Content-Type" value="text/html;charset=UTF-8" />
   <table class="pane sortable" id="warnings">
     <tr>
@@ -14,23 +14,13 @@
         <tr>
           <td class="pane">
             <j:choose>
-              <j:when test="${warning.size() &lt; 50}">
+              <j:when test="${warning.size() &lt; 40}">
                 <div tooltip="${warning.formattedSourceCode}" nodismiss="">
-                  <j:choose>
-                    <j:when test="${it.isCurrent() and warning.canDisplayFile(it.owner)}">
-                      <a href="source.${warning.key}/#${warning.primaryLineNumber}">${warning.shortFileName}</a>
-                    </j:when>
-                    <j:otherwise>${warning.shortFileName}</j:otherwise>
-                  </j:choose>
+                  <dry:warning />
                 </div>
               </j:when>
               <j:otherwise>
-                <j:choose>
-                  <j:when test="${it.isCurrent() and warning.canDisplayFile(it.owner)}">
-                    <a href="source.${warning.key}/#${warning.primaryLineNumber}">${warning.shortFileName}</a>
-                  </j:when>
-                  <j:otherwise>${warning.shortFileName}</j:otherwise>
-                </j:choose>
+                  <dry:warning />
               </j:otherwise>
             </j:choose>
           </td>
@@ -41,21 +31,23 @@
               ${warning.numberOfLines}
           </td>
           <td class="pane">
-            <div tooltip="${warning.formattedSourceCode}" nodismiss="">
             <j:set var="linkCount" value="${0}" />
               <j:forEach var="link" items="${warning.links}">
                 <j:if test="${linkCount > 0}">
                   <br/>
                 </j:if>
                 <j:choose>
-                  <j:when test="${it.isCurrent() and link.canDisplayFile(it.owner)}">
-                    <a href="link.${warning.key}.${link.key}/#${link.primaryLineNumber}">${link.shortFileName} (${link.primaryLineNumber})</a>
+                  <j:when test="${warning.size() &lt; 40}">
+                    <div tooltip="${warning.formattedSourceCode}" nodismiss="">
+                      <dry:link />
+                    </div>
                   </j:when>
-                  <j:otherwise>${link.shortFileName} (${link.primaryLineNumber})</j:otherwise>
+                  <j:otherwise>
+                      <dry:link />
+                  </j:otherwise>
                 </j:choose>
-              <j:set var="linkCount" value="${linkCount + 1}" />
+                    <j:set var="linkCount" value="${linkCount + 1}" />
               </j:forEach>
-            </div>
           </td>
         </tr>
       </j:forEach>

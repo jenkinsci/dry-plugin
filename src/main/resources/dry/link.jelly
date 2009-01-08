@@ -1,0 +1,15 @@
+<!--
+  Section header
+
+-->
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
+  xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+
+      <j:choose>
+        <j:when test="${it.isCurrent() and link.canDisplayFile(it.owner)}">
+          <a href="link.${warning.key}.${link.key}/#${link.primaryLineNumber}">${link.shortFileName} (${link.primaryLineNumber})</a>
+        </j:when>
+        <j:otherwise>${link.shortFileName} (${link.primaryLineNumber})</j:otherwise>
+      </j:choose>
+
+</j:jelly>
