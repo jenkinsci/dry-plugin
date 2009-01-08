@@ -49,7 +49,7 @@
                 </j:if>
                 <j:choose>
                   <j:when test="${it.isCurrent() and link.canDisplayFile(it.owner)}">
-                    <a href="source.${link.key}/#${link.primaryLineNumber}">${link.shortFileName} (${link.primaryLineNumber})</a>
+                    <a href="link.${warning.key}.${link.key}/#${link.primaryLineNumber}">${link.shortFileName} (${link.primaryLineNumber})</a>
                   </j:when>
                   <j:otherwise>${link.shortFileName} (${link.primaryLineNumber})</j:otherwise>
                 </j:choose>

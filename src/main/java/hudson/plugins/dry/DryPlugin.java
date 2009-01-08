@@ -2,6 +2,7 @@ package hudson.plugins.dry;
 
 import hudson.Plugin;
 import hudson.maven.MavenReporters;
+import hudson.plugins.dry.util.DetailBuilder;
 import hudson.tasks.BuildStep;
 
 /**
@@ -17,5 +18,7 @@ public class DryPlugin extends Plugin {
         BuildStep.PUBLISHERS.addRecorder(DryPublisher.DRY_DESCRIPTOR);
 
         MavenReporters.LIST.add(DryReporter.DRY_SCANNER_DESCRIPTOR);
+
+        DetailBuilder.setDetailBuilder(DryDetailBuilder.class);
     }
 }

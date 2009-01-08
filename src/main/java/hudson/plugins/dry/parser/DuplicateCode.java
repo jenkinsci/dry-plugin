@@ -2,6 +2,7 @@ package hudson.plugins.dry.parser;
 
 import hudson.plugins.dry.Messages;
 import hudson.plugins.dry.util.model.AbstractAnnotation;
+import hudson.plugins.dry.util.model.FileAnnotation;
 import hudson.plugins.dry.util.model.Priority;
 
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -95,7 +97,7 @@ public class DuplicateCode extends AbstractAnnotation {
 
     /** {@inheritDoc} */
     public String getToolTip() {
-        return "Duplicate Code Tool Tip";
+        return StringUtils.EMPTY;
     }
 
     /**
@@ -191,6 +193,22 @@ public class DuplicateCode extends AbstractAnnotation {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Returns the link with the specified hash code.
+     *
+     * @param linkHashCode
+     *            the hash code of the linked annotation
+     * @return the link with the specified hash code
+     */
+    public FileAnnotation getLink(final long linkHashCode) {
+        for (FileAnnotation link : links) {
+            if (link.getKey() == linkHashCode) {
+                return link;
+            }
+        }
+        throw new NoSuchElementException("Linked annotation not found: key=" + linkHashCode);
     }
 }
 
