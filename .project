@@ -1,6 +1,6 @@
 <projectDescription>
   <name>dry</name>
-  <comment>This plug-in generates reports of duplicate code in a project.</comment>
+  <comment>This plug-in generates reports of duplicated code in a project.</comment>
   <projects/>
   <buildSpec>
     <buildCommand>
