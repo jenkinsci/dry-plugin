@@ -14,17 +14,6 @@
         this.height = height;
         this.pluginName = "[" + pluginName + "] ";
 
-        if (!StringUtils.isEmpty(threshold)) {
-            try {
-                minimumAnnotations = Integer.valueOf(threshold);
-                if (minimumAnnotations >= 0) {
-                    thresholdEnabled = true;
-                }
-            }
-            catch (NumberFormatException exception) {
-                // nothing to do, we use the default value
-            }
-        }
         if (!StringUtils.isEmpty(healthy) && !StringUtils.isEmpty(unHealthy)) {
             try {
                 healthyAnnotations = Integer.valueOf(healthy);
@@ -53,61 +42,6 @@
                 reportSingleCount, reportMultipleCount);
     }
 
-
-    /**
-     * Determines whether a threshold has been defined.
-     *
-     * @return <code>true</code> if a threshold has been defined
-     */
-    public boolean isThresholdEnabled() {
-        return thresholdEnabled;
-    }
-
-    /**
-     * Returns the annotation threshold to be reached if a build should be considered as unstable.
-     *
-     * @return the annotation threshold to be reached if a build should be considered as unstable.
-     */
-    public String getThreshold() {
-        return threshold;
-    }
-
-    /**
-     * Returns the threshold to be reached if a build should be considered as unstable.
-     *
-     * @return the threshold to be reached if a build should be considered as unstable
-     */
-    public int getMinimumAnnotations() {
-        return minimumAnnotations;
-    }
-
-    /**
-     * Returns the isHealthyReportEnabled.
-     *
-     * @return the isHealthyReportEnabled
-     */
-    public boolean isHealthyReportEnabled() {
-        return healthyReportEnabled;
-    }
-
-    /**
-     * Returns the healthy threshold, i.e. when health is reported as 100%.
-     *
-     * @return the 100% healthiness
-     */
-    public String getHealthy() {
-        return healthy;
-    }
-
-    /**
-     * Returns the healthy threshold for annotations, i.e. when health is reported as 100%.
-     *
-     * @return the 100% healthiness
-     */
-    public int getHealthyAnnotations() {
-        return healthyAnnotations;
-    }
-
     /**
      * Returns the unhealthy threshold, i.e. when health is reported as 0%.
      *
@@ -117,23 +51,6 @@
         return unHealthy;
     }
 
-    /**
-     * Returns the unhealthy threshold of annotations, i.e. when health is reported as 0%.
-     *
-     * @return the 0% unhealthiness
-     */
-    public int getUnHealthyAnnotations() {
-        return unHealthyAnnotations;
-    }
-
-    /**
-     * Returns the height of the trend graph.
-     *
-     * @return the height of the trend graph
-     */
-    public String getHeight() {
-        return height;
-    }
 
     /**
      * Returns the height of the trend graph.
