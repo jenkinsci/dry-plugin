@@ -8,6 +8,7 @@ import hudson.plugins.dry.parser.DuplicationParserRegistry;
 import hudson.plugins.dry.util.FilesParser;
 import hudson.plugins.dry.util.HealthAwarePublisher;
 import hudson.plugins.dry.util.ParserResult;
+import hudson.plugins.dry.util.model.Priority;
 import hudson.tasks.Publisher;
 
 import java.io.IOException;
@@ -47,7 +48,7 @@ public class DryPublisher extends HealthAwarePublisher {
      *            than this value
      * @param height
      *            the height of the trend graph
-     * @param thresholdLimit
+     * @param minimumPriority
      *            determines which warning priorities should be considered when
      *            evaluating the build stability and health
      * @param defaultEncoding
@@ -57,8 +58,8 @@ public class DryPublisher extends HealthAwarePublisher {
     @SuppressWarnings("PMD.ExcessiveParameterList")
     @DataBoundConstructor
     public DryPublisher(final String pattern, final String threshold, final String healthy, final String unHealthy,
-            final String height, final String thresholdLimit, final String defaultEncoding) {
-        super(threshold, healthy, unHealthy, height, thresholdLimit, defaultEncoding, "DRY");
+            final String height, final Priority minimumPriority, final String defaultEncoding) {
+        super(threshold, healthy, unHealthy, height, minimumPriority, defaultEncoding, "DRY");
         this.pattern = pattern;
     }
     // CHECKSTYLE:ON
