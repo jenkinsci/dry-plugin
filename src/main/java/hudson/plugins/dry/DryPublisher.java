@@ -5,6 +5,7 @@ import hudson.model.AbstractProject;
 import hudson.model.Action;
 import hudson.model.Descriptor;
 import hudson.plugins.dry.parser.DuplicationParserRegistry;
+import hudson.plugins.dry.util.AnnotationsBuildResult;
 import hudson.plugins.dry.util.FilesParser;
 import hudson.plugins.dry.util.HealthAwarePublisher;
 import hudson.plugins.dry.util.ParserResult;
@@ -38,8 +39,11 @@ public class DryPublisher extends HealthAwarePublisher {
      * @param pattern
      *            Ant file-set pattern to scan for DRY files
      * @param threshold
-     *            Bug threshold to be reached if a build should be considered as
+     *            Annotation threshold to be reached if a build should be considered as
      *            unstable.
+     * @param newThreshold
+     *            New annotations threshold to be reached if a build should be
+     *            considered as unstable.
      * @param healthy
      *            Report health as 100% when the number of warnings is less than
      *            this value
@@ -57,9 +61,10 @@ public class DryPublisher extends HealthAwarePublisher {
     // CHECKSTYLE:OFF
     @SuppressWarnings("PMD.ExcessiveParameterList")
     @DataBoundConstructor
-    public DryPublisher(final String pattern, final String threshold, final String healthy, final String unHealthy,
+    public DryPublisher(final String pattern, final String threshold,
+            final String newThreshold, final String healthy, final String unHealthy,
             final String height, final Priority minimumPriority, final String defaultEncoding) {
-        super(threshold, healthy, unHealthy, height, minimumPriority, defaultEncoding, "DRY");
+        super(threshold, newThreshold, healthy, unHealthy, height, minimumPriority, defaultEncoding, "DRY");
         this.pattern = pattern;
     }
     // CHECKSTYLE:ON
@@ -81,7 +86,7 @@ public class DryPublisher extends HealthAwarePublisher {
 
     /** {@inheritDoc} */
     @Override
-    public ParserResult perform(final AbstractBuild<?, ?> build, final PrintStream logger) throws InterruptedException, IOException {
+    public AnnotationsBuildResult perform(final AbstractBuild<?, ?> build, final PrintStream logger) throws InterruptedException, IOException {
         log(logger, "Collecting duplicate code analysis files...");
         FilesParser dryCollector = new FilesParser(logger, StringUtils.defaultIfEmpty(getPattern(), DEFAULT_PATTERN), new DuplicationParserRegistry(),
                 isMavenBuild(build), isAntBuild(build));
@@ -90,7 +95,7 @@ public class DryPublisher extends HealthAwarePublisher {
         DryResult result = new DryResultBuilder().build(build, project, getDefaultEncoding());
         build.getActions().add(new DryResultAction(build, this, result));
 
-        return project;
+        return result;
     }
 
     /** {@inheritDoc} */

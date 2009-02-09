@@ -7,6 +7,7 @@ import hudson.maven.MavenReporterDescriptor;
 import hudson.maven.MojoInfo;
 import hudson.model.Action;
 import hudson.plugins.dry.parser.DuplicationParserRegistry;
+import hudson.plugins.dry.util.AnnotationsBuildResult;
 import hudson.plugins.dry.util.FilesParser;
 import hudson.plugins.dry.util.HealthAwareMavenReporter;
 import hudson.plugins.dry.util.ParserResult;
@@ -35,8 +36,11 @@ public class DryReporter extends HealthAwareMavenReporter {
      * Creates a new instance of <code>PmdReporter</code>.
      *
      * @param threshold
-     *            Bug threshold to be reached if a build should be considered as
+     *            Annotation threshold to be reached if a build should be considered as
      *            unstable.
+     * @param newThreshold
+     *            New annotations threshold to be reached if a build should be
+     *            considered as unstable.
      * @param healthy
      *            Report health as 100% when the number of warnings is less than
      *            this value
@@ -50,8 +54,9 @@ public class DryReporter extends HealthAwareMavenReporter {
      *            evaluating the build stability and health
      */
     @DataBoundConstructor
-    public DryReporter(final String threshold, final String healthy, final String unHealthy, final String height, final Priority minimumPriority) {
-        super(threshold, healthy, unHealthy, height, minimumPriority, "DRY");
+    public DryReporter(final String threshold, final String newThreshold,
+            final String healthy, final String unHealthy, final String height, final Priority minimumPriority) {
+        super(threshold, newThreshold, healthy, unHealthy, height, minimumPriority, "DRY");
     }
 
     /** {@inheritDoc} */
@@ -70,10 +75,12 @@ public class DryReporter extends HealthAwareMavenReporter {
 
     /** {@inheritDoc} */
     @Override
-    protected void persistResult(final ParserResult project, final MavenBuild build) {
+    protected AnnotationsBuildResult persistResult(final ParserResult project, final MavenBuild build) {
         DryResult result = new DryResultBuilder().build(build, project, getDefaultEncoding());
         build.getActions().add(new MavenDryResultAction(build, this, getHeight(), getDefaultEncoding(), result));
         build.registerAsProjectAction(DryReporter.this);
+
+        return result;
     }
 
     /** {@inheritDoc} */
