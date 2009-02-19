@@ -21,6 +21,7 @@ public class DuplicationParserRegistry implements AnnotationParser {
     /** Unique ID of this class. */
     private static final long serialVersionUID = -8114361417348412242L;
     /** The registered parsers. */
+    @SuppressWarnings("Se")
     private final List<AbstractDryParser> parsers = new ArrayList<AbstractDryParser>();
 
     /**
@@ -28,11 +29,6 @@ public class DuplicationParserRegistry implements AnnotationParser {
      */
     public DuplicationParserRegistry() {
         parsers.add(new CpdParser());
-    }
-
-    /** {@inheritDoc} */
-    public String getName() {
-        return "DRY (CPD)";
     }
 
     /** {@inheritDoc} */

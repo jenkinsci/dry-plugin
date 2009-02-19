@@ -118,9 +118,4 @@ public class CpdParser extends AbstractDryParser {
         }
         return annotations;
     }
-
-    /** {@inheritDoc} */
-    public String getName() {
-        return "CPD";
-    }
 }

@@ -11,10 +11,9 @@ import hudson.plugins.dry.util.AnnotationsBuildResult;
 import hudson.plugins.dry.util.FilesParser;
 import hudson.plugins.dry.util.HealthAwareMavenReporter;
 import hudson.plugins.dry.util.ParserResult;
-import hudson.plugins.dry.util.model.Priority;
+import hudson.plugins.dry.util.PluginLogger;
 
 import java.io.IOException;
-import java.io.PrintStream;
 
 import org.apache.maven.project.MavenProject;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -55,7 +54,7 @@ public class DryReporter extends HealthAwareMavenReporter {
      *            than this value
      * @param height
      *            the height of the trend graph
-     * @param minimumPriority
+     * @param thresholdLimit
      *            determines which warning priorities should be considered when
      *            evaluating the build stability and health
      */
@@ -65,9 +64,9 @@ public class DryReporter extends HealthAwareMavenReporter {
     public DryReporter(final String threshold, final String newThreshold,
             final String failureThreshold, final String newFailureThreshold,
             final String healthy, final String unHealthy,
-            final String height, final Priority minimumPriority) {
+            final String height, final String thresholdLimit) {
         super(threshold, newThreshold, failureThreshold, newFailureThreshold,
-                healthy, unHealthy, height, minimumPriority, "DRY");
+                healthy, unHealthy, height, thresholdLimit, "DRY");
     }
     // CHECKSTYLE:ON
 
@@ -79,7 +78,8 @@ public class DryReporter extends HealthAwareMavenReporter {
 
     /** {@inheritDoc} */
     @Override
-    public ParserResult perform(final MavenBuildProxy build, final MavenProject pom, final MojoInfo mojo, final PrintStream logger) throws InterruptedException, IOException {
+    public ParserResult perform(final MavenBuildProxy build, final MavenProject pom, final MojoInfo mojo,
+            final PluginLogger logger) throws InterruptedException, IOException {
         FilesParser dryCollector = new FilesParser(logger, DRY_XML_FILE, new DuplicationParserRegistry(), true, false);
 
         return getTargetPath(pom).act(dryCollector);
