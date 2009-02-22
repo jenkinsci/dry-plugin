@@ -7,7 +7,7 @@ import hudson.maven.MavenReporterDescriptor;
 import hudson.maven.MojoInfo;
 import hudson.model.Action;
 import hudson.plugins.dry.parser.DuplicationParserRegistry;
-import hudson.plugins.dry.util.AnnotationsBuildResult;
+import hudson.plugins.dry.util.BuildResult;
 import hudson.plugins.dry.util.FilesParser;
 import hudson.plugins.dry.util.HealthAwareMavenReporter;
 import hudson.plugins.dry.util.ParserResult;
@@ -87,7 +87,7 @@ public class DryReporter extends HealthAwareMavenReporter {
 
     /** {@inheritDoc} */
     @Override
-    protected AnnotationsBuildResult persistResult(final ParserResult project, final MavenBuild build) {
+    protected BuildResult persistResult(final ParserResult project, final MavenBuild build) {
         DryResult result = new DryResultBuilder().build(build, project, getDefaultEncoding());
         build.getActions().add(new MavenDryResultAction(build, this, getHeight(), getDefaultEncoding(), result));
         build.registerAsProjectAction(DryReporter.this);

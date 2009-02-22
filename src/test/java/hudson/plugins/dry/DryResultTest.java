@@ -2,14 +2,14 @@ package hudson.plugins.dry;
 
 import static junit.framework.Assert.*;
 import hudson.model.AbstractBuild;
-import hudson.plugins.dry.util.AbstractAnnotationsBuildResultTest;
-import hudson.plugins.dry.util.AnnotationsBuildResult;
+import hudson.plugins.dry.util.BuildResult;
+import hudson.plugins.dry.util.BuildResultTest;
 import hudson.plugins.dry.util.ParserResult;
 
 /**
  * Tests the class {@link DryResult}.
  */
-public class DryResultTest extends AbstractAnnotationsBuildResultTest<DryResult> {
+public class DryResultTest extends BuildResultTest<DryResult> {
     /** {@inheritDoc} */
     @Override
     protected DryResult createBuildResult(final AbstractBuild<?, ?> build, final ParserResult project) {
@@ -28,7 +28,7 @@ public class DryResultTest extends AbstractAnnotationsBuildResultTest<DryResult>
         if (result.hasNoAnnotations() && result.getDelta() == 0) {
             assertTrue(result.getDetails().contains(Messages.DRY_ResultAction_NoWarningsSince(expectedZeroWarningsBuildNumber)));
             if (expectedIsNewHighScore) {
-                long days = AnnotationsBuildResult.getDays(expectedHighScore);
+                long days = BuildResult.getDays(expectedHighScore);
                 if (days == 1) {
                     assertTrue(result.getDetails().contains(Messages.DRY_ResultAction_OneHighScore()));
                 }
@@ -37,7 +37,7 @@ public class DryResultTest extends AbstractAnnotationsBuildResultTest<DryResult>
                 }
             }
             else {
-                long days = AnnotationsBuildResult.getDays(gap);
+                long days = BuildResult.getDays(gap);
                 if (days == 1) {
                     assertTrue(result.getDetails().contains(Messages.DRY_ResultAction_OneNoHighScore()));
                 }

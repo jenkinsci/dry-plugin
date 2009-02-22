@@ -2,7 +2,7 @@ package hudson.plugins.dry;
 
 import hudson.model.AbstractBuild;
 import hudson.plugins.dry.parser.DuplicateCode;
-import hudson.plugins.dry.util.AnnotationsBuildResult;
+import hudson.plugins.dry.util.BuildResult;
 import hudson.plugins.dry.util.ParserResult;
 import hudson.plugins.dry.util.model.JavaProject;
 
@@ -12,7 +12,7 @@ import hudson.plugins.dry.util.model.JavaProject;
  *
  * @author Ulli Hafner
  */
-public class DryResult extends AnnotationsBuildResult {
+public class DryResult extends BuildResult {
     /** Unique identifier of this class. */
     private static final long serialVersionUID = 2768250056765266658L;
     static {

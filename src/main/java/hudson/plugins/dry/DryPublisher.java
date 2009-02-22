@@ -5,7 +5,7 @@ import hudson.model.AbstractProject;
 import hudson.model.Action;
 import hudson.model.Descriptor;
 import hudson.plugins.dry.parser.DuplicationParserRegistry;
-import hudson.plugins.dry.util.AnnotationsBuildResult;
+import hudson.plugins.dry.util.BuildResult;
 import hudson.plugins.dry.util.FilesParser;
 import hudson.plugins.dry.util.HealthAwarePublisher;
 import hudson.plugins.dry.util.ParserResult;
@@ -93,7 +93,7 @@ public class DryPublisher extends HealthAwarePublisher {
 
     /** {@inheritDoc} */
     @Override
-    public AnnotationsBuildResult perform(final AbstractBuild<?, ?> build, final PluginLogger logger) throws InterruptedException, IOException {
+    public BuildResult perform(final AbstractBuild<?, ?> build, final PluginLogger logger) throws InterruptedException, IOException {
         logger.log("Collecting duplicate code analysis files...");
         FilesParser dryCollector = new FilesParser(logger, StringUtils.defaultIfEmpty(getPattern(), DEFAULT_PATTERN), new DuplicationParserRegistry(),
                 isMavenBuild(build), isAntBuild(build));
