@@ -10,7 +10,7 @@
 
   <artifactId>dry</artifactId>
   <packaging>hpi</packaging>
-  <name>Hudson Duplicate Code Plug-in</name>
+  <name>Hudson Duplicate Code Scanner Plug-in</name>
   <version>1.4-SNAPSHOT</version>
   <url>http://hudson.gotdns.com/wiki/display/HUDSON/DRY+Plugin</url>
   <description>This plug-in generates reports of duplicated code in a project.</description>
