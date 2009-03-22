@@ -20,7 +20,7 @@ public class DryResult extends BuildResult {
     }
 
     /**
-     * Creates a new instance of <code>PmdResult</code>.
+     * Creates a new instance of {@link DryResult}.
      *
      * @param build
      *            the current build as owner of this action
@@ -29,12 +29,13 @@ public class DryResult extends BuildResult {
      * @param result
      *            the parsed result with all annotations
      */
-    public DryResult(final AbstractBuild<?, ?> build, final String defaultEncoding, final ParserResult result) {
+    public DryResult(final AbstractBuild<?, ?> build, final String defaultEncoding,
+            final ParserResult result) {
         super(build, defaultEncoding, result);
     }
 
     /**
-     * Creates a new instance of <code>PmdResult</code>.
+     * Creates a new instance of {@link DryResult}.
      *
      * @param build
      *            the current build as owner of this action
@@ -45,7 +46,8 @@ public class DryResult extends BuildResult {
      * @param previous
      *            the result of the previous build
      */
-    public DryResult(final AbstractBuild<?, ?> build, final String defaultEncoding, final ParserResult result, final DryResult previous) {
+    public DryResult(final AbstractBuild<?, ?> build, final String defaultEncoding,
+            final ParserResult result, final DryResult previous) {
         super(build, defaultEncoding, result, previous);
     }
 

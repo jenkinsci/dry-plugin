@@ -34,5 +34,30 @@ public class DryResultBuilder {
         }
         return new DryResult(build, defaultEncoding, result);
     }
+
+    /**
+     * Creates a result that persists the DRY information for the
+     * specified m2 build.
+     *
+     * @param build
+     *            the build to create the action for
+     * @param result
+     *            the result containing the annotations
+     * @param defaultEncoding
+     *            the default encoding to be used when reading and parsing files
+     * @return the result action
+     */
+    public DryMavenResult buildMaven(final AbstractBuild<?, ?> build, final ParserResult result, final String defaultEncoding) {
+        Object previous = build.getPreviousBuild();
+        while (previous instanceof AbstractBuild<?, ?>) {
+            AbstractBuild<?, ?> previousBuild = (AbstractBuild<?, ?>)previous;
+            DryResultAction previousAction = previousBuild.getAction(DryResultAction.class);
+            if (previousAction != null) {
+                return new DryMavenResult(build, defaultEncoding, result, previousAction.getResult());
+            }
+            previous = previousBuild.getPreviousBuild();
+        }
+        return new DryMavenResult(build, defaultEncoding, result);
+    }
 }
 
