@@ -1,8 +1,9 @@
 package hudson.plugins.dry;
 
 import hudson.model.AbstractBuild;
+import hudson.plugins.dry.util.BuildResult;
 import hudson.plugins.dry.util.ParserResult;
-import hudson.plugins.dry.util.model.JavaProject;
+import hudson.plugins.dry.util.ResultAction;
 
 /**
  * Represents the aggregated results of the PMD analysis in m2 jobs.
@@ -45,31 +46,10 @@ public class DryMavenResult extends DryResult {
         super(build, defaultEncoding, result, previous);
     }
 
-    /**
-     * Returns the results of the previous build.
-     *
-     * @return the result of the previous build, or <code>null</code> if no
-     *         such build exists
-     */
+    /** {@inheritDoc} */
     @Override
-    public JavaProject getPreviousResult() {
-        MavenDryResultAction action = getOwner().getAction(MavenDryResultAction.class);
-        if (action.hasPreviousResultAction()) {
-            return action.getPreviousResultAction().getResult().getProject();
-        }
-        else {
-            return null;
-        }
-    }
-
-    /**
-     * Returns whether a previous build result exists.
-     *
-     * @return <code>true</code> if a previous build result exists.
-     */
-    @Override
-    public boolean hasPreviousResult() {
-        return getOwner().getAction(MavenDryResultAction.class).hasPreviousResultAction();
+    protected Class<? extends ResultAction<? extends BuildResult>> getResultActionType() {
+        return MavenDryResultAction.class;
     }
 }
 
