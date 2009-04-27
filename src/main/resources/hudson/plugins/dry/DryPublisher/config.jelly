@@ -7,7 +7,6 @@
   </f:entry>
   <f:advanced>
     <u:thresholds id="dry"/>
-    <u:trendHeight/>
     <u:defaultEncoding id="dry"/>
   </f:advanced>
 </j:jelly>
