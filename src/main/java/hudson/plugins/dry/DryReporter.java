@@ -52,8 +52,6 @@ public class DryReporter extends HealthAwareMavenReporter {
      * @param unHealthy
      *            Report health as 0% when the number of warnings is greater
      *            than this value
-     * @param height
-     *            the height of the trend graph
      * @param thresholdLimit
      *            determines which warning priorities should be considered when
      *            evaluating the build stability and health
@@ -63,10 +61,9 @@ public class DryReporter extends HealthAwareMavenReporter {
     @DataBoundConstructor
     public DryReporter(final String threshold, final String newThreshold,
             final String failureThreshold, final String newFailureThreshold,
-            final String healthy, final String unHealthy,
-            final String height, final String thresholdLimit) {
+            final String healthy, final String unHealthy, final String thresholdLimit) {
         super(threshold, newThreshold, failureThreshold, newFailureThreshold,
-                healthy, unHealthy, height, thresholdLimit, "DRY");
+                healthy, unHealthy, thresholdLimit, "DRY");
     }
     // CHECKSTYLE:ON
 
@@ -89,7 +86,7 @@ public class DryReporter extends HealthAwareMavenReporter {
     @Override
     protected BuildResult persistResult(final ParserResult project, final MavenBuild build) {
         DryResult result = new DryResultBuilder().build(build, project, getDefaultEncoding());
-        build.getActions().add(new MavenDryResultAction(build, this, getHeight(), getDefaultEncoding(), result));
+        build.getActions().add(new MavenDryResultAction(build, this, getDefaultEncoding(), result));
         build.registerAsProjectAction(DryReporter.this);
 
         return result;
