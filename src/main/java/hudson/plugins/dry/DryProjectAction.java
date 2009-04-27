@@ -33,12 +33,6 @@ public class DryProjectAction extends AbstractProjectAction<DryResultAction> {
 
     /** {@inheritDoc} */
     @Override
-    public String getCookieName() {
-        return "DRY_displayMode";
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public String getTrendName() {
         return Messages.DRY_Trend_Name();
     }
