@@ -8,5 +8,6 @@
   <f:advanced>
     <u:thresholds id="dry"/>
     <u:defaultEncoding id="dry"/>
+    <u:trend id="dry"/>
   </f:advanced>
 </j:jelly>
