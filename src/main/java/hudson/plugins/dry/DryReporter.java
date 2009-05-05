@@ -95,7 +95,7 @@ public class DryReporter extends HealthAwareMavenReporter {
     /** {@inheritDoc} */
     @Override
     public Action getProjectAction(final MavenModule module) {
-        return new DryProjectAction(module, getTrendHeight());
+        return new DryProjectAction(module);
     }
 
     /** {@inheritDoc} */

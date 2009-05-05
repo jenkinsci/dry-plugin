@@ -9,7 +9,6 @@ import hudson.maven.MavenModuleSetBuild;
 import hudson.model.AbstractBuild;
 import hudson.model.Action;
 import hudson.plugins.dry.util.HealthDescriptor;
-import hudson.plugins.dry.util.TrendReportHeightValidator;
 
 import java.util.List;
 import java.util.Map;
@@ -68,7 +67,7 @@ public class MavenDryResultAction extends DryResultAction implements Aggregatabl
 
     /** {@inheritDoc} */
     public Action getProjectAction(final MavenModuleSet moduleSet) {
-        return new DryProjectAction(moduleSet, TrendReportHeightValidator.defaultHeight(height));
+        return new DryProjectAction(moduleSet);
     }
 
     /** {@inheritDoc} */

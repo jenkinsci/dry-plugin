@@ -86,7 +86,7 @@ public class DryPublisher extends HealthAwarePublisher {
     /** {@inheritDoc} */
     @Override
     public Action getProjectAction(final AbstractProject<?, ?> project) {
-        return new DryProjectAction(project, getTrendHeight());
+        return new DryProjectAction(project);
     }
 
     /** {@inheritDoc} */
