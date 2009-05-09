@@ -1,11 +1,13 @@
 <div>
-  <p>
-    Hudson kann Reports von
-    <a href="http://pmd.sourceforge.net/cpd.html">PMD's Copy Paste Detector (CPD)</a>
-    einlesen und darstellen. Wenn dies aktiviert wird und der Build das Maven
-    Goal <code>pmd:cpd</code> ausführt, dann
-    analysiert Hudson nach jedem Build die erzeugten CPD Dateien und stellt deren Informationen
-    in verschiedenen Ansichten dar: Trend Anzeige, Projekt Statistik und Package Statistik.
-    Zudem zeigt Hudson die jeweiligen Warnungen direkt in der betroffen Datei an.
-  </p>
+<p>Hudson kann Reports von <a
+  href="http://pmd.sourceforge.net/cpd.html">PMD's Copy Paste
+Detector (CPD)</a> einlesen und darstellen. Wenn dies aktiviert wird und der
+Build das Maven Goal <code>pmd:cpd</code> ausführt, dann analysiert
+Hudson nach jedem Build die erzeugten CPD Dateien und stellt deren
+Informationen in verschiedenen Ansichten dar: Trend Anzeige, Projekt
+Statistik und Package Statistik. Zudem zeigt Hudson die jeweiligen
+Warnungen direkt in der betroffen Datei an.</p>
+<p>Das Plug-in wird nicht aufgerufen, wenn der Build fehlgeschlagen
+ist, sondern nur für stabile bzw. instabile Builds (mit fehlgeschlagenen
+Tests).</p>
 </div>

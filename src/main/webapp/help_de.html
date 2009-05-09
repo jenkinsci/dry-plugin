@@ -1,15 +1,14 @@
 <div>
-  <p>
-    Hudson kann Reports von
-    <a href="http://pmd.sourceforge.net/cpd.html">PMD's Copy Paste Detector (CPD)</a>
-    einlesen und darstellen.
-    Wenn dies aktiviert wird, analysiert Hudson nach jedem Build die erzeugten CPD Dateien und
-    stellt deren Informationen in verschiedenen Ansichten dar: Trend Anzeige,
-    Projekt Statistik und Package Statistik.
-    Zudem zeigt Hudson die jeweiligen Warnungen direkt in der betroffen Datei an.
-    Damit das Plug-in korrekt funktioniert,
-    muss im Build das CPD Tool gestartet werden und die Dateinamen der erzeugten CPD Dateien
-     in der Konfiguration
-    unten angegeben werden (im Ant format), beispielsweise **/target/cpd.xml.
-  </p>
+<p>Hudson kann Reports von <a
+  href="http://pmd.sourceforge.net/cpd.html">PMD's Copy Paste
+Detector (CPD)</a> einlesen und darstellen. Wenn dies aktiviert wird,
+analysiert Hudson nach jedem Build die erzeugten CPD Dateien und stellt
+deren Informationen in verschiedenen Ansichten dar: Trend Anzeige,
+Projekt Statistik und Package Statistik. Zudem zeigt Hudson die
+jeweiligen Warnungen direkt in der betroffen Datei an. </p>
+<p>Damit das Plug-in korrekt funktioniert, muss im Build
+CPD gestartet werden - das Hudson Plug-in selbst macht dies
+nicht! Das Plug-in wird nicht aufgerufen, wenn der Build fehlgeschlagen
+ist, sondern nur für stabile bzw. instabile Builds (mit fehlgeschlagenen
+Tests).</p>
 </div>
