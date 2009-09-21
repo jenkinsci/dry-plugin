@@ -1,9 +1,9 @@
 package hudson.plugins.dry;
 
 import hudson.model.AbstractBuild;
-import hudson.plugins.dry.util.AbstractResultAction;
-import hudson.plugins.dry.util.HealthDescriptor;
-import hudson.plugins.dry.util.PluginDescriptor;
+import hudson.plugins.analysis.util.AbstractResultAction;
+import hudson.plugins.analysis.util.HealthDescriptor;
+import hudson.plugins.analysis.util.PluginDescriptor;
 
 import java.util.NoSuchElementException;
 
@@ -75,11 +75,13 @@ public class DryResultAction extends AbstractResultAction<DryResult> {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getMultipleItemsTooltip(final int numberOfItems) {
         return Messages.DRY_ResultAction_MultipleWarnings(numberOfItems);
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getSingleItemTooltip() {
         return Messages.DRY_ResultAction_OneWarning();
     }

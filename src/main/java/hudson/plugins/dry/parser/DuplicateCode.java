@@ -1,9 +1,9 @@
 package hudson.plugins.dry.parser;
 
+import hudson.plugins.analysis.util.model.AbstractAnnotation;
+import hudson.plugins.analysis.util.model.FileAnnotation;
+import hudson.plugins.analysis.util.model.Priority;
 import hudson.plugins.dry.Messages;
-import hudson.plugins.dry.util.model.AbstractAnnotation;
-import hudson.plugins.dry.util.model.FileAnnotation;
-import hudson.plugins.dry.util.model.Priority;
 
 import java.io.IOException;
 import java.io.StringReader;

@@ -1,11 +1,11 @@
 package hudson.plugins.dry;
 
 import hudson.model.AbstractBuild;
+import hudson.plugins.analysis.util.DetailBuilder;
+import hudson.plugins.analysis.util.SourceDetail;
+import hudson.plugins.analysis.util.model.AnnotationContainer;
+import hudson.plugins.analysis.util.model.FileAnnotation;
 import hudson.plugins.dry.parser.DuplicateCode;
-import hudson.plugins.dry.util.DetailBuilder;
-import hudson.plugins.dry.util.SourceDetail;
-import hudson.plugins.dry.util.model.AnnotationContainer;
-import hudson.plugins.dry.util.model.FileAnnotation;
 
 import org.apache.commons.lang.StringUtils;
 

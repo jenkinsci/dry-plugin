@@ -1,6 +1,7 @@
 package hudson.plugins.dry;
 
-import hudson.plugins.dry.util.PluginDescriptor;
+import hudson.plugins.analysis.util.PluginDescriptor;
+
 
 /**
  * Descriptor for the class {@link DryPublisher}. Used as a singleton. The

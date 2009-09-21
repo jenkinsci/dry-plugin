@@ -1,10 +1,10 @@
 package hudson.plugins.dry;
 
 import hudson.model.AbstractBuild;
+import hudson.plugins.analysis.util.BuildResult;
+import hudson.plugins.analysis.util.ParserResult;
+import hudson.plugins.analysis.util.ResultAction;
 import hudson.plugins.dry.parser.DuplicateCode;
-import hudson.plugins.dry.util.BuildResult;
-import hudson.plugins.dry.util.ParserResult;
-import hudson.plugins.dry.util.ResultAction;
 
 /**
  * Represents the results of the DRY analysis. One instance of this class is persisted for

@@ -1,9 +1,9 @@
 package hudson.plugins.dry.parser;
 
-import hudson.plugins.dry.util.AnnotationDifferencer;
-import hudson.plugins.dry.util.AnnotationDifferencerTest;
-import hudson.plugins.dry.util.model.FileAnnotation;
-import hudson.plugins.dry.util.model.Priority;
+import hudson.plugins.analysis.test.AnnotationDifferencerTest;
+import hudson.plugins.analysis.util.AnnotationDifferencer;
+import hudson.plugins.analysis.util.model.FileAnnotation;
+import hudson.plugins.analysis.util.model.Priority;
 
 /**
  * Tests the {@link AnnotationDifferencer} for {@link DuplicateCode} instances.

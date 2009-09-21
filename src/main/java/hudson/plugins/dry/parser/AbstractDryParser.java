@@ -1,7 +1,7 @@
 package hudson.plugins.dry.parser;
 
-import hudson.plugins.dry.util.AnnotationParser;
-import hudson.plugins.dry.util.model.FileAnnotation;
+import hudson.plugins.analysis.util.AnnotationParser;
+import hudson.plugins.analysis.util.model.FileAnnotation;
 
 import java.io.File;
 import java.io.FileInputStream;

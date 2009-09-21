@@ -1,9 +1,9 @@
 package hudson.plugins.dry.parser.cpd;
 
+import hudson.plugins.analysis.util.JavaPackageDetector;
+import hudson.plugins.analysis.util.model.FileAnnotation;
 import hudson.plugins.dry.parser.AbstractDryParser;
 import hudson.plugins.dry.parser.DuplicateCode;
-import hudson.plugins.dry.util.JavaPackageDetector;
-import hudson.plugins.dry.util.model.FileAnnotation;
 
 import java.io.IOException;
 import java.io.InputStream;

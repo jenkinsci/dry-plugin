@@ -1,8 +1,8 @@
 package hudson.plugins.dry.parser.cpd;
 
 import static org.junit.Assert.*;
+import hudson.plugins.analysis.util.model.FileAnnotation;
 import hudson.plugins.dry.parser.DuplicateCode;
-import hudson.plugins.dry.util.model.FileAnnotation;
 
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;

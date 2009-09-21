@@ -2,7 +2,7 @@ package hudson.plugins.dry;
 
 import hudson.Plugin;
 import hudson.maven.MavenReporters;
-import hudson.plugins.dry.util.DetailBuilder;
+import hudson.plugins.analysis.util.DetailBuilder;
 import hudson.tasks.BuildStep;
 
 /**

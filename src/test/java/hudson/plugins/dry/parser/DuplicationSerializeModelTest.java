@@ -1,13 +1,13 @@
 package hudson.plugins.dry.parser;
 
 import hudson.XmlFile;
+import hudson.plugins.analysis.test.AbstractSerializeModelTest;
+import hudson.plugins.analysis.util.model.AbstractAnnotation;
+import hudson.plugins.analysis.util.model.AnnotationStream;
+import hudson.plugins.analysis.util.model.FileAnnotation;
+import hudson.plugins.analysis.util.model.JavaProject;
+import hudson.plugins.analysis.util.model.Priority;
 import hudson.plugins.dry.Messages;
-import hudson.plugins.dry.util.model.AbstractAnnotation;
-import hudson.plugins.dry.util.model.AbstractSerializeModelTest;
-import hudson.plugins.dry.util.model.AnnotationStream;
-import hudson.plugins.dry.util.model.FileAnnotation;
-import hudson.plugins.dry.util.model.JavaProject;
-import hudson.plugins.dry.util.model.Priority;
 
 import java.io.File;
 import java.io.IOException;

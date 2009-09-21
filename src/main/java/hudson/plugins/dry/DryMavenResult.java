@@ -1,9 +1,9 @@
 package hudson.plugins.dry;
 
 import hudson.model.AbstractBuild;
-import hudson.plugins.dry.util.BuildResult;
-import hudson.plugins.dry.util.ParserResult;
-import hudson.plugins.dry.util.ResultAction;
+import hudson.plugins.analysis.util.BuildResult;
+import hudson.plugins.analysis.util.ParserResult;
+import hudson.plugins.analysis.util.ResultAction;
 
 /**
  * Represents the aggregated results of the PMD analysis in m2 jobs.
