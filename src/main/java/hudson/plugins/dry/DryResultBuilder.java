@@ -1,7 +1,7 @@
 package hudson.plugins.dry;
 
 import hudson.model.AbstractBuild;
-import hudson.plugins.analysis.util.ParserResult;
+import hudson.plugins.analysis.core.ParserResult;
 
 /**
  * Creates a new DRY result based on the values of a previous build and the

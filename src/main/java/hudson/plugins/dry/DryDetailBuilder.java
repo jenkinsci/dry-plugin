@@ -1,10 +1,10 @@
 package hudson.plugins.dry;
 
 import hudson.model.AbstractBuild;
-import hudson.plugins.analysis.util.DetailBuilder;
-import hudson.plugins.analysis.util.SourceDetail;
 import hudson.plugins.analysis.util.model.AnnotationContainer;
 import hudson.plugins.analysis.util.model.FileAnnotation;
+import hudson.plugins.analysis.views.DetailFactory;
+import hudson.plugins.analysis.views.SourceDetail;
 import hudson.plugins.dry.parser.DuplicateCode;
 
 import org.apache.commons.lang.StringUtils;
@@ -14,7 +14,7 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author Ulli Hafner
  */
-public class DryDetailBuilder extends DetailBuilder {
+public class DryDetailBuilder extends DetailFactory {
     /** {@inheritDoc} */
     @Override
     public Object createDetails(final String link, final AbstractBuild<?, ?> owner,

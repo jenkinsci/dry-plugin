@@ -1,6 +1,6 @@
 package hudson.plugins.dry.parser;
 
-import hudson.plugins.analysis.util.AnnotationParser;
+import hudson.plugins.analysis.core.AnnotationParser;
 import hudson.plugins.analysis.util.model.FileAnnotation;
 
 import java.io.File;

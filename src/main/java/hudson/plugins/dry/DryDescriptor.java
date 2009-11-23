@@ -1,6 +1,6 @@
 package hudson.plugins.dry;
 
-import hudson.plugins.analysis.util.PluginDescriptor;
+import hudson.plugins.analysis.core.PluginDescriptor;
 
 
 /**
