@@ -5,7 +5,10 @@ import hudson.plugins.analysis.util.model.AnnotationContainer;
 import hudson.plugins.analysis.util.model.FileAnnotation;
 import hudson.plugins.analysis.views.DetailFactory;
 import hudson.plugins.analysis.views.SourceDetail;
+import hudson.plugins.analysis.views.TabDetail;
 import hudson.plugins.dry.parser.DuplicateCode;
+
+import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -31,9 +34,19 @@ public class DryDetailBuilder extends DetailFactory {
                     return new SourceDetail(owner, ((DuplicateCode)fromAnnotation).getLink(to), defaultEncoding);
                 }
             }
+            return null;
         }
-
+        else if (link.startsWith("tab.")) {
+            return new DryTabDetail(owner, container.getAnnotations(), "/tabview/" + StringUtils.substringAfter(link, "tab.") + ".jelly", defaultEncoding);
+        }
         return super.createDetails(link, owner, container, defaultEncoding, displayName);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected TabDetail createTabDetail(final AbstractBuild<?, ?> owner, final Collection<FileAnnotation> annotations,
+            final String url, final String defaultEncoding) {
+        return new DryTabDetail(owner, annotations, url, defaultEncoding);
     }
 }
 
