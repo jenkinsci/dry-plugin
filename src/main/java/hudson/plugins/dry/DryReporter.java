@@ -29,7 +29,7 @@ public class DryReporter extends HealthAwareMavenReporter {
     private static final long serialVersionUID = 2272875032054063496L;
 
     /** Descriptor of this publisher. */
-    @Extension
+    @Extension(ordinal = 100)
     public static final DryReporterDescriptor DRY_SCANNER_DESCRIPTOR = new DryReporterDescriptor(DryPublisher.DRY_DESCRIPTOR);
 
     /** Default DRY pattern. */

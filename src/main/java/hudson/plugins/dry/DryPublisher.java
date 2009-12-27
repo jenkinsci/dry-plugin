@@ -28,7 +28,7 @@ public class DryPublisher extends HealthAwarePublisher {
     private static final long serialVersionUID = 6711252664481150129L;
 
     /** Descriptor of this publisher. */
-    @Extension
+    @Extension(ordinal = 100)
     public static final DryDescriptor DRY_DESCRIPTOR = new DryDescriptor();
 
     /** Default DRY pattern. */
