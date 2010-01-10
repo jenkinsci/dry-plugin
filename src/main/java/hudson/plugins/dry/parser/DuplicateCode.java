@@ -56,6 +56,7 @@ public class DuplicateCode extends AbstractAnnotation {
         super(Messages.DRY_Warning_Message(numberOfLines),
                 firstLine, firstLine +  numberOfLines - 1, "Duplicate Code", StringUtils.EMPTY);
 
+        setOrigin(Messages.DRY_Warning_Origin());
         setFileName(fileName);
         if (numberOfLines > 50) {
             setPriority(Priority.HIGH);
