@@ -9,6 +9,8 @@ import hudson.plugins.analysis.views.TabDetail;
 import hudson.plugins.dry.parser.DuplicateCode;
 
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -36,9 +38,6 @@ public class DryDetailBuilder extends DetailFactory {
             }
             return null;
         }
-        else if (link.startsWith("tab.")) {
-            return new DryTabDetail(owner, container.getAnnotations(), "/tabview/" + StringUtils.substringAfter(link, "tab.") + ".jelly", defaultEncoding);
-        }
         return super.createDetails(link, owner, container, defaultEncoding, displayName);
     }
 
@@ -46,6 +45,8 @@ public class DryDetailBuilder extends DetailFactory {
     @Override
     protected TabDetail createTabDetail(final AbstractBuild<?, ?> owner, final Collection<FileAnnotation> annotations,
             final String url, final String defaultEncoding) {
+        Logger.getLogger(DryDetailBuilder.class.getName()).log(Level.INFO, "Creating detail " + url);
+
         return new DryTabDetail(owner, annotations, url, defaultEncoding);
     }
 }
