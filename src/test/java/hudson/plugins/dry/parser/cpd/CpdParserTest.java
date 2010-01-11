@@ -67,6 +67,9 @@ public class CpdParserTest {
 
     /**
      * Checks whether we correctly detect all 2 duplications (i.e., 4 warnings).
+     *
+     * @throws InvocationTargetException
+     *             Signals a test failure
      */
     @Test
     public void scanFileWithTwoDuplications() throws InvocationTargetException {
@@ -79,6 +82,9 @@ public class CpdParserTest {
 
     /**
      * Checks whether we correctly detect 1 duplication (i.e., 2 warnings).
+     *
+     * @throws InvocationTargetException
+     *             Signals a test failure
      */
     @Test
     public void scanFileWithOneDuplication() throws InvocationTargetException {
