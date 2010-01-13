@@ -56,7 +56,7 @@ public class DryResultAction extends AbstractResultAction<DryResult> {
     /** {@inheritDoc} */
     @Override
     protected PluginDescriptor getDescriptor() {
-        return DryPublisher.DRY_DESCRIPTOR;
+        return new DryDescriptor();
     }
 
     /**

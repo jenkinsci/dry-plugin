@@ -21,7 +21,7 @@ public class DryProjectAction extends AbstractProjectAction<DryResultAction> {
      *            the project that owns this action
      */
     public DryProjectAction(final AbstractProject<?, ?> project) {
-        super(project, DryResultAction.class, DryPublisher.DRY_DESCRIPTOR);
+        super(project, DryResultAction.class, new DryDescriptor());
     }
 
     /** {@inheritDoc} */

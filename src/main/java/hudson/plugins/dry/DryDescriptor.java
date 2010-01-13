@@ -1,5 +1,6 @@
 package hudson.plugins.dry;
 
+import hudson.Extension;
 import hudson.plugins.analysis.core.PluginDescriptor;
 
 
@@ -9,6 +10,7 @@ import hudson.plugins.analysis.core.PluginDescriptor;
  *
  * @author Ulli Hafner
  */
+@Extension(ordinal = 100)
 public final class DryDescriptor extends PluginDescriptor {
     /** Plug-in name. */
     private static final String PLUGIN_NAME = "dry";
@@ -18,7 +20,7 @@ public final class DryDescriptor extends PluginDescriptor {
     /**
      * Instantiates a new find bugs descriptor.
      */
-    DryDescriptor() {
+    public DryDescriptor() {
         super(DryPublisher.class);
     }
 

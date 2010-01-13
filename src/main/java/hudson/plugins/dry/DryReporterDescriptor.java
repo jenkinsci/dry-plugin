@@ -1,5 +1,6 @@
 package hudson.plugins.dry;
 
+import hudson.Extension;
 import hudson.maven.MavenReporter;
 import hudson.plugins.analysis.core.PluginDescriptor;
 import hudson.plugins.analysis.core.ReporterDescriptor;
@@ -13,6 +14,7 @@ import org.kohsuke.stapler.StaplerRequest;
  *
  * @author Ulli Hafner
  */
+@Extension(ordinal = 100)
 public class DryReporterDescriptor extends ReporterDescriptor {
     /**
      * Creates a new instance of <code>PmdReporterDescriptor</code>.
