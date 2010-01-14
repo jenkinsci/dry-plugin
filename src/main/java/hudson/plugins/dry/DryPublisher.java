@@ -93,10 +93,16 @@ public class DryPublisher extends HealthAwarePublisher {
         FilesParser dryCollector = new FilesParser(logger, StringUtils.defaultIfEmpty(getPattern(), DEFAULT_PATTERN), new DuplicationParserRegistry(),
                 isMavenBuild(build), isAntBuild(build));
 
-        ParserResult project = build.getProject().getWorkspace().act(dryCollector);
+        ParserResult project = build.getWorkspace().act(dryCollector);
         DryResult result = new DryResultBuilder().build(build, project, getDefaultEncoding());
         build.getActions().add(new DryResultAction(build, this, result));
 
         return result;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DryDescriptor getDescriptor() {
+        return (DryDescriptor)super.getDescriptor();
     }
 }
