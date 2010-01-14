@@ -2,7 +2,6 @@ package hudson.plugins.dry;
 
 import hudson.Extension;
 import hudson.maven.MavenReporter;
-import hudson.plugins.analysis.core.PluginDescriptor;
 import hudson.plugins.analysis.core.ReporterDescriptor;
 import net.sf.json.JSONObject;
 
@@ -17,13 +16,10 @@ import org.kohsuke.stapler.StaplerRequest;
 @Extension(ordinal = 100)
 public class DryReporterDescriptor extends ReporterDescriptor {
     /**
-     * Creates a new instance of <code>PmdReporterDescriptor</code>.
-     *
-     * @param pluginDescriptor
-     *            the plug-in descriptor of the publisher
+     * Creates a new instance of {@link DryReporterDescriptor}.
      */
-    public DryReporterDescriptor(final PluginDescriptor pluginDescriptor) {
-        super(DryReporter.class, pluginDescriptor);
+    public DryReporterDescriptor() {
+        super(DryReporter.class, new DryDescriptor());
     }
 
     /** {@inheritDoc} */

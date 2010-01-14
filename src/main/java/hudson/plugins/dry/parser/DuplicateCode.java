@@ -35,6 +35,8 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 public class DuplicateCode extends AbstractAnnotation {
     /** Unique identifier of this class. */
     private static final long serialVersionUID = -6231614169627992548L;
+    /** Origin of the annotation. */
+    public static final String ORIGIN = "dry";
 
     /** The links to the other code duplications. */
     @SuppressWarnings("Se")
@@ -56,7 +58,7 @@ public class DuplicateCode extends AbstractAnnotation {
         super(Messages.DRY_Warning_Message(numberOfLines),
                 firstLine, firstLine +  numberOfLines - 1, "Duplicate Code", StringUtils.EMPTY);
 
-        setOrigin(Messages.DRY_Warning_Origin());
+        setOrigin(ORIGIN);
         setFileName(fileName);
         if (numberOfLines > 50) {
             setPriority(Priority.HIGH);
