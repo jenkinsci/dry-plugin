@@ -5,8 +5,6 @@ import hudson.plugins.analysis.core.AbstractResultAction;
 import hudson.plugins.analysis.core.HealthDescriptor;
 import hudson.plugins.analysis.core.PluginDescriptor;
 
-import java.util.NoSuchElementException;
-
 /**
  * Controls the live cycle of the DRY results. This action persists the
  * results of the DRY analysis of a build and displays the results on the
@@ -57,21 +55,6 @@ public class DryResultAction extends AbstractResultAction<DryResult> {
     @Override
     protected PluginDescriptor getDescriptor() {
         return new DryDescriptor();
-    }
-
-    /**
-     * Gets the DRY result of the previous build.
-     *
-     * @return the DRY result of the previous build.
-     * @throws NoSuchElementException
-     *             if there is no previous build for this action
-     */
-    public DryResultAction getPreviousResultAction() {
-        AbstractResultAction<DryResult> previousBuild = getPreviousBuild();
-        if (previousBuild instanceof DryResultAction) {
-            return (DryResultAction)previousBuild;
-        }
-        throw new NoSuchElementException("There is no previous build for action " + this);
     }
 
     /** {@inheritDoc} */
