@@ -88,7 +88,7 @@ public class MavenDryResultAction extends DryResultAction implements Aggregatabl
      *            Newly completed build.
      */
     public void update(final Map<MavenModule, List<MavenBuild>> moduleBuilds, final MavenBuild newBuild) {
-        DryResult annotationsResult = new DryResultBuilder().buildMaven(getOwner(), createAggregatedResult(moduleBuilds), defaultEncoding);
+        DryResult annotationsResult = new DryResult(getOwner(), defaultEncoding, createAggregatedResult(moduleBuilds));
         setResult(annotationsResult);
         updateBuildHealth(newBuild, annotationsResult);
     }

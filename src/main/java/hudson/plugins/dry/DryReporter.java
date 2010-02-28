@@ -83,7 +83,7 @@ public class DryReporter extends HealthAwareMavenReporter {
     /** {@inheritDoc} */
     @Override
     protected BuildResult persistResult(final ParserResult project, final MavenBuild build) {
-        DryResult result = new DryResultBuilder().build(build, project, getDefaultEncoding());
+        DryResult result = new DryResult(build, getDefaultEncoding(), project);
         build.getActions().add(new MavenDryResultAction(build, this, getDefaultEncoding(), result));
         build.registerAsProjectAction(DryReporter.this);
 

@@ -18,12 +18,6 @@ public class DryResultTest extends BuildResultTest<DryResult> {
 
     /** {@inheritDoc} */
     @Override
-    protected DryResult createBuildResult(final AbstractBuild<?, ?> build, final ParserResult project, final DryResult previous) {
-        return new DryResult(build, null, project, previous);
-    }
-
-    /** {@inheritDoc} */
-    @Override
     protected void verifyHighScoreMessage(final int expectedZeroWarningsBuildNumber, final boolean expectedIsNewHighScore, final long expectedHighScore, final long gap, final DryResult result) {
         if (result.hasNoAnnotations() && result.getDelta() == 0) {
             assertTrue(result.getDetails().contains(Messages.DRY_ResultAction_NoWarningsSince(expectedZeroWarningsBuildNumber)));

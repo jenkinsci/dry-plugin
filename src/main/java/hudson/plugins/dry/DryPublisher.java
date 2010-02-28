@@ -94,7 +94,7 @@ public class DryPublisher extends HealthAwarePublisher {
                 isMavenBuild(build), isAntBuild(build));
 
         ParserResult project = build.getWorkspace().act(dryCollector);
-        DryResult result = new DryResultBuilder().build(build, project, getDefaultEncoding());
+        DryResult result = new DryResult(build, getDefaultEncoding(), project);
         build.getActions().add(new DryResultAction(build, this, result));
 
         return result;

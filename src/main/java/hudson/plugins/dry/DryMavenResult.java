@@ -29,23 +29,6 @@ public class DryMavenResult extends DryResult {
         super(build, defaultEncoding, result);
     }
 
-    /**
-     * Creates a new instance of {@link DryMavenResult}.
-     *
-     * @param build
-     *            the current build as owner of this action
-     * @param defaultEncoding
-     *            the default encoding to be used when reading and parsing files
-     * @param result
-     *            the parsed result with all annotations
-     * @param previous
-     *            the result of the previous build
-     */
-    public DryMavenResult(final AbstractBuild<?, ?> build, final String defaultEncoding,
-            final ParserResult result, final DryResult previous) {
-        super(build, defaultEncoding, result, previous);
-    }
-
     /** {@inheritDoc} */
     @Override
     protected Class<? extends ResultAction<? extends BuildResult>> getResultActionType() {
