@@ -26,17 +26,39 @@ public class DryDetailBuilder extends DetailFactory {
             String suffix = StringUtils.substringAfter(link, "link.");
             String[] fromToStrings = StringUtils.split(suffix, ".");
             if (fromToStrings.length == 2) {
-                long from = Long.parseLong(fromToStrings[0]);
-                long to = Long.parseLong(fromToStrings[1]);
-
-                FileAnnotation fromAnnotation = container.getAnnotation(from);
-                if (fromAnnotation instanceof DuplicateCode) {
-                    return new SourceDetail(owner, ((DuplicateCode)fromAnnotation).getLink(to), defaultEncoding);
-                }
+                return createDrySourceDetail(owner, container, defaultEncoding, fromToStrings[0], fromToStrings[1]);
             }
             return null;
         }
         return super.createDetails(link, owner, container, defaultEncoding, displayName);
+    }
+
+    /**
+     * Creates the dry source detail view.
+     *
+     * @param owner
+     *            the owner
+     * @param container
+     *            the container
+     * @param defaultEncoding
+     *            the default encoding
+     * @param fromString
+     *            from ID
+     * @param toString
+     *            to ID
+     * @return the detail view or <code>null</code>
+     */
+    private Object createDrySourceDetail(final AbstractBuild<?, ?> owner,
+            final AnnotationContainer container, final String defaultEncoding,
+            final String fromString, final String toString) {
+        long from = Long.parseLong(fromString);
+        long to = Long.parseLong(toString);
+
+        FileAnnotation fromAnnotation = container.getAnnotation(from);
+        if (fromAnnotation instanceof DuplicateCode) {
+            return new SourceDetail(owner, ((DuplicateCode)fromAnnotation).getLink(to), defaultEncoding);
+        }
+        return null;
     }
 
     /** {@inheritDoc} */

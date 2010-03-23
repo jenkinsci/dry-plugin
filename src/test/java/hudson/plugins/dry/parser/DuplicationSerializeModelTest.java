@@ -78,10 +78,11 @@ public class DuplicationSerializeModelTest extends AbstractSerializeModelTest {
     /**
      * Test whether a serialized project is the same object after deserialization of the file format of release 2.2.
      *
-     * @throws Exception Signals a test failure
+     * @throws ClassNotFoundException Signals a test failure
+     * @throws IOException Signals a test failure
      */
     @Test
-    public void ensureSameSerialization() throws Exception {
+    public void ensureSameSerialization() throws IOException, ClassNotFoundException {
         InputStream inputStream = DuplicationSerializeModelTest.class.getResourceAsStream("project.ser");
         ObjectInputStream objectStream = new ObjectInputStream(inputStream);
         Object deserialized = objectStream.readObject();

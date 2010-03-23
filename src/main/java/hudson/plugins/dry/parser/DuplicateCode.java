@@ -8,10 +8,10 @@ import hudson.plugins.dry.Messages;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -108,7 +108,7 @@ public class DuplicateCode extends AbstractAnnotation {
      *
      * @param codeBlocks the code blocks to links to
      */
-    public void linkTo(final ArrayList<DuplicateCode> codeBlocks) {
+    public void linkTo(final List<DuplicateCode> codeBlocks) {
         links.addAll(codeBlocks);
         links.remove(this);
     }
@@ -168,7 +168,7 @@ public class DuplicateCode extends AbstractAnnotation {
     /** {@inheritDoc} */
     @Override
     public int hashCode() {
-        final int prime = 31;
+        int prime = 31;
         int result = super.hashCode();
         result = prime * result + ((sourceCode == null) ? 0 : sourceCode.hashCode());
         return result;

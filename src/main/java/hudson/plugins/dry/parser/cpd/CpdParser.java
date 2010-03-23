@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.digester.Digester;
 import org.xml.sax.SAXException;
@@ -72,7 +73,7 @@ public class CpdParser extends AbstractDryParser {
             digester.addSetNext(fileXPath, "addFile", SourceFile.class.getName());
 
             Object result = digester.parse(file);
-            if (result != duplications) {
+            if (result != duplications) { // NOPMD
                 throw new SAXException("Input stream is not a valid CPD file.");
             }
 
@@ -95,7 +96,7 @@ public class CpdParser extends AbstractDryParser {
      *            name of the maven module
      * @return a maven module of the annotations API
      */
-    private Collection<FileAnnotation> convert(final ArrayList<Duplication> duplications, final String moduleName) {
+    private Collection<FileAnnotation> convert(final List<Duplication> duplications, final String moduleName) {
         JavaPackageDetector javaPackageDetector = new JavaPackageDetector();
         ArrayList<FileAnnotation> annotations = new ArrayList<FileAnnotation>();
 
