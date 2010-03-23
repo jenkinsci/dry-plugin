@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+
 /**
  * Registry for duplication parsers.
  *
@@ -21,7 +23,7 @@ public class DuplicationParserRegistry implements AnnotationParser {
     /** Unique ID of this class. */
     private static final long serialVersionUID = -8114361417348412242L;
     /** The registered parsers. */
-    @SuppressWarnings("Se")
+    @SuppressWarnings("SE")
     private final List<AbstractDryParser> parsers = new ArrayList<AbstractDryParser>();
 
     /**
