@@ -71,6 +71,12 @@ public class DuplicateCode extends AbstractAnnotation {
         }
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public String getMessage() {
+        return Messages.DRY_Warning_Message(size());
+    }
+
     /**
      * Returns the total number of duplicate lines.
      *
@@ -100,7 +106,20 @@ public class DuplicateCode extends AbstractAnnotation {
 
     /** {@inheritDoc} */
     public String getToolTip() {
-        return StringUtils.EMPTY;
+        StringBuilder message = new StringBuilder();
+        message.append("<p>");
+        message.append(Messages.DRY_Duplications_Header());
+        message.append("<ul>");
+        for (DuplicateCode duplication : links) {
+            message.append("<li>");
+            message.append(String.format("<a href=\"link.%s.%s/#%s\">%s (%s)</a>",
+                    getKey(), duplication.getKey(), duplication.getPrimaryLineNumber(),
+                    duplication.getShortFileName(), duplication.getPrimaryLineNumber()));
+            message.append("</li>");
+        }
+        message.append("</ul>");
+        message.append("</p>");
+        return message.toString();
     }
 
     /**

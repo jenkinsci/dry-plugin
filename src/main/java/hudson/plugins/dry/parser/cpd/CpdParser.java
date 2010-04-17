@@ -101,7 +101,7 @@ public class CpdParser extends AbstractDryParser {
         ArrayList<FileAnnotation> annotations = new ArrayList<FileAnnotation>();
 
         for (Duplication duplication : duplications) {
-            ArrayList<DuplicateCode> codeBlocks = new ArrayList<DuplicateCode>();
+            List<DuplicateCode> codeBlocks = new ArrayList<DuplicateCode>();
             for (SourceFile file : duplication.getFiles()) {
                 // TODO: check why PMD reports a length + 1
                 DuplicateCode annotation = new DuplicateCode(file.getLine(), duplication.getLines(), file.getPath());
