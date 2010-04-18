@@ -65,7 +65,7 @@ public class DryDetailBuilder extends DetailFactory {
     @Override
     protected TabDetail createTabDetail(final AbstractBuild<?, ?> owner, final Collection<FileAnnotation> annotations,
             final String url, final String defaultEncoding) {
-        return new DryTabDetail(owner, annotations, url, defaultEncoding);
+        return new DryTabDetail(owner, this, annotations, url, defaultEncoding);
     }
 }
 

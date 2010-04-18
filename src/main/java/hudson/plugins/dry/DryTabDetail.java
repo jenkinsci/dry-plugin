@@ -2,6 +2,7 @@ package hudson.plugins.dry;
 
 import hudson.model.AbstractBuild;
 import hudson.plugins.analysis.util.model.FileAnnotation;
+import hudson.plugins.analysis.views.DetailFactory;
 import hudson.plugins.analysis.views.TabDetail;
 
 import java.util.Collection;
@@ -20,6 +21,8 @@ public class DryTabDetail extends TabDetail {
      *
      * @param owner
      *            current build as owner of this action.
+     * @param detailFactory
+     *            the detail factory to use
      * @param annotations
      *            the module to show the details for
      * @param url
@@ -27,8 +30,16 @@ public class DryTabDetail extends TabDetail {
      * @param defaultEncoding
      *            the default encoding to be used when reading and parsing files
      */
-    public DryTabDetail(final AbstractBuild<?, ?> owner, final Collection<FileAnnotation> annotations, final String url, final String defaultEncoding) {
-        super(owner, annotations, url, defaultEncoding);
+    public DryTabDetail(final AbstractBuild<?, ?> owner, final DetailFactory detailFactory, final Collection<FileAnnotation> annotations, final String url, final String defaultEncoding) {
+        super(owner, detailFactory, annotations, url, defaultEncoding);
+    }
+
+    @Override
+    public String getUrl() {
+        if ("/tabview/warnings.jelly".equals(super.getUrl())) {
+            return "local-warnings.jelly";
+        }
+        return super.getUrl();
     }
 }
 
