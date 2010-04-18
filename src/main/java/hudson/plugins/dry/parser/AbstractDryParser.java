@@ -2,6 +2,7 @@ package hudson.plugins.dry.parser;
 
 import hudson.plugins.analysis.core.AnnotationParser;
 import hudson.plugins.analysis.util.model.FileAnnotation;
+import hudson.plugins.analysis.util.model.Priority;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,6 +21,24 @@ import java.util.Collection;
 public abstract class AbstractDryParser implements AnnotationParser {
     /** Unique ID of this class. */
     private static final long serialVersionUID = 6328121785037117886L;
+
+    /** Minimum number of duplicate lines for high priority warnings. @since 2.5 */
+    private final int highThreshold;
+    /** Minimum number of duplicate lines for normal priority warnings. @since 2.5 */
+    private final int normalThreshold;
+
+    /**
+     * Creates a new instance of {@link AbstractDryParser}.
+     *
+     * @param highThreshold
+     *            minimum number of duplicate lines for high priority warnings
+     * @param normalThreshold
+     *            minimum number of duplicate lines for normal priority warnings
+     */
+    public AbstractDryParser(final int highThreshold, final int normalThreshold) {
+        this.highThreshold = highThreshold;
+        this.normalThreshold = normalThreshold;
+    }
 
     /** {@inheritDoc} */
     public Collection<FileAnnotation> parse(final File file, final String moduleName) throws InvocationTargetException {
@@ -59,5 +78,24 @@ public abstract class AbstractDryParser implements AnnotationParser {
      *         a valid file, <code>false</code> if the parser can't read this file
      */
     protected abstract boolean accepts(InputStream inputStream);
+
+    /**
+     * Returns the priority of the warning.
+     *
+     * @param lines
+     *            number of duplicate lines
+     * @return the priority of the warning
+     */
+    protected Priority getPriority(final int lines) {
+        if (lines >= highThreshold) {
+            return Priority.HIGH;
+        }
+        else if (lines >= normalThreshold) {
+            return Priority.NORMAL;
+        }
+        else {
+            return Priority.LOW;
+        }
+    }
 }
 

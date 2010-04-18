@@ -1,8 +1,8 @@
 package hudson.plugins.dry;
 
+import hudson.model.Action;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
-import hudson.model.Action;
 import hudson.plugins.analysis.core.BuildResult;
 import hudson.plugins.analysis.core.FilesParser;
 import hudson.plugins.analysis.core.HealthAwarePublisher;
@@ -29,20 +29,25 @@ public class DryPublisher extends HealthAwarePublisher {
     /** Ant file-set pattern of files to work with. */
     private final String pattern;
 
+    /** Minimum number of duplicate lines for high priority warnings. @since 2.5 */
+    private final int highThreshold;
+    /** Minimum number of duplicate lines for normal priority warnings. @since 2.5 */
+    private final int normalThreshold;
+
     /**
      * Creates a new instance of <code>PmdPublisher</code>.
      *
      * @param pattern
      *            Ant file-set pattern to scan for DRY files
      * @param threshold
-     *            Annotation threshold to be reached if a build should be considered as
-     *            unstable.
+     *            Annotation threshold to be reached if a build should be
+     *            considered as unstable.
      * @param newThreshold
      *            New annotations threshold to be reached if a build should be
      *            considered as unstable.
      * @param failureThreshold
-     *            Annotation threshold to be reached if a build should be considered as
-     *            failure.
+     *            Annotation threshold to be reached if a build should be
+     *            considered as failure.
      * @param newFailureThreshold
      *            New annotations threshold to be reached if a build should be
      *            considered as failure.
@@ -61,6 +66,10 @@ public class DryPublisher extends HealthAwarePublisher {
      *            determines whether the absolute annotations delta or the
      *            actual annotations set difference should be used to evaluate
      *            the build stability
+     * @param highThreshold
+     *            minimum number of duplicate lines for high priority warnings
+     * @param normalThreshold
+     *            minimum number of duplicate lines for normal priority warnings
      */
     // CHECKSTYLE:OFF
     @SuppressWarnings("PMD.ExcessiveParameterList")
@@ -68,12 +77,39 @@ public class DryPublisher extends HealthAwarePublisher {
     public DryPublisher(final String pattern, final String threshold, final String newThreshold,
             final String failureThreshold, final String newFailureThreshold,
             final String healthy, final String unHealthy,
-            final String thresholdLimit, final String defaultEncoding, final boolean useDeltaValues) {
+            final String thresholdLimit, final String defaultEncoding, final boolean useDeltaValues,
+            final int highThreshold, final int normalThreshold) {
         super(threshold, newThreshold, failureThreshold, newFailureThreshold,
                 healthy, unHealthy, thresholdLimit, defaultEncoding, useDeltaValues, "DRY");
         this.pattern = pattern;
+        this.highThreshold = highThreshold;
+        this.normalThreshold = normalThreshold;
     }
     // CHECKSTYLE:ON
+
+    /**
+     * Returns the minimum number of duplicate lines for high priority warnings.
+     *
+     * @return the minimum number of duplicate lines for high priority warnings
+     */
+    public int getHighThreshold() {
+        if (highThreshold <= 0 || highThreshold <= normalThreshold) {
+            return 50;
+        }
+        return highThreshold;
+    }
+
+    /**
+     * Returns the minimum number of duplicate lines for high normal warnings.
+     *
+     * @return the minimum number of duplicate lines for high normal warnings
+     */
+    public int getNormalThreshold() {
+        if (normalThreshold <= 0 || highThreshold <= normalThreshold) {
+            return 25;
+        }
+        return normalThreshold;
+    }
 
     /**
      * Returns the Ant file-set pattern of files to work with.
@@ -94,7 +130,8 @@ public class DryPublisher extends HealthAwarePublisher {
     @Override
     public BuildResult perform(final AbstractBuild<?, ?> build, final PluginLogger logger) throws InterruptedException, IOException {
         logger.log("Collecting duplicate code analysis files...");
-        FilesParser dryCollector = new FilesParser(logger, StringUtils.defaultIfEmpty(getPattern(), DEFAULT_PATTERN), new DuplicationParserRegistry(),
+        FilesParser dryCollector = new FilesParser(logger, StringUtils.defaultIfEmpty(getPattern(), DEFAULT_PATTERN),
+                new DuplicationParserRegistry(getNormalThreshold(), getHighThreshold()),
                 isMavenBuild(build), isAntBuild(build));
 
         ParserResult project = build.getWorkspace().act(dryCollector);

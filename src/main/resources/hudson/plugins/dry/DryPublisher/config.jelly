@@ -1,9 +1,10 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
-	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:u="/util">
+	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:u="/util" xmlns:p="/dry">
   <f:entry title="${%Duplicate code results}"
 	description="${%description.pattern}">
 	<f:textbox name="pattern" value="${instance.pattern}"
 		checkUrl="'descriptorByName/DryPublisher/checkPattern?value='+escape(this.value)" />
+    <p:priorities/>
   </f:entry>
   <f:advanced>
     <u:thresholds id="dry"/>

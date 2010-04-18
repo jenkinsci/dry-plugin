@@ -47,6 +47,8 @@ public class DuplicateCode extends AbstractAnnotation {
     /**
      * Creates a new instance of {@link DuplicateCode}.
      *
+     * @param priority
+     *            the priority of the warning
      * @param firstLine
      *            the starting line of the duplication
      * @param numberOfLines
@@ -54,21 +56,12 @@ public class DuplicateCode extends AbstractAnnotation {
      * @param fileName
      *            name of the file that contains the duplication
      */
-    public DuplicateCode(final int firstLine, final int numberOfLines, final String fileName) {
-        super(Messages.DRY_Warning_Message(numberOfLines),
+    public DuplicateCode(final Priority priority, final int firstLine, final int numberOfLines, final String fileName) {
+        super(priority, Messages.DRY_Warning_Message(numberOfLines),
                 firstLine, firstLine +  numberOfLines - 1, "Duplicate Code", StringUtils.EMPTY);
 
         setOrigin(ORIGIN);
         setFileName(fileName);
-        if (numberOfLines > 50) {
-            setPriority(Priority.HIGH);
-        }
-        else if (numberOfLines > 25) {
-            setPriority(Priority.NORMAL);
-        }
-        else {
-            setPriority(Priority.LOW);
-        }
     }
 
     /** {@inheritDoc} */

@@ -41,7 +41,7 @@ public class CpdParserTest {
      *             in case of an error
      */
     private Collection<FileAnnotation> parseFile(final String fileName) throws InvocationTargetException {
-        return new CpdParser().parse(getResource(fileName), "module");
+        return new CpdParser(50, 25).parse(getResource(fileName), "module");
     }
 
     /**
@@ -51,7 +51,7 @@ public class CpdParserTest {
      * @return <code>true</code> if the file is a CPD file
      */
     private boolean acceptsFile(final String fileName) {
-        return new CpdParser().accepts(getResource(fileName));
+        return new CpdParser(50, 25).accepts(getResource(fileName));
     }
 
     /**

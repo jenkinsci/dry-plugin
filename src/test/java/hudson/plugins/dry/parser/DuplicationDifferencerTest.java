@@ -13,7 +13,7 @@ public class DuplicationDifferencerTest extends AnnotationDifferencerTest {
     @Override
     public FileAnnotation createAnnotation(final String fileName, final Priority priority, final String message, final String category,
             final String type, final int start, final int end) {
-        DuplicateCode annotation = new DuplicateCode(start, end - start + 1, fileName);
+        DuplicateCode annotation = new DuplicateCode(priority, start, end - start + 1, fileName);
         annotation.setFileName(fileName);
         annotation.setPriority(priority);
         annotation.setSourceCode(message + type + category);

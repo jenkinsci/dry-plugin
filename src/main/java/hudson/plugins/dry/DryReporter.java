@@ -1,9 +1,9 @@
 package hudson.plugins.dry;
 
-import hudson.maven.MavenBuild;
 import hudson.maven.MavenBuildProxy;
-import hudson.maven.MavenModule;
 import hudson.maven.MojoInfo;
+import hudson.maven.MavenBuild;
+import hudson.maven.MavenModule;
 import hudson.model.Action;
 import hudson.plugins.analysis.core.BuildResult;
 import hudson.plugins.analysis.core.FilesParser;
@@ -29,6 +29,11 @@ public class DryReporter extends HealthAwareMavenReporter {
     /** Default DRY pattern. */
     private static final String DRY_XML_FILE = "cpd.xml";
 
+    /** Minimum number of duplicate lines for high priority warnings. @since 2.5 */
+    private final int highThreshold;
+    /** Minimum number of duplicate lines for normal priority warnings. @since 2.5 */
+    private final int normalThreshold;
+
     /**
      * Creates a new instance of <code>PmdReporter</code>.
      *
@@ -53,17 +58,48 @@ public class DryReporter extends HealthAwareMavenReporter {
      * @param thresholdLimit
      *            determines which warning priorities should be considered when
      *            evaluating the build stability and health
+     * @param highThreshold
+     *            minimum number of duplicate lines for high priority warnings
+     * @param normalThreshold
+     *            minimum number of duplicate lines for normal priority warnings
      */
     // CHECKSTYLE:OFF
     @SuppressWarnings("PMD.ExcessiveParameterList")
     @DataBoundConstructor
     public DryReporter(final String threshold, final String newThreshold,
             final String failureThreshold, final String newFailureThreshold,
-            final String healthy, final String unHealthy, final String thresholdLimit) {
+            final String healthy, final String unHealthy, final String thresholdLimit,
+            final int highThreshold, final int normalThreshold) {
         super(threshold, newThreshold, failureThreshold, newFailureThreshold,
                 healthy, unHealthy, thresholdLimit, "DRY");
+        this.highThreshold = highThreshold;
+        this.normalThreshold = normalThreshold;
     }
     // CHECKSTYLE:ON
+
+    /**
+     * Returns the minimum number of duplicate lines for high priority warnings.
+     *
+     * @return the minimum number of duplicate lines for high priority warnings
+     */
+    public int getHighThreshold() {
+        if (highThreshold <= 0 || highThreshold <= normalThreshold) {
+            return 50;
+        }
+        return highThreshold;
+    }
+
+    /**
+     * Returns the minimum number of duplicate lines for high normal warnings.
+     *
+     * @return the minimum number of duplicate lines for high normal warnings
+     */
+    public int getNormalThreshold() {
+        if (normalThreshold <= 0 || highThreshold <= normalThreshold) {
+            return 25;
+        }
+        return normalThreshold;
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -75,7 +111,9 @@ public class DryReporter extends HealthAwareMavenReporter {
     @Override
     public ParserResult perform(final MavenBuildProxy build, final MavenProject pom, final MojoInfo mojo,
             final PluginLogger logger) throws InterruptedException, IOException {
-        FilesParser dryCollector = new FilesParser(logger, DRY_XML_FILE, new DuplicationParserRegistry(), true, false);
+        FilesParser dryCollector = new FilesParser(logger, DRY_XML_FILE,
+                new DuplicationParserRegistry(getNormalThreshold(), getHighThreshold()),
+                true, false);
 
         return getTargetPath(pom).act(dryCollector);
     }

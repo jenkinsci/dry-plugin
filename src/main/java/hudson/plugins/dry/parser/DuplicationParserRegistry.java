@@ -28,9 +28,14 @@ public class DuplicationParserRegistry implements AnnotationParser {
 
     /**
      * Creates a new instance of {@link DuplicationParserRegistry}.
+     *
+     * @param highThreshold
+     *            minimum number of duplicate lines for high priority warnings
+     * @param normalThreshold
+     *            minimum number of duplicate lines for normal priority warnings
      */
-    public DuplicationParserRegistry() {
-        parsers.add(new CpdParser());
+    public DuplicationParserRegistry(final int normalThreshold, final int highThreshold) {
+        parsers.add(new CpdParser(highThreshold, normalThreshold));
     }
 
     /** {@inheritDoc} */

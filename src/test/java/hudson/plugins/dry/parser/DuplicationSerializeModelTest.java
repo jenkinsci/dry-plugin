@@ -65,11 +65,10 @@ public class DuplicationSerializeModelTest extends AbstractSerializeModelTest {
      */
     @Override
     protected AbstractAnnotation createAnnotation(final int line, final String message, final Priority priority, final String fileName, final String packageName, final String moduleName) {
-        DuplicateCode duplicateCode = new DuplicateCode(line, 1, message);
+        DuplicateCode duplicateCode = new DuplicateCode(priority, line, 1, message);
         duplicateCode.setFileName(fileName);
         duplicateCode.setPackageName(packageName);
         duplicateCode.setModuleName(moduleName);
-        duplicateCode.setPriority(priority);
         duplicateCode.setSourceCode(message);
 
         return duplicateCode;

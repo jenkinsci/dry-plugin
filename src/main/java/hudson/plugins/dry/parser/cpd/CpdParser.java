@@ -24,6 +24,18 @@ public class CpdParser extends AbstractDryParser {
     /** Unique ID of this class. */
     private static final long serialVersionUID = 6507147028628714706L;
 
+    /**
+     * Creates a new instance of {@link CpdParser}.
+     *
+     * @param highThreshold
+     *            minimum number of duplicate lines for high priority warnings
+     * @param normalThreshold
+     *            minimum number of duplicate lines for normal priority warnings
+     */
+    public CpdParser(final int highThreshold, final int normalThreshold) {
+        super(highThreshold, normalThreshold);
+    }
+
     /** {@inheritDoc} */
     @Override
     public boolean accepts(final InputStream file) {
@@ -104,7 +116,7 @@ public class CpdParser extends AbstractDryParser {
             List<DuplicateCode> codeBlocks = new ArrayList<DuplicateCode>();
             for (SourceFile file : duplication.getFiles()) {
                 // TODO: check why PMD reports a length + 1
-                DuplicateCode annotation = new DuplicateCode(file.getLine(), duplication.getLines(), file.getPath());
+                DuplicateCode annotation = new DuplicateCode(getPriority(duplication.getLines()), file.getLine(), duplication.getLines(), file.getPath());
                 annotation.setSourceCode(duplication.getCodeFragment());
                 annotation.setModuleName(moduleName);
                 codeBlocks.add(annotation);
