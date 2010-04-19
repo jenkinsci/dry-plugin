@@ -4,8 +4,8 @@
 	description="${%description.pattern}">
 	<f:textbox name="pattern" value="${instance.pattern}"
 		checkUrl="'descriptorByName/DryPublisher/checkPattern?value='+escape(this.value)" />
-    <p:priorities/>
   </f:entry>
+  <p:priorities/>
   <f:advanced>
     <u:thresholds id="dry"/>
     <u:defaultEncoding id="dry"/>
