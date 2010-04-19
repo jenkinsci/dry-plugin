@@ -66,6 +66,12 @@ public class DuplicateCode extends AbstractAnnotation {
 
     /** {@inheritDoc} */
     @Override
+    public String getType() {
+        return Messages.DRY_Warning_Type();
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public String getMessage() {
         return Messages.DRY_Warning_Message(size());
     }
