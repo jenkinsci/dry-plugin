@@ -2,6 +2,7 @@
 	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:u="/util" xmlns:p="/dry">
   <p:priorities/>
   <f:advanced>
+    <u:failed/>
     <u:thresholds id="dry"/>
     <u:trend id="dry"/>
   </f:advanced>

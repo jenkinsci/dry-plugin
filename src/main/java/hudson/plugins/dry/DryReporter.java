@@ -58,6 +58,8 @@ public class DryReporter extends HealthAwareMavenReporter {
      * @param thresholdLimit
      *            determines which warning priorities should be considered when
      *            evaluating the build stability and health
+     * @param canRunOnFailed
+     *            determines whether the plug-in can run for failed builds, too
      * @param highThreshold
      *            minimum number of duplicate lines for high priority warnings
      * @param normalThreshold
@@ -68,10 +70,10 @@ public class DryReporter extends HealthAwareMavenReporter {
     @DataBoundConstructor
     public DryReporter(final String threshold, final String newThreshold,
             final String failureThreshold, final String newFailureThreshold,
-            final String healthy, final String unHealthy, final String thresholdLimit,
+            final String healthy, final String unHealthy, final String thresholdLimit, final boolean canRunOnFailed,
             final int highThreshold, final int normalThreshold) {
         super(threshold, newThreshold, failureThreshold, newFailureThreshold,
-                healthy, unHealthy, thresholdLimit, "DRY");
+                healthy, unHealthy, thresholdLimit, canRunOnFailed, "DRY");
         this.highThreshold = highThreshold;
         this.normalThreshold = normalThreshold;
     }

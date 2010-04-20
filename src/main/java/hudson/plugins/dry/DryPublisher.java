@@ -66,6 +66,8 @@ public class DryPublisher extends HealthAwarePublisher {
      *            determines whether the absolute annotations delta or the
      *            actual annotations set difference should be used to evaluate
      *            the build stability
+     * @param canRunOnFailed
+     *            determines whether the plug-in can run for failed builds, too
      * @param highThreshold
      *            minimum number of duplicate lines for high priority warnings
      * @param normalThreshold
@@ -76,11 +78,11 @@ public class DryPublisher extends HealthAwarePublisher {
     @DataBoundConstructor
     public DryPublisher(final String pattern, final String threshold, final String newThreshold,
             final String failureThreshold, final String newFailureThreshold,
-            final String healthy, final String unHealthy,
-            final String thresholdLimit, final String defaultEncoding, final boolean useDeltaValues,
+            final String healthy, final String unHealthy, final String thresholdLimit,
+            final String defaultEncoding, final boolean useDeltaValues, final boolean canRunOnFailed,
             final int highThreshold, final int normalThreshold) {
         super(threshold, newThreshold, failureThreshold, newFailureThreshold,
-                healthy, unHealthy, thresholdLimit, defaultEncoding, useDeltaValues, "DRY");
+                healthy, unHealthy, thresholdLimit, defaultEncoding, useDeltaValues, canRunOnFailed, "DRY");
         this.pattern = pattern;
         this.highThreshold = highThreshold;
         this.normalThreshold = normalThreshold;

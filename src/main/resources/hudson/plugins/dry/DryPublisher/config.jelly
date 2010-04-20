@@ -7,6 +7,7 @@
   </f:entry>
   <p:priorities/>
   <f:advanced>
+    <u:failed/>
     <u:thresholds id="dry"/>
     <u:defaultEncoding id="dry"/>
     <u:trend id="dry"/>
