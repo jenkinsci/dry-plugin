@@ -11,6 +11,8 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
+import org.apache.commons.io.IOUtils;
+
 /**
  * A base class for duplicate code parsers. Use this class as a starting point
  * for your duplication result parser and register an instance in the
@@ -42,9 +44,14 @@ public abstract class AbstractDryParser implements AnnotationParser {
 
     /** {@inheritDoc} */
     public Collection<FileAnnotation> parse(final File file, final String moduleName) throws InvocationTargetException {
+        FileInputStream inputStream = null;
         try {
-            if (accepts(new FileInputStream(file))) {
-                return parse(new FileInputStream(file), moduleName);
+            inputStream = new FileInputStream(file);
+            if (accepts(inputStream)) {
+                IOUtils.closeQuietly(inputStream);
+                inputStream = new FileInputStream(file);
+
+                return parse(inputStream, moduleName);
             }
             else {
                 throw new IOException("Can't parse CPD file " + file.getAbsolutePath());
@@ -52,6 +59,9 @@ public abstract class AbstractDryParser implements AnnotationParser {
         }
         catch (IOException exception) {
             throw new InvocationTargetException(exception);
+        }
+        finally {
+            IOUtils.closeQuietly(inputStream);
         }
     }
 
