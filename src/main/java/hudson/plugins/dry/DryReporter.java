@@ -13,6 +13,8 @@ import hudson.plugins.analysis.util.PluginLogger;
 import hudson.plugins.dry.parser.DuplicationParserRegistry;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.maven.project.MavenProject;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -132,8 +134,8 @@ public class DryReporter extends HealthAwareMavenReporter {
 
     /** {@inheritDoc} */
     @Override
-    public Action getProjectAction(final MavenModule module) {
-        return new DryProjectAction(module);
+    public List<DryProjectAction> getProjectActions(final MavenModule module) {
+        return Collections.singletonList(new DryProjectAction(module));
     }
 
     /** {@inheritDoc} */
