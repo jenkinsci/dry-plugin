@@ -6,7 +6,6 @@ import hudson.util.FormValidation;
 
 import org.kohsuke.stapler.QueryParameter;
 
-
 /**
  * Descriptor for the class {@link DryPublisher}. Used as a singleton. The
  * class is marked as public so that it can be accessed from views.
@@ -19,6 +18,8 @@ public final class DryDescriptor extends PluginDescriptor {
     private static final String PLUGIN_NAME = "dry";
     /** Icon to use for the result and project action. */
     private static final String ACTION_ICON = "/plugin/dry/icons/dry-24x24.png";
+    /** Validates the user input. */
+    private static final ThresholdValidation VALIDATION = new ThresholdValidation();
 
     /**
      * Instantiates a new find bugs descriptor.
@@ -55,7 +56,7 @@ public final class DryDescriptor extends PluginDescriptor {
      * @return the validation result
      */
     public FormValidation doCheckHighThreshold(@QueryParameter final String highThreshold, @QueryParameter final String normalThreshold) {
-        return validate(highThreshold, normalThreshold, Messages.DRY_ValidationError_HighThreshold());
+        return VALIDATION.validateHigh(highThreshold, normalThreshold);
     }
 
     /**
@@ -68,31 +69,6 @@ public final class DryDescriptor extends PluginDescriptor {
      * @return the validation result
      */
     public FormValidation doCheckNormalThreshold(@QueryParameter final String highThreshold, @QueryParameter final String normalThreshold) {
-        return validate(highThreshold, normalThreshold, Messages.DRY_ValidationError_NormalThreshold());
-    }
-
-    /**
-     * Performs on-the-fly validation on thresholds for high and normal warnings.
-     *
-     * @param highThreshold
-     *            the threshold for high warnings
-     * @param normalThreshold
-     *            the threshold for normal warnings
-     * @param message
-     *            the validation message
-     * @return the validation result
-     */
-    private FormValidation validate(final String highThreshold, final String normalThreshold, final String message) {
-        try {
-            int high = Integer.parseInt(highThreshold);
-            int normal = Integer.parseInt(normalThreshold);
-            if (normal >= 0 && high > normal) {
-                return FormValidation.ok();
-            }
-        }
-        catch (NumberFormatException exception) {
-            // ignore and return failure
-        }
-        return FormValidation.error(message);
+        return VALIDATION.validateNormal(highThreshold, normalThreshold);
     }
 }

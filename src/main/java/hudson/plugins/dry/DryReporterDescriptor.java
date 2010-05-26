@@ -17,6 +17,9 @@ import org.kohsuke.stapler.StaplerRequest;
  */
 @Extension(ordinal = 100)
 public class DryReporterDescriptor extends ReporterDescriptor {
+    /** Validates the user input. */
+    private static final ThresholdValidation VALIDATION = new ThresholdValidation();
+
     /**
      * Creates a new instance of {@link DryReporterDescriptor}.
      */
@@ -40,7 +43,7 @@ public class DryReporterDescriptor extends ReporterDescriptor {
      * @return the validation result
      */
     public FormValidation doCheckHighThreshold(@QueryParameter final String highThreshold, @QueryParameter final String normalThreshold) {
-        return validate(highThreshold, normalThreshold, Messages.DRY_ValidationError_HighThreshold());
+        return VALIDATION.validateHigh(highThreshold, normalThreshold);
     }
 
     /**
@@ -53,32 +56,7 @@ public class DryReporterDescriptor extends ReporterDescriptor {
      * @return the validation result
      */
     public FormValidation doCheckNormalThreshold(@QueryParameter final String highThreshold, @QueryParameter final String normalThreshold) {
-        return validate(highThreshold, normalThreshold, Messages.DRY_ValidationError_NormalThreshold());
-    }
-
-    /**
-     * Performs on-the-fly validation on thresholds for high and normal warnings.
-     *
-     * @param highThreshold
-     *            the threshold for high warnings
-     * @param normalThreshold
-     *            the threshold for normal warnings
-     * @param message
-     *            the validation message
-     * @return the validation result
-     */
-    private FormValidation validate(final String highThreshold, final String normalThreshold, final String message) {
-        try {
-            int high = Integer.parseInt(highThreshold);
-            int normal = Integer.parseInt(normalThreshold);
-            if (normal >= 0 && high > normal) {
-                return FormValidation.ok();
-            }
-        }
-        catch (NumberFormatException exception) {
-            // ignore and return failure
-        }
-        return FormValidation.error(message);
+        return VALIDATION.validateNormal(highThreshold, normalThreshold);
     }
 }
 
