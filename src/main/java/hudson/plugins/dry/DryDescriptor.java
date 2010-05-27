@@ -12,7 +12,7 @@ import org.kohsuke.stapler.QueryParameter;
  *
  * @author Ulli Hafner
  */
-@Extension(ordinal = 100)
+@Extension(ordinal = 100) // NOCHECKSTYLE
 public final class DryDescriptor extends PluginDescriptor {
     /** Plug-in name. */
     private static final String PLUGIN_NAME = "dry";

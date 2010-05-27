@@ -28,8 +28,9 @@ public class DryReporter extends HealthAwareMavenReporter {
     /** Unique identifier of this class. */
     private static final long serialVersionUID = 2272875032054063496L;
 
-    /** Default DRY pattern. */
-    private static final String DRY_XML_FILE = "cpd.xml";
+    /** Validates the thresholds user input. */
+    private static final ThresholdValidation THRESHOLD_VALIDATION = new ThresholdValidation();
+    private static final String DEFAULT_DRY_XML_FILE = "cpd.xml";
 
     /** Minimum number of duplicate lines for high priority warnings. @since 2.5 */
     private final int highThreshold;
@@ -87,22 +88,16 @@ public class DryReporter extends HealthAwareMavenReporter {
      * @return the minimum number of duplicate lines for high priority warnings
      */
     public int getHighThreshold() {
-        if (highThreshold <= 0 || highThreshold <= normalThreshold) {
-            return 50;
-        }
-        return highThreshold;
+        return THRESHOLD_VALIDATION.getHighThreshold(normalThreshold, highThreshold);
     }
 
     /**
-     * Returns the minimum number of duplicate lines for high normal warnings.
+     * Returns the minimum number of duplicate lines for normal warnings.
      *
-     * @return the minimum number of duplicate lines for high normal warnings
+     * @return the minimum number of duplicate lines for normal warnings
      */
     public int getNormalThreshold() {
-        if (normalThreshold <= 0 || highThreshold <= normalThreshold) {
-            return 25;
-        }
-        return normalThreshold;
+        return THRESHOLD_VALIDATION.getNormalThreshold(normalThreshold, highThreshold);
     }
 
     /** {@inheritDoc} */
@@ -115,7 +110,7 @@ public class DryReporter extends HealthAwareMavenReporter {
     @Override
     public ParserResult perform(final MavenBuildProxy build, final MavenProject pom, final MojoInfo mojo,
             final PluginLogger logger) throws InterruptedException, IOException {
-        FilesParser dryCollector = new FilesParser(logger, DRY_XML_FILE,
+        FilesParser dryCollector = new FilesParser(logger, DEFAULT_DRY_XML_FILE,
                 new DuplicationParserRegistry(getNormalThreshold(), getHighThreshold()),
                 true, false);
 

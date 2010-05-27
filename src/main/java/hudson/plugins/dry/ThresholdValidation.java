@@ -8,6 +8,11 @@ import hudson.util.FormValidation;
  * @author Ulli Hafner
  */
 public class ThresholdValidation {
+    /** Minimum number of duplicate lines for a warning with priority high. */
+    static final int DEFAULT_HIGH_THRESHOLD = 50;
+    /** Minimum number of duplicate lines for a warning with priority normal. */
+    static final int DEFAULT_NORMAL_THRESHOLD = 25;
+
     /**
      * Performs on-the-fly validation on threshold for high warnings.
      *
@@ -49,7 +54,7 @@ public class ThresholdValidation {
         try {
             int high = Integer.parseInt(highThreshold);
             int normal = Integer.parseInt(normalThreshold);
-            if (normal >= 0 && high > normal) {
+            if (isValid(normal, high)) {
                 return FormValidation.ok();
             }
         }
@@ -57,6 +62,46 @@ public class ThresholdValidation {
             // ignore and return failure
         }
         return FormValidation.error(message);
+    }
+
+    /**
+     * Returns the minimum number of duplicate lines for a warning with priority
+     * high.
+     *
+     * @param normalThreshold
+     *            the normal threshold
+     * @param highThreshold
+     *            the high threshold
+     * @return the minimum number of duplicate lines for a warning with priority
+     *         high
+     */
+    public int getHighThreshold(final int normalThreshold, final int highThreshold) {
+        if (!isValid(normalThreshold, highThreshold)) {
+            return DEFAULT_HIGH_THRESHOLD;
+        }
+        return highThreshold;
+    }
+
+    private boolean isValid(final int normalThreshold, final int highThreshold) {
+        return !(highThreshold <= 0 || normalThreshold <= 0 || highThreshold <= normalThreshold);
+    }
+
+    /**
+     * Returns the minimum number of duplicate lines for a warning with priority
+     * normal.
+     *
+     * @param normalThreshold
+     *            the normal threshold
+     * @param highThreshold
+     *            the high threshold
+     * @return the minimum number of duplicate lines for a warning with priority
+     *         normal
+     */
+    public int getNormalThreshold(final int normalThreshold, final int highThreshold) {
+        if (!isValid(normalThreshold, highThreshold)) {
+            return DEFAULT_NORMAL_THRESHOLD;
+        }
+        return normalThreshold;
     }
 }
 

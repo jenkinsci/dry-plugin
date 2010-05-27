@@ -24,8 +24,10 @@ public class DryPublisher extends HealthAwarePublisher {
     /** Unique ID of this class. */
     private static final long serialVersionUID = 6711252664481150129L;
 
-    /** Default DRY pattern. */
-    private static final String DEFAULT_PATTERN = "**/cpd.xml";
+    /** Validates the thresholds user input. */
+    private static final ThresholdValidation THRESHOLD_VALIDATION = new ThresholdValidation();
+
+    private static final String DEFAULT_DRY_PATTERN = "**/cpd.xml";
     /** Ant file-set pattern of files to work with. */
     private final String pattern;
 
@@ -95,22 +97,16 @@ public class DryPublisher extends HealthAwarePublisher {
      * @return the minimum number of duplicate lines for high priority warnings
      */
     public int getHighThreshold() {
-        if (highThreshold <= 0 || highThreshold <= normalThreshold) {
-            return 50;
-        }
-        return highThreshold;
+        return THRESHOLD_VALIDATION.getHighThreshold(normalThreshold, highThreshold);
     }
 
     /**
-     * Returns the minimum number of duplicate lines for high normal warnings.
+     * Returns the minimum number of duplicate lines for normal warnings.
      *
-     * @return the minimum number of duplicate lines for high normal warnings
+     * @return the minimum number of duplicate lines for normal warnings
      */
     public int getNormalThreshold() {
-        if (normalThreshold <= 0 || highThreshold <= normalThreshold) {
-            return 25;
-        }
-        return normalThreshold;
+        return THRESHOLD_VALIDATION.getNormalThreshold(normalThreshold, highThreshold);
     }
 
     /**
@@ -132,7 +128,7 @@ public class DryPublisher extends HealthAwarePublisher {
     @Override
     public BuildResult perform(final AbstractBuild<?, ?> build, final PluginLogger logger) throws InterruptedException, IOException {
         logger.log("Collecting duplicate code analysis files...");
-        FilesParser dryCollector = new FilesParser(logger, StringUtils.defaultIfEmpty(getPattern(), DEFAULT_PATTERN),
+        FilesParser dryCollector = new FilesParser(logger, StringUtils.defaultIfEmpty(getPattern(), DEFAULT_DRY_PATTERN),
                 new DuplicationParserRegistry(getNormalThreshold(), getHighThreshold()),
                 isMavenBuild(build), isAntBuild(build));
 

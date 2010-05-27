@@ -15,10 +15,10 @@ import org.kohsuke.stapler.StaplerRequest;
  *
  * @author Ulli Hafner
  */
-@Extension(ordinal = 100)
+@Extension(ordinal = 100) // NOCHECKSTYLE
 public class DryReporterDescriptor extends ReporterDescriptor {
-    /** Validates the user input. */
-    private static final ThresholdValidation VALIDATION = new ThresholdValidation();
+    /** Validates the thresholds user input. */
+    private static final ThresholdValidation THRESHOLD_VALIDATION = new ThresholdValidation();
 
     /**
      * Creates a new instance of {@link DryReporterDescriptor}.
@@ -43,7 +43,7 @@ public class DryReporterDescriptor extends ReporterDescriptor {
      * @return the validation result
      */
     public FormValidation doCheckHighThreshold(@QueryParameter final String highThreshold, @QueryParameter final String normalThreshold) {
-        return VALIDATION.validateHigh(highThreshold, normalThreshold);
+        return THRESHOLD_VALIDATION.validateHigh(highThreshold, normalThreshold);
     }
 
     /**
@@ -56,7 +56,7 @@ public class DryReporterDescriptor extends ReporterDescriptor {
      * @return the validation result
      */
     public FormValidation doCheckNormalThreshold(@QueryParameter final String highThreshold, @QueryParameter final String normalThreshold) {
-        return VALIDATION.validateNormal(highThreshold, normalThreshold);
+        return THRESHOLD_VALIDATION.validateNormal(highThreshold, normalThreshold);
     }
 }
 

@@ -186,7 +186,7 @@ public class DuplicateCode extends AbstractAnnotation {
     /** {@inheritDoc} */
     @Override
     public int hashCode() {
-        int prime = 31;
+        int prime = 31; // NOCHECKSTYLE
         int result = super.hashCode();
         result = prime * result + ((sourceCode == null) ? 0 : sourceCode.hashCode());
         return result;
