@@ -129,7 +129,7 @@ public class DryPublisher extends HealthAwarePublisher {
     public BuildResult perform(final AbstractBuild<?, ?> build, final PluginLogger logger) throws InterruptedException, IOException {
         logger.log("Collecting duplicate code analysis files...");
         FilesParser dryCollector = new FilesParser(logger, StringUtils.defaultIfEmpty(getPattern(), DEFAULT_DRY_PATTERN),
-                new DuplicationParserRegistry(getNormalThreshold(), getHighThreshold()),
+                new DuplicationParserRegistry(getNormalThreshold(), getHighThreshold(), build.getWorkspace().getRemote()),
                 isMavenBuild(build), isAntBuild(build));
 
         ParserResult project = build.getWorkspace().act(dryCollector);

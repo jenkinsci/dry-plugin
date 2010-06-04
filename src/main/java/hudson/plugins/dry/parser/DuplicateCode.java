@@ -113,7 +113,7 @@ public class DuplicateCode extends AbstractAnnotation {
             message.append("<li>");
             message.append(String.format("<a href=\"link.%s.%s/#%s\">%s (%s)</a>",
                     getKey(), duplication.getKey(), duplication.getPrimaryLineNumber(),
-                    duplication.getShortFileName(), duplication.getPrimaryLineNumber()));
+                    duplication.getLinkName(), duplication.getPrimaryLineNumber()));
             message.append("</li>");
         }
         message.append("</ul>");
