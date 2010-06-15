@@ -112,7 +112,7 @@ public class DryReporter extends HealthAwareMavenReporter {
             final PluginLogger logger) throws InterruptedException, IOException {
         FilesParser dryCollector = new FilesParser(logger, DEFAULT_DRY_XML_FILE,
                 new DuplicationParserRegistry(getNormalThreshold(), getHighThreshold()),
-                true, false);
+                getModuleName(pom));
 
         return getTargetPath(pom).act(dryCollector);
     }
