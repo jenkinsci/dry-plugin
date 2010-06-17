@@ -11,7 +11,7 @@
   <artifactId>dry</artifactId>
   <packaging>hpi</packaging>
   <name>Duplicate Code Scanner Plug-in</name>
-  <version>2.8</version>
+  <version>2.9-SNAPSHOT</version>
   <url>http://wiki.hudson-ci.org/display/HUDSON/DRY+Plugin</url>
   <description>This plug-in generates reports of duplicated code in a project.</description>
 
@@ -47,9 +47,9 @@
   </dependencies>
 
   <scm>
-    <connection>scm:svn:https://guest@svn.dev.java.net/svn/hudson/tags/dry-2.8</connection>
-    <developerConnection>scm:svn:https://svn.dev.java.net/svn/hudson/tags/dry-2.8</developerConnection>
-    <url>https://hudson.dev.java.net/source/browse/hudson/tags/dry-2.8</url>
+    <connection>scm:svn:https://guest@svn.dev.java.net/svn/hudson/trunk/hudson/plugins/dry</connection>
+    <developerConnection>scm:svn:https://svn.dev.java.net/svn/hudson/trunk/hudson/plugins/dry</developerConnection>
+    <url>https://hudson.dev.java.net/source/browse/hudson/trunk/hudson/plugins/dry</url>
   </scm>
 
   <repositories>
