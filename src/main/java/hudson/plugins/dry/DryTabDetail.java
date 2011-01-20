@@ -34,12 +34,10 @@ public class DryTabDetail extends TabDetail {
         super(owner, detailFactory, annotations, url, defaultEncoding);
     }
 
+    /** {@inheritDoc} */
     @Override
-    public String getUrl() {
-        if ("/tabview/warnings.jelly".equals(super.getUrl())) {
-            return "local-warnings.jelly";
-        }
-        return super.getUrl();
+    public String getWarnings() {
+        return "local-warnings.jelly";
     }
 }
 
