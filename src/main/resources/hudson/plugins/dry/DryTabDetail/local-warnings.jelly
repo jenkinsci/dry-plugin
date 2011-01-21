@@ -6,7 +6,6 @@
   <table class="pane sortable" id="warnings">
     <tr>
       <td class="pane-header">${%File}</td>
-      <td class="pane-header">${%Line}</td>
       <td class="pane-header">${%Number of lines}</td>
       <td class="pane-header">${%Duplicated in}</td>
     </tr>
@@ -24,9 +23,6 @@
                   <dry:warning />
               </j:otherwise>
             </j:choose>
-          </td>
-          <td class="pane">
-              ${warning.primaryLineNumber}
           </td>
           <td class="pane">
               ${warning.numberOfLines}
