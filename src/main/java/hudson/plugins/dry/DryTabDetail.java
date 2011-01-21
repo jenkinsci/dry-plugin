@@ -37,7 +37,7 @@ public class DryTabDetail extends TabDetail {
     /** {@inheritDoc} */
     @Override
     public String getWarnings() {
-        return "local-warnings.jelly";
+        return "dry-warnings.jelly";
     }
 }
 
