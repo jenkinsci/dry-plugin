@@ -1,7 +1,6 @@
 package hudson.plugins.dry.parser.cpd;
 
 import static org.junit.Assert.*;
-import hudson.plugins.analysis.util.model.FileAnnotation;
 import hudson.plugins.dry.parser.DuplicateCode;
 
 import java.io.InputStream;
@@ -40,7 +39,7 @@ public class CpdParserTest {
      * @throws InvocationTargetException
      *             in case of an error
      */
-    private Collection<FileAnnotation> parseFile(final String fileName) throws InvocationTargetException {
+    private Collection<DuplicateCode> parseFile(final String fileName) throws InvocationTargetException {
         return new CpdParser(50, 25).parse(getResource(fileName), "module");
     }
 
@@ -75,7 +74,7 @@ public class CpdParserTest {
     public void scanFileWithTwoDuplications() throws InvocationTargetException {
         String fileName = "cpd.xml";
         assertTrue(VALID_CPD_FILE, acceptsFile(fileName));
-        Collection<FileAnnotation> annotations = parseFile(fileName);
+        Collection<DuplicateCode> annotations = parseFile(fileName);
 
         assertEquals(ERROR_MESSAGE, 4, annotations.size());
     }
@@ -90,13 +89,13 @@ public class CpdParserTest {
     public void scanFileWithOneDuplication() throws InvocationTargetException {
         String fileName = "one-cpd.xml";
         assertTrue(VALID_CPD_FILE, acceptsFile(fileName));
-        Collection<FileAnnotation> annotations = parseFile(fileName);
+        Collection<DuplicateCode> annotations = parseFile(fileName);
 
         assertEquals(ERROR_MESSAGE, 2, annotations.size());
 
-        Iterator<FileAnnotation> iterator = annotations.iterator();
-        DuplicateCode first = (DuplicateCode)iterator.next();
-        DuplicateCode second = (DuplicateCode)iterator.next();
+        Iterator<DuplicateCode> iterator = annotations.iterator();
+        DuplicateCode first = iterator.next();
+        DuplicateCode second = iterator.next();
 
         if (first.getPrimaryLineNumber() == REPORTER_LINE) {
             assertDuplication(REPORTER_LINE, REPORTER, first);

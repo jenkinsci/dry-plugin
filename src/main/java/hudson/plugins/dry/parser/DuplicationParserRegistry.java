@@ -3,6 +3,7 @@ package hudson.plugins.dry.parser;
 import hudson.plugins.analysis.core.AnnotationParser;
 import hudson.plugins.analysis.util.model.FileAnnotation;
 import hudson.plugins.dry.parser.cpd.CpdParser;
+import hudson.plugins.dry.parser.simian.SimianParser;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,9 +11,12 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+
+import com.google.common.collect.Sets;
 
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
@@ -37,6 +41,7 @@ public class DuplicationParserRegistry implements AnnotationParser {
      */
     public DuplicationParserRegistry(final int normalThreshold, final int highThreshold) {
         parsers.add(new CpdParser(highThreshold, normalThreshold));
+        parsers.add(new SimianParser(highThreshold, normalThreshold));
     }
 
     /**
@@ -65,9 +70,11 @@ public class DuplicationParserRegistry implements AnnotationParser {
                 if (parser.accepts(inputStream)) {
                     IOUtils.closeQuietly(inputStream);
                     inputStream = new FileInputStream(file);
-                    Collection<FileAnnotation> result = parser.parse(inputStream, moduleName);
+                    Collection<DuplicateCode> result = parser.parse(inputStream, moduleName);
                     createLinkNames(result);
-                    return result;
+                    HashSet<FileAnnotation> warnings = Sets.newHashSet();
+                    warnings.addAll(result);
+                    return warnings;
                 }
             }
             throw new IOException("No parser found for duplicated code results file " + file.getAbsolutePath());
@@ -86,7 +93,7 @@ public class DuplicationParserRegistry implements AnnotationParser {
      *
      * @param result the annotations
      */
-    private void createLinkNames(final Collection<FileAnnotation> result) {
+    private void createLinkNames(final Collection<DuplicateCode> result) {
         if (workspacePath != null) {
             for (FileAnnotation duplication : result) {
                 duplication.setPathName(workspacePath);

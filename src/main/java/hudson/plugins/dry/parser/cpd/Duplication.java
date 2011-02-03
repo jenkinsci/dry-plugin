@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Java Bean class for a violation of the PMD format.
+ * Java Bean class for a CPD duplication.
  *
  * @author Ulli Hafner
  */

@@ -10,8 +10,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.apache.commons.io.IOUtils;
+
+import com.google.common.collect.Sets;
 
 /**
  * A base class for duplicate code parsers. Use this class as a starting point
@@ -51,7 +54,9 @@ public abstract class AbstractDryParser implements AnnotationParser {
                 IOUtils.closeQuietly(inputStream);
                 inputStream = new FileInputStream(file);
 
-                return parse(inputStream, moduleName);
+                HashSet<FileAnnotation> warnings = Sets.newHashSet();
+                warnings.addAll(parse(inputStream, moduleName));
+                return warnings;
             }
             else {
                 throw new IOException("Can't parse CPD file " + file.getAbsolutePath());
@@ -76,7 +81,7 @@ public abstract class AbstractDryParser implements AnnotationParser {
      * @throws InvocationTargetException
      *             if the file could not be parsed (wrap your actual exception in this exception)
      */
-    protected abstract Collection<FileAnnotation> parse(InputStream inputStream, String moduleName)  throws InvocationTargetException;
+    protected abstract Collection<DuplicateCode> parse(InputStream inputStream, String moduleName)  throws InvocationTargetException;
 
     /**
      * Returns whether this parser accepts the specified stream as a valid

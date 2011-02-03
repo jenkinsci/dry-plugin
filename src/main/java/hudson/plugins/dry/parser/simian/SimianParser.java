@@ -1,4 +1,4 @@
-package hudson.plugins.dry.parser.cpd;
+package hudson.plugins.dry.parser.simian;
 
 import hudson.plugins.analysis.util.JavaPackageDetector;
 import hudson.plugins.dry.parser.AbstractDryParser;
@@ -15,23 +15,23 @@ import org.apache.commons.digester.Digester;
 import org.xml.sax.SAXException;
 
 /**
- * A parser for PMD's CPD XML files.
+ * A parser for Simian XML files.
  *
  * @author Ulli Hafner
  */
-public class CpdParser extends AbstractDryParser {
+public class SimianParser extends AbstractDryParser {
     /** Unique ID of this class. */
     private static final long serialVersionUID = 6507147028628714706L;
 
     /**
-     * Creates a new instance of {@link CpdParser}.
+     * Creates a new instance of {@link SimianParser}.
      *
      * @param highThreshold
      *            minimum number of duplicate lines for high priority warnings
      * @param normalThreshold
      *            minimum number of duplicate lines for normal priority warnings
      */
-    public CpdParser(final int highThreshold, final int normalThreshold) {
+    public SimianParser(final int highThreshold, final int normalThreshold) {
         super(highThreshold, normalThreshold);
     }
 
@@ -41,9 +41,9 @@ public class CpdParser extends AbstractDryParser {
         try {
             Digester digester = new Digester();
             digester.setValidating(false);
-            digester.setClassLoader(CpdParser.class.getClassLoader());
+            digester.setClassLoader(SimianParser.class.getClassLoader());
 
-            String duplicationXPath = "*/pmd-cpd";
+            String duplicationXPath = "*/simian";
             digester.addObjectCreate(duplicationXPath, String.class);
 
             Object result = digester.parse(file);
@@ -67,25 +67,24 @@ public class CpdParser extends AbstractDryParser {
         try {
             Digester digester = new Digester();
             digester.setValidating(false);
-            digester.setClassLoader(CpdParser.class.getClassLoader());
+            digester.setClassLoader(SimianParser.class.getClassLoader());
 
-            ArrayList<Duplication> duplications = new ArrayList<Duplication>();
+            ArrayList<Set> duplications = new ArrayList<Set>();
             digester.push(duplications);
 
-            String duplicationXPath = "*/pmd-cpd/duplication";
-            digester.addObjectCreate(duplicationXPath, Duplication.class);
+            String duplicationXPath = "*/simian/check/set";
+            digester.addObjectCreate(duplicationXPath, Set.class);
             digester.addSetProperties(duplicationXPath);
-            digester.addCallMethod(duplicationXPath + "/codefragment", "setCodeFragment", 0);
             digester.addSetNext(duplicationXPath, "add");
 
-            String fileXPath = duplicationXPath + "/file";
-            digester.addObjectCreate(fileXPath, SourceFile.class);
+            String fileXPath = duplicationXPath + "/block";
+            digester.addObjectCreate(fileXPath, Block.class);
             digester.addSetProperties(fileXPath);
-            digester.addSetNext(fileXPath, "addFile", SourceFile.class.getName());
+            digester.addSetNext(fileXPath, "addBlock", Block.class.getName());
 
             Object result = digester.parse(file);
             if (result != duplications) { // NOPMD
-                throw new SAXException("Input stream is not a valid CPD file.");
+                throw new SAXException("Input stream is not a valid Simian file.");
             }
 
             return convert(duplications, moduleName);
@@ -107,16 +106,14 @@ public class CpdParser extends AbstractDryParser {
      *            name of the maven module
      * @return a maven module of the annotations API
      */
-    private Collection<DuplicateCode> convert(final List<Duplication> duplications, final String moduleName) {
+    private Collection<DuplicateCode> convert(final List<Set> duplications, final String moduleName) {
         JavaPackageDetector javaPackageDetector = new JavaPackageDetector();
         List<DuplicateCode> annotations = new ArrayList<DuplicateCode>();
 
-        for (Duplication duplication : duplications) {
+        for (Set duplication : duplications) {
             List<DuplicateCode> codeBlocks = new ArrayList<DuplicateCode>();
-            for (SourceFile file : duplication.getFiles()) {
-                // TODO: check why PMD reports a length + 1
-                DuplicateCode annotation = new DuplicateCode(getPriority(duplication.getLines()), file.getLine(), duplication.getLines(), file.getPath());
-                annotation.setSourceCode(duplication.getCodeFragment());
+            for (Block file : duplication.getBlocks()) {
+                DuplicateCode annotation = new DuplicateCode(getPriority(duplication.getLineCount()), file.getStartLineNumber(), duplication.getLineCount(), file.getSourceFile());
                 annotation.setModuleName(moduleName);
                 codeBlocks.add(annotation);
             }
