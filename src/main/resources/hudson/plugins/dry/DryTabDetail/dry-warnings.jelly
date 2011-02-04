@@ -30,9 +30,6 @@
           <td class="pane">
             <j:set var="linkCount" value="${0}" />
               <j:forEach var="link" items="${warning.links}">
-                <j:if test="${linkCount > 0}">
-                  <br/>
-                </j:if>
                 <j:choose>
                   <j:when test="${warning.size() &lt; 40}">
                     <div tooltip="${warning.formattedSourceCode}" nodismiss="">
@@ -40,6 +37,9 @@
                     </div>
                   </j:when>
                   <j:otherwise>
+                      <j:if test="${linkCount > 0}">
+                        <br/>
+                      </j:if>
                       <dry:link />
                   </j:otherwise>
                 </j:choose>
