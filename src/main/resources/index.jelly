@@ -1,9 +1,0 @@
-<div>
-  This plug-in collects the duplicate code analysis
-  results of the project modules and visualizes the found warnings. 
-  Supported duplicate code analysis tools:
-  <ul>
-    <li><a href="http://pmd.sourceforge.net/cpd.html">PMD's Copy Paste Detector (CPD)</a></li>
-    <li><a href="http://www.harukizaemon.com/simian/">Simian</a></li>
-  </ul>
-</div>

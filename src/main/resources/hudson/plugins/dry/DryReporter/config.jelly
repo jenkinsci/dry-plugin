@@ -1,9 +1,0 @@
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
-	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:u="/util" xmlns:p="/dry">
-  <p:priorities/>
-  <f:advanced>
-    <u:failed/>
-    <u:health id="dry"/>
-    <u:trend id="dry"/>
-  </f:advanced>
-</j:jelly>
