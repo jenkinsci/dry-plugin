@@ -43,12 +43,18 @@ public class DryAnnotationsAggregator extends AnnotationsAggregator {
                 new DryResult(build, defaultEncoding, aggregatedResult));
     }
 
-    /** {@inheritDoc} */
+    @Override
+    protected boolean hasResult(final MatrixRun run) {
+        return getAction(run) != null;
+    }
+
     @Override
     protected DryResult getResult(final MatrixRun run) {
-        DryResultAction action = run.getAction(DryResultAction.class);
+        return getAction(run).getResult();
+    }
 
-        return action.getResult();
+    private DryResultAction getAction(final MatrixRun run) {
+        return run.getAction(DryResultAction.class);
     }
 }
 
