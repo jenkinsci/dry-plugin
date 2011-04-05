@@ -6,10 +6,6 @@
   </f:entry>
   <p:priorities/>
   <f:advanced>
-    <u:failed/>
-    <u:health id="dry"/>
-    <u:thresholds id="dry"/>
-    <u:defaultEncoding id="dry"/>
-    <u:trend id="dry"/>
+    <u:advanced id="dry"/>
   </f:advanced>
 </j:jelly>
