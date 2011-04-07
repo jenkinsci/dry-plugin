@@ -166,7 +166,7 @@ public class DryPublisher extends HealthAwarePublisher {
         if (shouldDetectModules()) {
             dryCollector = new FilesParser(logger, StringUtils.defaultIfEmpty(getPattern(), DEFAULT_DRY_PATTERN),
                     new DuplicationParserRegistry(getNormalThreshold(), getHighThreshold(), build.getWorkspace().getRemote()),
-                    isMavenBuild(build), isAntBuild(build));
+                    isMavenBuild(build));
         }
         else {
             dryCollector = new FilesParser(logger, StringUtils.defaultIfEmpty(getPattern(), DEFAULT_DRY_PATTERN),
