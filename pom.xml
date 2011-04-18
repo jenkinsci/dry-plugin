@@ -11,7 +11,7 @@
   <artifactId>dry</artifactId>
   <packaging>hpi</packaging>
   <name>Duplicate Code Scanner Plug-in</name>
-  <version>2.15-SNAPSHOT</version>
+  <version>2.15</version>
   <url>http://wiki.jenkins-ci.org/x/X4IuAg</url>
   <description>This plug-in generates reports of duplicated code in a project.</description>
 
