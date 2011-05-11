@@ -153,7 +153,7 @@ public class DryReporter extends HealthAwareReporter<DryResult> {
 
     @Override
     protected MavenAggregatedReport createMavenAggregatedReport(final MavenBuild build, final DryResult result) {
-        return new MavenDryResultAction(build, this, getDefaultEncoding(), result);
+        return new DryMavenResultAction(build, this, getDefaultEncoding(), result);
     }
 
     @Override
@@ -162,8 +162,8 @@ public class DryReporter extends HealthAwareReporter<DryResult> {
     }
 
     @Override
-    protected Class<MavenDryResultAction> getResultActionClass() {
-        return MavenDryResultAction.class;
+    protected Class<DryMavenResultAction> getResultActionClass() {
+        return DryMavenResultAction.class;
     }
 }
 
