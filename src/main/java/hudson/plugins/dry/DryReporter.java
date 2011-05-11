@@ -1,13 +1,12 @@
 package hudson.plugins.dry;
 
+import hudson.maven.MavenAggregatedReport;
 import hudson.maven.MavenBuildProxy;
 import hudson.maven.MojoInfo;
 import hudson.maven.MavenBuild;
 import hudson.maven.MavenModule;
-import hudson.model.Action;
-import hudson.plugins.analysis.core.BuildResult;
 import hudson.plugins.analysis.core.FilesParser;
-import hudson.plugins.analysis.core.HealthAwareMavenReporter;
+import hudson.plugins.analysis.core.HealthAwareReporter;
 import hudson.plugins.analysis.core.ParserResult;
 import hudson.plugins.analysis.util.PluginLogger;
 import hudson.plugins.dry.parser.DuplicationParserRegistry;
@@ -24,7 +23,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
  *
  * @author Ulli Hafner
  */
-public class DryReporter extends HealthAwareMavenReporter {
+public class DryReporter extends HealthAwareReporter<DryResult> {
     /** Unique identifier of this class. */
     private static final long serialVersionUID = 2272875032054063496L;
 
@@ -49,6 +48,10 @@ public class DryReporter extends HealthAwareMavenReporter {
      * @param thresholdLimit
      *            determines which warning priorities should be considered when
      *            evaluating the build stability and health
+     * @param useDeltaValues
+     *            determines whether the absolute annotations delta or the
+     *            actual annotations set difference should be used to evaluate
+     *            the build stability
      * @param unstableTotalAll
      *            annotation threshold
      * @param unstableTotalHigh
@@ -90,14 +93,14 @@ public class DryReporter extends HealthAwareMavenReporter {
     // CHECKSTYLE:OFF
     @SuppressWarnings("PMD.ExcessiveParameterList")
     @DataBoundConstructor
-    public DryReporter(final String healthy, final String unHealthy, final String thresholdLimit,
+    public DryReporter(final String healthy, final String unHealthy, final String thresholdLimit, final boolean useDeltaValues,
             final String unstableTotalAll, final String unstableTotalHigh, final String unstableTotalNormal, final String unstableTotalLow,
             final String unstableNewAll, final String unstableNewHigh, final String unstableNewNormal, final String unstableNewLow,
             final String failedTotalAll, final String failedTotalHigh, final String failedTotalNormal, final String failedTotalLow,
             final String failedNewAll, final String failedNewHigh, final String failedNewNormal, final String failedNewLow,
             final boolean canRunOnFailed,
             final int highThreshold, final int normalThreshold) {
-        super(healthy, unHealthy, thresholdLimit,
+        super(healthy, unHealthy, thresholdLimit, useDeltaValues,
                 unstableTotalAll, unstableTotalHigh, unstableTotalNormal, unstableTotalLow,
                 unstableNewAll, unstableNewHigh, unstableNewNormal, unstableNewLow,
                 failedTotalAll, failedTotalHigh, failedTotalNormal, failedTotalLow,
@@ -143,25 +146,23 @@ public class DryReporter extends HealthAwareMavenReporter {
         return getTargetPath(pom).act(dryCollector);
     }
 
-    /** {@inheritDoc} */
     @Override
-    protected BuildResult persistResult(final ParserResult project, final MavenBuild build) {
-        DryResult result = new DryResult(build, getDefaultEncoding(), project);
-        build.getActions().add(new MavenDryResultAction(build, this, getDefaultEncoding(), result));
-        build.registerAsProjectAction(DryReporter.this);
-
-        return result;
+    protected DryResult createResult(final MavenBuild build, final ParserResult project) {
+        return new DryResult(build, getDefaultEncoding(), project);
     }
 
-    /** {@inheritDoc} */
+    @Override
+    protected MavenAggregatedReport createMavenAggregatedReport(final MavenBuild build, final DryResult result) {
+        return new MavenDryResultAction(build, this, getDefaultEncoding(), result);
+    }
+
     @Override
     public List<DryProjectAction> getProjectActions(final MavenModule module) {
         return Collections.singletonList(new DryProjectAction(module));
     }
 
-    /** {@inheritDoc} */
     @Override
-    protected Class<? extends Action> getResultActionClass() {
+    protected Class<MavenDryResultAction> getResultActionClass() {
         return MavenDryResultAction.class;
     }
 }
