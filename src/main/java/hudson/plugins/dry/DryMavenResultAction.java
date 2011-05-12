@@ -35,7 +35,7 @@ public class DryMavenResultAction extends MavenResultAction<DryResult> {
      */
     public DryMavenResultAction(final MavenModuleSetBuild owner, final HealthDescriptor healthDescriptor,
             final String defaultEncoding) {
-        super(new DryResultAction(owner, healthDescriptor), defaultEncoding);
+        super(new DryResultAction(owner, healthDescriptor), defaultEncoding, "DRY");
     }
 
     /**
@@ -52,7 +52,7 @@ public class DryMavenResultAction extends MavenResultAction<DryResult> {
      */
     public DryMavenResultAction(final MavenBuild owner, final HealthDescriptor healthDescriptor,
             final String defaultEncoding, final DryResult result) {
-        super(new DryResultAction(owner, healthDescriptor, result), defaultEncoding);
+        super(new DryResultAction(owner, healthDescriptor, result), defaultEncoding, "DRY");
     }
 
     /** {@inheritDoc} */
