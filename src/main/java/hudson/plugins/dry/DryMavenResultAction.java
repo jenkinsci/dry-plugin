@@ -8,7 +8,6 @@ import hudson.maven.MavenModuleSetBuild;
 import hudson.model.Action;
 import hudson.plugins.analysis.core.HealthDescriptor;
 import hudson.plugins.analysis.core.MavenResultAction;
-import hudson.plugins.analysis.core.ParserResult;
 
 import java.util.List;
 import java.util.Map;
@@ -71,8 +70,8 @@ public class DryMavenResultAction extends MavenResultAction<DryResult> {
     }
 
     @Override
-    protected DryResult createResult(final DryResult existingResult, final ParserResult aggregatedAnnotations) {
-        return new DryResult(getOwner(), existingResult.getDefaultEncoding(), aggregatedAnnotations);
+    protected DryResult createResult(final DryResult existingResult, final DryResult additionalResult) {
+        return new DryResult(getOwner(), existingResult.getDefaultEncoding(), aggregate(existingResult, additionalResult));
     }
 }
 
