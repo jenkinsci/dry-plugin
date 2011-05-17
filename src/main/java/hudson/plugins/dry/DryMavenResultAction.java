@@ -70,8 +70,8 @@ public class DryMavenResultAction extends MavenResultAction<DryResult> {
     }
 
     @Override
-    protected DryResult createResult(final DryResult... results) {
-        return new DryResult(getOwner(), results[0].getDefaultEncoding(), aggregate(results));
+    protected DryResult createResult(final DryResult existingResult, final DryResult additionalResult) {
+        return new DryResult(getOwner(), additionalResult.getDefaultEncoding(), aggregate(existingResult, additionalResult));
     }
 }
 
