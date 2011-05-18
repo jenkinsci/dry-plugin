@@ -9,6 +9,7 @@ import hudson.plugins.analysis.core.FilesParser;
 import hudson.plugins.analysis.core.HealthAwareReporter;
 import hudson.plugins.analysis.core.ParserResult;
 import hudson.plugins.analysis.util.PluginLogger;
+import hudson.plugins.analysis.util.StringPluginLogger;
 import hudson.plugins.dry.parser.DuplicationParserRegistry;
 
 import java.io.IOException;
@@ -26,6 +27,8 @@ import org.kohsuke.stapler.DataBoundConstructor;
 public class DryReporter extends HealthAwareReporter<DryResult> {
     /** Unique identifier of this class. */
     private static final long serialVersionUID = 2272875032054063496L;
+
+    private static final String PLUGIN_NAME = "DRY";
 
     /** Validates the thresholds user input. */
     private static final ThresholdValidation THRESHOLD_VALIDATION = new ThresholdValidation();
@@ -105,7 +108,7 @@ public class DryReporter extends HealthAwareReporter<DryResult> {
                 unstableNewAll, unstableNewHigh, unstableNewNormal, unstableNewLow,
                 failedTotalAll, failedTotalHigh, failedTotalNormal, failedTotalLow,
                 failedNewAll, failedNewHigh, failedNewNormal, failedNewLow,
-                canRunOnFailed, "DRY");
+                canRunOnFailed, PLUGIN_NAME);
         this.highThreshold = highThreshold;
         this.normalThreshold = normalThreshold;
     }
@@ -139,7 +142,7 @@ public class DryReporter extends HealthAwareReporter<DryResult> {
     @Override
     public ParserResult perform(final MavenBuildProxy build, final MavenProject pom, final MojoInfo mojo,
             final PluginLogger logger) throws InterruptedException, IOException {
-        FilesParser dryCollector = new FilesParser(logger, DEFAULT_DRY_XML_FILE,
+        FilesParser dryCollector = new FilesParser(new StringPluginLogger(PLUGIN_NAME), DEFAULT_DRY_XML_FILE,
                 new DuplicationParserRegistry(getNormalThreshold(), getHighThreshold()),
                 getModuleName(pom));
 

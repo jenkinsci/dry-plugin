@@ -12,6 +12,7 @@ import hudson.plugins.analysis.core.FilesParser;
 import hudson.plugins.analysis.core.HealthAwarePublisher;
 import hudson.plugins.analysis.core.ParserResult;
 import hudson.plugins.analysis.util.PluginLogger;
+import hudson.plugins.analysis.util.StringPluginLogger;
 import hudson.plugins.dry.parser.DuplicationParserRegistry;
 
 import java.io.IOException;
@@ -27,6 +28,8 @@ import org.kohsuke.stapler.DataBoundConstructor;
 public class DryPublisher extends HealthAwarePublisher {
     /** Unique ID of this class. */
     private static final long serialVersionUID = 6711252664481150129L;
+
+    private static final String PLUGIN_NAME = "DRY";
 
     /** Validates the thresholds user input. */
     private static final ThresholdValidation THRESHOLD_VALIDATION = new ThresholdValidation();
@@ -117,7 +120,7 @@ public class DryPublisher extends HealthAwarePublisher {
                 unstableNewAll, unstableNewHigh, unstableNewNormal, unstableNewLow,
                 failedTotalAll, failedTotalHigh, failedTotalNormal, failedTotalLow,
                 failedNewAll, failedNewHigh, failedNewNormal, failedNewLow,
-                canRunOnFailed, shouldDetectModules, "DRY");
+                canRunOnFailed, shouldDetectModules, PLUGIN_NAME);
         this.pattern = pattern;
         this.highThreshold = highThreshold;
         this.normalThreshold = normalThreshold;
@@ -162,18 +165,14 @@ public class DryPublisher extends HealthAwarePublisher {
     public BuildResult perform(final AbstractBuild<?, ?> build, final PluginLogger logger) throws InterruptedException, IOException {
         logger.log("Collecting duplicate code analysis files...");
 
-        FilesParser dryCollector;
-        if (shouldDetectModules()) {
-            dryCollector = new FilesParser(logger, StringUtils.defaultIfEmpty(getPattern(), DEFAULT_DRY_PATTERN),
+        FilesParser dryCollector = new FilesParser(new StringPluginLogger(PLUGIN_NAME),
+                StringUtils.defaultIfEmpty(getPattern(), DEFAULT_DRY_PATTERN),
                     new DuplicationParserRegistry(getNormalThreshold(), getHighThreshold(), build.getWorkspace().getRemote()),
-                    isMavenBuild(build));
-        }
-        else {
-            dryCollector = new FilesParser(logger, StringUtils.defaultIfEmpty(getPattern(), DEFAULT_DRY_PATTERN),
-                    new DuplicationParserRegistry(getNormalThreshold(), getHighThreshold(), build.getWorkspace().getRemote()));
-        }
+                    shouldDetectModules(), isMavenBuild(build));
 
         ParserResult project = build.getWorkspace().act(dryCollector);
+        logger.logLines(project.getLogMessages());
+
         DryResult result = new DryResult(build, getDefaultEncoding(), project);
         build.getActions().add(new DryResultAction(build, this, result));
 
