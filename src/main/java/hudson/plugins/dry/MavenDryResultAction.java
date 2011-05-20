@@ -92,6 +92,7 @@ public class MavenDryResultAction extends DryResultAction implements Aggregatabl
     }
 
     /** Backward compatibility. @deprecated */
+    @edu.umd.cs.findbugs.annotations.SuppressWarnings("UUF")
     @SuppressWarnings("unused")
     @Deprecated
     private transient String height;
