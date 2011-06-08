@@ -161,7 +161,7 @@ public class DryReporter extends HealthAwareReporter<DryResult> {
 
     @Override
     public List<DryProjectAction> getProjectActions(final MavenModule module) {
-        return Collections.singletonList(new DryProjectAction(module));
+        return Collections.singletonList(new DryProjectAction(module, getResultActionClass()));
     }
 
     @Override

@@ -61,7 +61,7 @@ public class DryMavenResultAction extends MavenResultAction<DryResult> {
 
     /** {@inheritDoc} */
     public Action getProjectAction(final MavenModuleSet moduleSet) {
-        return new DryProjectAction(moduleSet);
+        return new DryProjectAction(moduleSet, DryMavenResultAction.class);
     }
 
     @Override
