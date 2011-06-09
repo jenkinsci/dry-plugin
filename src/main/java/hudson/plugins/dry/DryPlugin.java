@@ -12,6 +12,8 @@ public class DryPlugin extends Plugin {
     /** {@inheritDoc} */
     @Override
     public void start() {
-        DetailFactory.addDetailBuilder(DryResultAction.class, new DryDetailBuilder());
+        DryDetailBuilder detailBuilder = new DryDetailBuilder();
+        DetailFactory.addDetailBuilder(DryResultAction.class, detailBuilder);
+        DetailFactory.addDetailBuilder(DryMavenResultAction.class, detailBuilder);
     }
 }
