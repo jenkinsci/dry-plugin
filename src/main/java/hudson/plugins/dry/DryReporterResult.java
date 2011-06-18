@@ -11,6 +11,8 @@ import hudson.plugins.analysis.core.ResultAction;
  * @author Ulli Hafner
  */
 public class DryReporterResult extends DryResult {
+    private static final long serialVersionUID = -2812927497499345424L;
+
     /**
      * Creates a new instance of {@link DryReporterResult}.
      *
