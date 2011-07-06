@@ -2,6 +2,7 @@ package hudson.plugins.dry.tokens;
 
 import hudson.Extension;
 import hudson.plugins.analysis.tokens.AbstractResultTokenMacro;
+import hudson.plugins.dry.DryMavenResultAction;
 import hudson.plugins.dry.DryResultAction;
 
 /**
@@ -14,8 +15,9 @@ public class DryResultTokenMacro extends AbstractResultTokenMacro {
     /**
      * Creates a new instance of {@link DryResultTokenMacro}.
      */
+    @SuppressWarnings("unchecked")
     public DryResultTokenMacro() {
-        super(DryResultAction.class, "DRY_RESULT");
+        super("DRY_RESULT", DryResultAction.class, DryMavenResultAction.class);
     }
 }
 
