@@ -2,7 +2,7 @@
 
   <dt>$${DRY_RESULT}</dt>
   <dd>
-    Expands to the build result of the DRY plug-in.
+    Expands to the build result of the duplicate code scanner plug-in.
   </dd>
 
 </j:jelly>

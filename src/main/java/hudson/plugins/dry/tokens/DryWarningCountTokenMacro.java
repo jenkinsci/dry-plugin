@@ -1,7 +1,8 @@
 package hudson.plugins.dry.tokens;
 
 import hudson.Extension;
-import hudson.plugins.analysis.tokens.AbstractResultTokenMacro;
+import hudson.plugins.analysis.tokens.AbstractAnnotationsCountTokenMacro;
+import hudson.plugins.dry.DryMavenResultAction;
 import hudson.plugins.dry.DryResultAction;
 
 /**
@@ -10,12 +11,13 @@ import hudson.plugins.dry.DryResultAction;
  * @author Ulli Hafner
  */
 @Extension(optional = true)
-public class DryWarningCountTokenMacro extends AbstractResultTokenMacro {
+public class DryWarningCountTokenMacro extends AbstractAnnotationsCountTokenMacro {
     /**
      * Creates a new instance of {@link DryWarningCountTokenMacro}.
      */
+    @SuppressWarnings("unchecked")
     public DryWarningCountTokenMacro() {
-        super(DryResultAction.class, "DRY_COUNT");
+        super("DRY_COUNT", DryResultAction.class, DryMavenResultAction.class);
     }
 }
 
