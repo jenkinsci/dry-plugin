@@ -1,6 +1,6 @@
 package hudson.plugins.dry.parser.cpd;
 
-import hudson.plugins.analysis.util.JavaPackageDetector;
+import hudson.plugins.analysis.util.PackageDetectors;
 import hudson.plugins.dry.parser.AbstractDryParser;
 import hudson.plugins.dry.parser.DuplicateCode;
 
@@ -108,7 +108,6 @@ public class CpdParser extends AbstractDryParser {
      * @return a maven module of the annotations API
      */
     private Collection<DuplicateCode> convert(final List<Duplication> duplications, final String moduleName) {
-        JavaPackageDetector javaPackageDetector = new JavaPackageDetector();
         List<DuplicateCode> annotations = new ArrayList<DuplicateCode>();
 
         for (Duplication duplication : duplications) {
@@ -123,8 +122,7 @@ public class CpdParser extends AbstractDryParser {
             for (DuplicateCode block : codeBlocks) {
                 block.linkTo(codeBlocks);
 
-                String packageName = javaPackageDetector.detectPackageName(block.getFileName());
-                block.setPackageName(packageName);
+                block.setPackageName(PackageDetectors.detectPackageName(block.getFileName()));
             }
             annotations.addAll(codeBlocks);
         }
