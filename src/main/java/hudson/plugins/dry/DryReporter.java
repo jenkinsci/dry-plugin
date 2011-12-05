@@ -100,14 +100,14 @@ public class DryReporter extends HealthAwareReporter<DryResult> {
             final String unstableNewAll, final String unstableNewHigh, final String unstableNewNormal, final String unstableNewLow,
             final String failedTotalAll, final String failedTotalHigh, final String failedTotalNormal, final String failedTotalLow,
             final String failedNewAll, final String failedNewHigh, final String failedNewNormal, final String failedNewLow,
-            final boolean canRunOnFailed,
+            final boolean canRunOnFailed, final boolean canComputeNew,
             final int highThreshold, final int normalThreshold) {
         super(healthy, unHealthy, thresholdLimit, useDeltaValues,
                 unstableTotalAll, unstableTotalHigh, unstableTotalNormal, unstableTotalLow,
                 unstableNewAll, unstableNewHigh, unstableNewNormal, unstableNewLow,
                 failedTotalAll, failedTotalHigh, failedTotalNormal, failedTotalLow,
                 failedNewAll, failedNewHigh, failedNewNormal, failedNewLow,
-                canRunOnFailed, PLUGIN_NAME);
+                canRunOnFailed, canComputeNew, PLUGIN_NAME);
         this.highThreshold = highThreshold;
         this.normalThreshold = normalThreshold;
     }
