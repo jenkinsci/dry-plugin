@@ -1,13 +1,10 @@
 package hudson.plugins.dry;
 
 import hudson.Extension;
-import hudson.maven.MavenReporter;
 import hudson.plugins.analysis.core.ReporterDescriptor;
 import hudson.util.FormValidation;
-import net.sf.json.JSONObject;
 
 import org.kohsuke.stapler.QueryParameter;
-import org.kohsuke.stapler.StaplerRequest;
 
 /**
  * Descriptor for the class {@link DryReporter}. Used as a singleton. The
@@ -25,12 +22,6 @@ public class DryReporterDescriptor extends ReporterDescriptor {
      */
     public DryReporterDescriptor() {
         super(DryReporter.class, new DryDescriptor());
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MavenReporter newInstance(final StaplerRequest request, final JSONObject formData) throws FormException {
-        return request.bindJSON(DryReporter.class, formData);
     }
 
     /**
