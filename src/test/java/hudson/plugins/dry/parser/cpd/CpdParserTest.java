@@ -65,6 +65,21 @@ public class CpdParserTest {
     }
 
     /**
+     * Checks whether we correctly detect a duplication.
+     *
+     * @throws InvocationTargetException
+     *             Signals a test failure
+     */
+    @Test
+    public void issue12516() throws InvocationTargetException {
+        String fileName = "issue12516.xml";
+        assertTrue(VALID_CPD_FILE, acceptsFile(fileName));
+        Collection<DuplicateCode> annotations = parseFile(fileName);
+
+        assertEquals(ERROR_MESSAGE, 2, annotations.size());
+    }
+
+    /**
      * Checks whether we correctly detect all 2 duplications (i.e., 4 warnings).
      *
      * @throws InvocationTargetException
@@ -133,7 +148,7 @@ public class CpdParserTest {
      */
     @Test
     public void scanOtherFile() {
-        assertFalse("Parser does accept invalid CPD file.", acceptsFile("other.xml"));
+        assertFalse("Parser does accept invalid CPD file.", acceptsFile("otherfile.xml"));
     }
 }
 

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.digester.Digester;
+import org.apache.commons.digester3.Digester;
 import org.xml.sax.SAXException;
 
 /**
@@ -40,7 +40,7 @@ public class CpdParser extends AbstractDryParser {
     public boolean accepts(final InputStream file) {
         try {
             Digester digester = new Digester();
-            digester.setValidating(false);
+            digester.setValidating(true);
             digester.setClassLoader(CpdParser.class.getClassLoader());
 
             String duplicationXPath = "*/pmd-cpd";
