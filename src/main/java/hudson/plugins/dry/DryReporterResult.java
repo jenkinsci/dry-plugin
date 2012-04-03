@@ -1,9 +1,9 @@
 package hudson.plugins.dry;
 
 import hudson.model.AbstractBuild;
-import hudson.plugins.analysis.core.BuildResult;
 import hudson.plugins.analysis.core.ParserResult;
 import hudson.plugins.analysis.core.ResultAction;
+import hudson.plugins.analysis.core.BuildResult;
 
 /**
  * Represents the aggregated results of the DRY analysis in m2 jobs.

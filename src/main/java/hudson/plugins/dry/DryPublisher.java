@@ -7,10 +7,10 @@ import hudson.model.Action;
 import hudson.model.BuildListener;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
-import hudson.plugins.analysis.core.BuildResult;
 import hudson.plugins.analysis.core.FilesParser;
 import hudson.plugins.analysis.core.HealthAwarePublisher;
 import hudson.plugins.analysis.core.ParserResult;
+import hudson.plugins.analysis.core.BuildResult;
 import hudson.plugins.analysis.util.PluginLogger;
 import hudson.plugins.dry.parser.DuplicationParserRegistry;
 

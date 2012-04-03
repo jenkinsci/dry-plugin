@@ -31,18 +31,8 @@ public class DryProjectAction extends AbstractProjectAction<ResultAction<DryResu
      */
     public DryProjectAction(final AbstractProject<?, ?> project,
             final Class<? extends ResultAction<DryResult>> type) {
-        super(project, type, new DryDescriptor());
-    }
-
-    /** {@inheritDoc} */
-    public String getDisplayName() {
-        return Messages.DRY_ProjectAction_Name();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public String getTrendName() {
-        return Messages.DRY_Trend_Name();
+        super(project, type, Messages._DRY_ProjectAction_Name(), Messages._DRY_Trend_Name(),
+                DryDescriptor.PLUGIN_ID, DryDescriptor.ICON_URL, DryDescriptor.RESULT_URL);
     }
 }
 

@@ -12,38 +12,37 @@ import org.kohsuke.stapler.QueryParameter;
  *
  * @author Ulli Hafner
  */
-@Extension(ordinal = 100) // NOCHECKSTYLE
+@Extension(ordinal = 100)
 public final class DryDescriptor extends PluginDescriptor {
-    /** Plug-in name. */
-    private static final String PLUGIN_NAME = "dry";
+    /** The ID of this plug-in is used as URL. */
+    static final String PLUGIN_ID = "dry";
+    /** The URL of the result action. */
+    static final String RESULT_URL = PluginDescriptor.createResultUrlName(PLUGIN_ID);
     /** Icon to use for the result and project action. */
-    private static final String ACTION_ICON = "/plugin/dry/icons/dry-24x24.png";
-    /** Validates the user input. */
+    static final String ICON_URL = "/plugin/dry/icons/dry-24x24.png";
+
     private static final ThresholdValidation VALIDATION = new ThresholdValidation();
 
     /**
-     * Instantiates a new find bugs descriptor.
+     * Creates a new instance of {@link DryDescriptor}.
      */
     public DryDescriptor() {
         super(DryPublisher.class);
     }
 
-    /** {@inheritDoc} */
     @Override
     public String getDisplayName() {
         return Messages.DRY_Publisher_Name();
     }
 
-    /** {@inheritDoc} */
     @Override
     public String getPluginName() {
-        return PLUGIN_NAME;
+        return PLUGIN_ID;
     }
 
-    /** {@inheritDoc} */
     @Override
     public String getIconUrl() {
-        return ACTION_ICON;
+        return ICON_URL;
     }
 
     /**
