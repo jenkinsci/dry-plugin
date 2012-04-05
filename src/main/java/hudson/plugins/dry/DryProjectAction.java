@@ -29,8 +29,7 @@ public class DryProjectAction extends AbstractProjectAction<ResultAction<DryResu
      * @param type
      *            the result action type
      */
-    public DryProjectAction(final AbstractProject<?, ?> project,
-            final Class<? extends ResultAction<DryResult>> type) {
+    public DryProjectAction(final AbstractProject<?, ?> project, final Class<? extends ResultAction<DryResult>> type) {
         super(project, type, Messages._DRY_ProjectAction_Name(), Messages._DRY_Trend_Name(),
                 DryDescriptor.PLUGIN_ID, DryDescriptor.ICON_URL, DryDescriptor.RESULT_URL);
     }
