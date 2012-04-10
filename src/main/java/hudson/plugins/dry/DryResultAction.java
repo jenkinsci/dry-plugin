@@ -48,19 +48,16 @@ public class DryResultAction extends AbstractResultAction<DryResult> {
         return Messages.DRY_ProjectAction_Name();
     }
 
-    /** {@inheritDoc} */
     @Override
     protected PluginDescriptor getDescriptor() {
         return new DryDescriptor();
     }
 
-    /** {@inheritDoc} */
     @Override
     public String getMultipleItemsTooltip(final int numberOfItems) {
         return Messages.DRY_ResultAction_MultipleWarnings(numberOfItems);
     }
 
-    /** {@inheritDoc} */
     @Override
     public String getSingleItemTooltip() {
         return Messages.DRY_ResultAction_OneWarning();

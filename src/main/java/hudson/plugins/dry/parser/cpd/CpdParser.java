@@ -35,7 +35,6 @@ public class CpdParser extends AbstractDryParser {
         super(highThreshold, normalThreshold);
     }
 
-    /** {@inheritDoc} */
     @Override
     public boolean accepts(final InputStream file) {
         try {
@@ -61,7 +60,6 @@ public class CpdParser extends AbstractDryParser {
         return false;
     }
 
-    /** {@inheritDoc} */
     @Override
     public Collection<DuplicateCode> parse(final InputStream file, final String moduleName) throws InvocationTargetException {
         try {

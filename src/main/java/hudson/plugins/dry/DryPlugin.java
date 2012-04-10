@@ -9,7 +9,6 @@ import hudson.plugins.analysis.views.DetailFactory;
  * @author Ulli Hafner
  */
 public class DryPlugin extends Plugin {
-    /** {@inheritDoc} */
     @Override
     public void start() {
         DryDetailBuilder detailBuilder = new DryDetailBuilder();

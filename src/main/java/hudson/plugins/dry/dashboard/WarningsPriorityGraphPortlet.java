@@ -37,19 +37,16 @@ public final class WarningsPriorityGraphPortlet extends AbstractWarningsGraphPor
         configureGraph(getGraphType());
     }
 
-    /** {@inheritDoc} */
     @Override
     protected Class<? extends AbstractProjectAction<?>> getAction() {
         return DryProjectAction.class;
     }
 
-    /** {@inheritDoc} */
     @Override
     protected String getPluginName() {
         return "dry";
     }
 
-    /** {@inheritDoc} */
     @Override
     protected BuildResultGraph getGraphType() {
         return new PriorityGraph();

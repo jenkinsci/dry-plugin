@@ -64,13 +64,11 @@ public class DuplicateCode extends AbstractAnnotation {
         setFileName(fileName);
     }
 
-    /** {@inheritDoc} */
     @Override
     public String getType() {
         return Messages.DRY_Warning_Type();
     }
 
-    /** {@inheritDoc} */
     @Override
     public String getMessage() {
         return Messages.DRY_Warning_Message(size());
@@ -183,7 +181,6 @@ public class DuplicateCode extends AbstractAnnotation {
         this.sourceCode = sourceCode;
     }
 
-    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         int prime = 31; // NOCHECKSTYLE
@@ -192,7 +189,6 @@ public class DuplicateCode extends AbstractAnnotation {
         return result;
     }
 
-    /** {@inheritDoc} */
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {

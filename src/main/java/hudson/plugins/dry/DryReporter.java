@@ -131,13 +131,11 @@ public class DryReporter extends HealthAwareReporter<DryResult> {
         return THRESHOLD_VALIDATION.getNormalThreshold(normalThreshold, highThreshold);
     }
 
-    /** {@inheritDoc} */
     @Override
     protected boolean acceptGoal(final String goal) {
         return "cpd".equals(goal) || "site".equals(goal);
     }
 
-    /** {@inheritDoc} */
     @Override
     public ParserResult perform(final MavenBuildProxy build, final MavenProject pom, final MojoInfo mojo,
             final PluginLogger logger) throws InterruptedException, IOException {

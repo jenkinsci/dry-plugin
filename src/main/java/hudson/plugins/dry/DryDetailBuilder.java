@@ -18,7 +18,6 @@ import org.apache.commons.lang.StringUtils;
  * @author Ulli Hafner
  */
 public class DryDetailBuilder extends DetailFactory {
-    /** {@inheritDoc} */
     @Override
     public Object createDetails(final String link, final AbstractBuild<?, ?> owner,
             final AnnotationContainer container, final String defaultEncoding, final String displayName) {
@@ -61,7 +60,6 @@ public class DryDetailBuilder extends DetailFactory {
         return null;
     }
 
-    /** {@inheritDoc} */
     @Override
     protected TabDetail createTabDetail(final AbstractBuild<?, ?> owner, final Collection<FileAnnotation> annotations,
             final String url, final String defaultEncoding) {

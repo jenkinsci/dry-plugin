@@ -153,13 +153,11 @@ public class DryPublisher extends HealthAwarePublisher {
         return pattern;
     }
 
-    /** {@inheritDoc} */
     @Override
     public Action getProjectAction(final AbstractProject<?, ?> project) {
         return new DryProjectAction(project);
     }
 
-    /** {@inheritDoc} */
     @Override
     public BuildResult perform(final AbstractBuild<?, ?> build, final PluginLogger logger) throws InterruptedException, IOException {
         logger.log("Collecting duplicate code analysis files...");
@@ -177,7 +175,6 @@ public class DryPublisher extends HealthAwarePublisher {
         return result;
     }
 
-    /** {@inheritDoc} */
     @Override
     public DryDescriptor getDescriptor() {
         return (DryDescriptor)super.getDescriptor();
