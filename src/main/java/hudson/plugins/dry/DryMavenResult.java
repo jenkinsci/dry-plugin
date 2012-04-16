@@ -1,7 +1,6 @@
 package hudson.plugins.dry;
 
 import hudson.model.AbstractBuild;
-import hudson.plugins.analysis.core.BuildHistory;
 import hudson.plugins.analysis.core.ParserResult;
 import hudson.plugins.analysis.core.ResultAction;
 import hudson.plugins.analysis.core.BuildResult;
@@ -27,9 +26,10 @@ public class DryMavenResult extends DryResult {
      * @param result
      *            the parsed result with all annotations
      */
+    @SuppressWarnings("deprecation")
     public DryMavenResult(final AbstractBuild<?, ?> build, final String defaultEncoding,
             final ParserResult result) {
-        super(build, new BuildHistory(build, MavenDryResultAction.class), result, defaultEncoding, true);
+        super(build, defaultEncoding, result, MavenDryResultAction.class);
     }
 
     /** {@inheritDoc} */

@@ -25,7 +25,7 @@ public class DryReporterResult extends DryResult {
      */
     public DryReporterResult(final AbstractBuild<?, ?> build, final String defaultEncoding,
             final ParserResult result) {
-        super(build, defaultEncoding, result);
+        super(build, defaultEncoding, result, DryMavenResultAction.class);
     }
 
     @Override

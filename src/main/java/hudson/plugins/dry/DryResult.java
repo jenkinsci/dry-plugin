@@ -29,7 +29,24 @@ public class DryResult extends BuildResult {
      *            the parsed result with all annotations
      */
     public DryResult(final AbstractBuild<?, ?> build, final String defaultEncoding, final ParserResult result) {
-        this(build, new BuildHistory(build, DryResultAction.class), result, defaultEncoding, true);
+        this(build, defaultEncoding, result, DryResultAction.class);
+    }
+
+    /**
+     * Creates a new instance of {@link DryResult}.
+     *
+     * @param build
+     *            the current build as owner of this action
+     * @param defaultEncoding
+     *            the default encoding to be used when reading and parsing files
+     * @param result
+     *            the parsed result with all annotations
+     * @param actionType
+     *            the type of the result action
+     */
+    protected DryResult(final AbstractBuild<?, ?> build, final String defaultEncoding, final ParserResult result,
+            final Class<? extends ResultAction<DryResult>> actionType) {
+        this(build, new BuildHistory(build, actionType), result, defaultEncoding, true);
     }
 
     DryResult(final AbstractBuild<?, ?> build, final BuildHistory history,
