@@ -1,5 +1,5 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
-  xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
+  xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:u="/util" xmlns:f="/lib/form"
   xmlns:i="jelly:fmt" xmlns:local="local" xmlns:dry="/dry">
   <st:header name="Content-Type" value="text/html;charset=UTF-8" />
 
@@ -16,11 +16,11 @@
             <j:choose>
               <j:when test="${warning.size() &lt; 40}">
                 <div tooltip="${warning.formattedSourceCode}" nodismiss="">
-                  <dry:warning />
+                   <u:sourceLink it="${it}" warning="${warning}"/>
                 </div>
               </j:when>
               <j:otherwise>
-                  <dry:warning />
+                   <u:sourceLink it="${it}" warning="${warning}"/>
               </j:otherwise>
             </j:choose>
           </td>
