@@ -52,14 +52,4 @@ public class DryResultAction extends AbstractResultAction<DryResult> {
     protected PluginDescriptor getDescriptor() {
         return new DryDescriptor();
     }
-
-    @Override
-    public String getMultipleItemsTooltip(final int numberOfItems) {
-        return Messages.DRY_ResultAction_MultipleWarnings(numberOfItems);
-    }
-
-    @Override
-    public String getSingleItemTooltip() {
-        return Messages.DRY_ResultAction_OneWarning();
-    }
 }
