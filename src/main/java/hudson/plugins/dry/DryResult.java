@@ -70,12 +70,13 @@ public class DryResult extends BuildResult {
 
     @Override
     public String getSummary() {
-        return ResultSummary.createSummary(this);
+        return Messages.DRY_ProjectAction_Name() + ": "
+                + createDefaultSummary(DryDescriptor.RESULT_URL, getNumberOfAnnotations(), getNumberOfModules());
     }
 
     @Override
     protected String createDeltaMessage() {
-        return ResultSummary.createDeltaMessage(this);
+        return createDefaultDeltaMessage(DryDescriptor.RESULT_URL, getNumberOfNewWarnings(), getNumberOfFixedWarnings());
     }
 
     @Override
