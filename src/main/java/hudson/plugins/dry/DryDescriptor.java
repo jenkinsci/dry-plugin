@@ -18,8 +18,10 @@ public final class DryDescriptor extends PluginDescriptor {
     static final String PLUGIN_ID = "dry";
     /** The URL of the result action. */
     static final String RESULT_URL = PluginDescriptor.createResultUrlName(PLUGIN_ID);
+    /** Icons prefix. */
+    static final String ICON_URL_PREFIX = "/plugin/dry/icons/";
     /** Icon to use for the result and project action. */
-    static final String ICON_URL = "/plugin/dry/icons/dry-24x24.png";
+    static final String ICON_URL = ICON_URL_PREFIX + "dry-24x24.png";
 
     private static final ThresholdValidation VALIDATION = new ThresholdValidation();
 
@@ -43,6 +45,11 @@ public final class DryDescriptor extends PluginDescriptor {
     @Override
     public String getIconUrl() {
         return ICON_URL;
+    }
+
+    @Override
+    public String getSummaryIconUrl() {
+        return ICON_URL_PREFIX + "dry-48x48.png";
     }
 
     /**
