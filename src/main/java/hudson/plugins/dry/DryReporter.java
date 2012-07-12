@@ -85,8 +85,12 @@ public class DryReporter extends HealthAwareReporter<DryResult> {
      * @param failedNewNormal
      *            annotation threshold
      * @param failedNewLow
-     *            annotation threshold     * @param canRunOnFailed
+     *            annotation threshold
+     * @param canRunOnFailed
      *            determines whether the plug-in can run for failed builds, too
+     * @param canComputeNew
+     *            determines whether new warnings should be computed (with
+     *            respect to baseline)
      * @param highThreshold
      *            minimum number of duplicate lines for high priority warnings
      * @param normalThreshold
