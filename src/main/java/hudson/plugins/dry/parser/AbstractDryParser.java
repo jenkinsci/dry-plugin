@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 
@@ -54,7 +54,7 @@ public abstract class AbstractDryParser implements AnnotationParser {
                 IOUtils.closeQuietly(inputStream);
                 inputStream = new FileInputStream(file);
 
-                HashSet<FileAnnotation> warnings = Sets.newHashSet();
+                Set<FileAnnotation> warnings = Sets.newHashSet();
                 warnings.addAll(parse(inputStream, moduleName));
                 return warnings;
             }

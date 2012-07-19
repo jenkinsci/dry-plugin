@@ -144,7 +144,7 @@ public class DryReporter extends HealthAwareReporter<DryResult> {
     public ParserResult perform(final MavenBuildProxy build, final MavenProject pom, final MojoInfo mojo,
             final PluginLogger logger) throws InterruptedException, IOException {
         FilesParser dryCollector = new FilesParser(PLUGIN_NAME, DEFAULT_DRY_XML_FILE,
-                new DuplicationParserRegistry(getNormalThreshold(), getHighThreshold()),
+                new DuplicationParserRegistry(getNormalThreshold(), getHighThreshold(), getDefaultEncoding()),
                 getModuleName(pom));
 
         return getTargetPath(pom).act(dryCollector);

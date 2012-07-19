@@ -166,7 +166,8 @@ public class DryPublisher extends HealthAwarePublisher {
         logger.log("Collecting duplicate code analysis files...");
 
         FilesParser dryCollector = new FilesParser(PLUGIN_NAME, StringUtils.defaultIfEmpty(getPattern(), DEFAULT_DRY_PATTERN),
-                    new DuplicationParserRegistry(getNormalThreshold(), getHighThreshold(), build.getWorkspace().getRemote()),
+                    new DuplicationParserRegistry(getNormalThreshold(), getHighThreshold(), build.getWorkspace().getRemote(),
+                            getDefaultEncoding()),
                     shouldDetectModules(), isMavenBuild(build));
 
         ParserResult project = build.getWorkspace().act(dryCollector);

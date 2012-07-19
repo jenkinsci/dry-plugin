@@ -1,6 +1,7 @@
 package hudson.plugins.dry.parser;
 
 import hudson.plugins.analysis.core.AnnotationParser;
+import hudson.plugins.analysis.util.ContextHashCode;
 import hudson.plugins.analysis.util.model.FileAnnotation;
 import hudson.plugins.dry.parser.cpd.CpdParser;
 import hudson.plugins.dry.parser.simian.SimianParser;
@@ -11,8 +12,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 
@@ -30,6 +31,7 @@ public class DuplicationParserRegistry implements AnnotationParser {
     @SuppressWarnings("SE")
     private final List<AbstractDryParser> parsers = new ArrayList<AbstractDryParser>();
     private String workspacePath;
+    private final String defaultEncoding;
 
     /**
      * Creates a new instance of {@link DuplicationParserRegistry}.
@@ -38,8 +40,11 @@ public class DuplicationParserRegistry implements AnnotationParser {
      *            minimum number of duplicate lines for high priority warnings
      * @param normalThreshold
      *            minimum number of duplicate lines for normal priority warnings
+     * @param defaultEncoding
+     *            default encoding of the files
      */
-    public DuplicationParserRegistry(final int normalThreshold, final int highThreshold) {
+    public DuplicationParserRegistry(final int normalThreshold, final int highThreshold, final String defaultEncoding) {
+        this.defaultEncoding = defaultEncoding;
         parsers.add(new CpdParser(highThreshold, normalThreshold));
         parsers.add(new SimianParser(highThreshold, normalThreshold));
     }
@@ -53,10 +58,12 @@ public class DuplicationParserRegistry implements AnnotationParser {
      *            minimum number of duplicate lines for normal priority warnings
      * @param workspacePath
      *            path to the workspace files
+     * @param defaultEncoding
+     *            default encoding of the files
      */
     public DuplicationParserRegistry(final int normalThreshold, final int highThreshold,
-            final String workspacePath) {
-        this(normalThreshold, highThreshold);
+            final String workspacePath, final String defaultEncoding) {
+        this(normalThreshold, highThreshold, defaultEncoding);
 
         this.workspacePath = workspacePath;
     }
@@ -72,8 +79,14 @@ public class DuplicationParserRegistry implements AnnotationParser {
                     inputStream = new FileInputStream(file);
                     Collection<DuplicateCode> result = parser.parse(inputStream, moduleName);
                     createLinkNames(result);
-                    HashSet<FileAnnotation> warnings = Sets.newHashSet();
+                    Set<FileAnnotation> warnings = Sets.newHashSet();
                     warnings.addAll(result);
+                    ContextHashCode hashCode = new ContextHashCode();
+                    for (FileAnnotation duplication : warnings) {
+                        duplication.setContextHashCode(hashCode.create(duplication.getFileName(), duplication.getPrimaryLineNumber(),
+                                defaultEncoding));
+                    }
+
                     return warnings;
                 }
             }
