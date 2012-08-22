@@ -12,7 +12,7 @@ import org.kohsuke.stapler.QueryParameter;
  *
  * @author Ulli Hafner
  */
-@Extension(ordinal = 100) // NOCHECKSTYLE
+@Extension(ordinal = 100, optional = true) // NOCHECKSTYLE
 public class DryReporterDescriptor extends ReporterDescriptor {
     /** Validates the thresholds user input. */
     private static final ThresholdValidation THRESHOLD_VALIDATION = new ThresholdValidation();
