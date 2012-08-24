@@ -109,10 +109,12 @@ public class SimianParser extends AbstractDryParser {
 
         for (Set duplication : duplications) {
             List<DuplicateCode> codeBlocks = new ArrayList<DuplicateCode>();
+            boolean isDerived = false;
             for (Block file : duplication.getBlocks()) {
-                DuplicateCode annotation = new DuplicateCode(getPriority(duplication.getLineCount()), file.getStartLineNumber(), duplication.getLineCount(), file.getSourceFile());
+                DuplicateCode annotation = new DuplicateCode(getPriority(duplication.getLineCount()), file.getStartLineNumber(), duplication.getLineCount(), file.getSourceFile(), isDerived);
                 annotation.setModuleName(moduleName);
                 codeBlocks.add(annotation);
+                isDerived = true;
             }
             for (DuplicateCode block : codeBlocks) {
                 block.linkTo(codeBlocks);

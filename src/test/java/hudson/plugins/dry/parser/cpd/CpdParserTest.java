@@ -1,6 +1,7 @@
 package hudson.plugins.dry.parser.cpd;
 
 import static org.junit.Assert.*;
+import hudson.plugins.dry.parser.AbstractDuplicationParserTest;
 import hudson.plugins.dry.parser.DuplicateCode;
 
 import java.io.InputStream;
@@ -15,7 +16,7 @@ import org.junit.Test;
 /**
  *  Tests the extraction of PMD's CPD analysis results.
  */
-public class CpdParserTest {
+public class CpdParserTest extends AbstractDuplicationParserTest {
     /** First line in publisher. */
     private static final int PUBLISHER_LINE = 69;
     /** First line in reporter. */
@@ -92,6 +93,7 @@ public class CpdParserTest {
         Collection<DuplicateCode> annotations = parseFile(fileName);
 
         assertEquals(ERROR_MESSAGE, 4, annotations.size());
+        verifyDerivedDuplications(annotations, 2);
     }
 
     /**
@@ -111,6 +113,8 @@ public class CpdParserTest {
         Iterator<DuplicateCode> iterator = annotations.iterator();
         DuplicateCode first = iterator.next();
         DuplicateCode second = iterator.next();
+
+        verifyDerivedDuplications(annotations, 1);
 
         if (first.getPrimaryLineNumber() == REPORTER_LINE) {
             assertDuplication(REPORTER_LINE, REPORTER, first);

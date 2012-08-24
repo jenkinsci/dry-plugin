@@ -38,5 +38,10 @@ public class DryTabDetail extends TabDetail {
     public String getWarnings() {
         return "dry-warnings.jelly";
     }
+
+    @Override
+    public String getDetails() {
+        return "dry-details.jelly";
+    }
 }
 

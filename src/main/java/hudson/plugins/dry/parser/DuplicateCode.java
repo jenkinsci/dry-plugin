@@ -43,6 +43,12 @@ public class DuplicateCode extends AbstractAnnotation {
     private final Set<DuplicateCode> links = new HashSet<DuplicateCode>();
     /** The duplicate source code fragment. */
     private String sourceCode;
+    /**
+     * Marks this duplication as derived. Derived duplications will not be shown in the user interface.
+     *
+     * @since 2.31
+     */
+    private boolean isDerived;
 
     /**
      * Creates a new instance of {@link DuplicateCode}.
@@ -62,6 +68,38 @@ public class DuplicateCode extends AbstractAnnotation {
 
         setOrigin(ORIGIN);
         setFileName(fileName);
+    }
+
+    /**
+     * Creates a new instance of {@link DuplicateCode}.
+     *
+     * @param priority
+     *            the priority of the warning
+     * @param firstLine
+     *            the starting line of the duplication
+     * @param numberOfLines
+     *            total number of duplicate lines
+     * @param fileName
+     *            name of the file that contains the duplication
+     * @param isDerived
+     *            determines if this duplication is derived. Derived
+     *            duplications will not be shown in the user interface
+     */
+    public DuplicateCode(final Priority priority, final int firstLine, final int numberOfLines, final String fileName, final boolean isDerived) {
+        this(priority, firstLine, numberOfLines, fileName);
+
+        this.isDerived = isDerived;
+    }
+
+    /**
+     * Returns whether this duplication as derived. Derived duplications will
+     * not be shown in the user interface.
+     *
+     * @return <code>true</code> if this duplication as derived, false if it is
+     *         the master duplication
+     */
+    public boolean isDerived() {
+        return isDerived;
     }
 
     @Override

@@ -10,43 +10,47 @@
       <td class="pane-header">${%Duplicated in}</td>
     </tr>
     <tbody>
-      <j:forEach var="warning" items="${it.container.annotations}">
-        <tr>
-          <td class="pane">
-            <j:choose>
-              <j:when test="${warning.size() &lt; 40}">
-                <div tooltip="${warning.formattedSourceCode}" nodismiss="">
-                   <u:sourceLink it="${it}" warning="${warning}"/>
-                </div>
-              </j:when>
-              <j:otherwise>
-                   <u:sourceLink it="${it}" warning="${warning}"/>
-              </j:otherwise>
-            </j:choose>
-          </td>
-          <td class="pane">
+      <j:forEach var="warning" items="${it.container.sortedAnnotations}">
+        <j:if test="${!warning.isDerived()}">
+          <tr>
+            <td class="pane">
+              <j:choose>
+                <j:when test="${warning.size() &lt; 40}">
+                  <div tooltip="${warning.formattedSourceCode}"
+                    nodismiss="">
+                    <u:sourceLink it="${it}" warning="${warning}" />
+                  </div>
+                </j:when>
+                <j:otherwise>
+                  <u:sourceLink it="${it}" warning="${warning}" />
+                </j:otherwise>
+              </j:choose>
+            </td>
+            <td class="pane">
               ${warning.numberOfLines}
-          </td>
-          <td class="pane">
-            <j:set var="linkCount" value="${0}" />
+            </td>
+            <td class="pane">
+              <j:set var="linkCount" value="${0}" />
               <j:forEach var="link" items="${warning.links}">
                 <j:choose>
                   <j:when test="${warning.size() &lt; 40}">
-                    <div tooltip="${warning.formattedSourceCode}" nodismiss="">
+                    <div tooltip="${warning.formattedSourceCode}"
+                      nodismiss="">
                       <dry:link />
                     </div>
                   </j:when>
                   <j:otherwise>
-                      <j:if test="${linkCount > 0}">
-                        <br/>
-                      </j:if>
-                      <dry:link />
+                    <j:if test="${linkCount > 0}">
+                      <br />
+                    </j:if>
+                    <dry:link />
                   </j:otherwise>
                 </j:choose>
-                    <j:set var="linkCount" value="${linkCount + 1}" />
+                <j:set var="linkCount" value="${linkCount + 1}" />
               </j:forEach>
-          </td>
-        </tr>
+            </td>
+          </tr>
+        </j:if>
       </j:forEach>
     </tbody>
   </table>
