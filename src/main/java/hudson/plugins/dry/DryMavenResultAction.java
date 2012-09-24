@@ -6,8 +6,10 @@ import hudson.maven.MavenModule;
 import hudson.maven.MavenModuleSet;
 import hudson.maven.MavenModuleSetBuild;
 import hudson.model.Action;
+import hudson.model.AbstractBuild;
 import hudson.plugins.analysis.core.HealthDescriptor;
 import hudson.plugins.analysis.core.MavenResultAction;
+import hudson.plugins.analysis.core.ParserResult;
 
 import java.util.List;
 import java.util.Map;
@@ -21,23 +23,6 @@ import java.util.Map;
  */
 public class DryMavenResultAction extends MavenResultAction<DryResult> {
     /**
-     * Creates a new instance of {@link DryMavenResultAction}. This instance
-     * will have no result set in the beginning. The result will be set
-     * successively after each of the modules are build.
-     *
-     * @param owner
-     *            the associated build of this action
-     * @param healthDescriptor
-     *            health descriptor to use
-     * @param defaultEncoding
-     *            the default encoding to be used when reading and parsing files
-     */
-    public DryMavenResultAction(final MavenModuleSetBuild owner, final HealthDescriptor healthDescriptor,
-            final String defaultEncoding) {
-        super(new DryResultAction(owner, healthDescriptor), defaultEncoding, "DRY");
-    }
-
-    /**
      * Creates a new instance of {@link DryMavenResultAction}.
      *
      * @param owner
@@ -49,14 +34,15 @@ public class DryMavenResultAction extends MavenResultAction<DryResult> {
      * @param result
      *            the result in this build
      */
-    public DryMavenResultAction(final MavenBuild owner, final HealthDescriptor healthDescriptor,
+    public DryMavenResultAction(final AbstractBuild<?, ?> owner, final HealthDescriptor healthDescriptor,
             final String defaultEncoding, final DryResult result) {
         super(new DryResultAction(owner, healthDescriptor, result), defaultEncoding, "DRY");
     }
 
     /** {@inheritDoc} */
     public MavenAggregatedReport createAggregatedAction(final MavenModuleSetBuild build, final Map<MavenModule, List<MavenBuild>> moduleBuilds) {
-        return new DryMavenResultAction(build, getHealthDescriptor(), getDisplayName());
+        return new DryMavenResultAction(build, getHealthDescriptor(), getDisplayName(),
+                new DryResult(build, getDefaultEncoding(), new ParserResult()));
     }
 
     /** {@inheritDoc} */
