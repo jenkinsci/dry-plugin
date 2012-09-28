@@ -1,8 +1,8 @@
 <?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
-	xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:u="/util" xmlns:p="/dry">
-  <p:priorities/>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+  xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:u="/util" xmlns:p="/dry">
+  <p:priorities />
   <f:advanced>
-    <u:advancedMaven id="dry"/>
+    <u:advancedMaven id="dry" />
   </f:advanced>
 </j:jelly>

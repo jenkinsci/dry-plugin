@@ -88,6 +88,8 @@ public class DryReporter extends HealthAwareReporter<DryResult> {
      *            annotation threshold
      * @param canRunOnFailed
      *            determines whether the plug-in can run for failed builds, too
+     * @param useStableBuildAsReference
+     *            determines whether only stable builds should be used as reference builds or not
      * @param canComputeNew
      *            determines whether new warnings should be computed (with
      *            respect to baseline)
@@ -104,14 +106,14 @@ public class DryReporter extends HealthAwareReporter<DryResult> {
             final String unstableNewAll, final String unstableNewHigh, final String unstableNewNormal, final String unstableNewLow,
             final String failedTotalAll, final String failedTotalHigh, final String failedTotalNormal, final String failedTotalLow,
             final String failedNewAll, final String failedNewHigh, final String failedNewNormal, final String failedNewLow,
-            final boolean canRunOnFailed, final boolean canComputeNew,
+            final boolean canRunOnFailed, final boolean useStableBuildAsReference, final boolean canComputeNew,
             final int highThreshold, final int normalThreshold) {
         super(healthy, unHealthy, thresholdLimit, useDeltaValues,
                 unstableTotalAll, unstableTotalHigh, unstableTotalNormal, unstableTotalLow,
                 unstableNewAll, unstableNewHigh, unstableNewNormal, unstableNewLow,
                 failedTotalAll, failedTotalHigh, failedTotalNormal, failedTotalLow,
                 failedNewAll, failedNewHigh, failedNewNormal, failedNewLow,
-                canRunOnFailed, canComputeNew, PLUGIN_NAME);
+                canRunOnFailed, useStableBuildAsReference, canComputeNew, PLUGIN_NAME);
         this.highThreshold = highThreshold;
         this.normalThreshold = normalThreshold;
     }
@@ -152,7 +154,7 @@ public class DryReporter extends HealthAwareReporter<DryResult> {
 
     @Override
     protected DryResult createResult(final MavenBuild build, final ParserResult project) {
-        return new DryReporterResult(build, getDefaultEncoding(), project);
+        return new DryReporterResult(build, getDefaultEncoding(), project, useOnlyStableBuildsAsReference());
     }
 
     @Override

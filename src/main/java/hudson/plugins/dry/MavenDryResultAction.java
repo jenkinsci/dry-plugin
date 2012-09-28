@@ -9,6 +9,7 @@ import hudson.maven.MavenModuleSetBuild;
 import hudson.model.Action;
 import hudson.model.AbstractBuild;
 import hudson.plugins.analysis.core.HealthDescriptor;
+import hudson.plugins.analysis.core.ParserResult;
 
 import java.util.List;
 import java.util.Map;
@@ -35,22 +36,6 @@ public class MavenDryResultAction extends DryResultAction implements Aggregatabl
      *            health descriptor to use
      * @param defaultEncoding
      *            the default encoding to be used when reading and parsing files
-     */
-    public MavenDryResultAction(final AbstractBuild<?, ?> owner, final HealthDescriptor healthDescriptor,
-            final String defaultEncoding) {
-        super(owner, healthDescriptor);
-        this.defaultEncoding = defaultEncoding;
-    }
-
-    /**
-     * Creates a new instance of <code>MavenPmdResultAction</code>.
-     *
-     * @param owner
-     *            the associated build of this action
-     * @param healthDescriptor
-     *            health descriptor to use
-     * @param defaultEncoding
-     *            the default encoding to be used when reading and parsing files
      * @param result
      *            the result in this build
      */
@@ -62,7 +47,8 @@ public class MavenDryResultAction extends DryResultAction implements Aggregatabl
 
     /** {@inheritDoc} */
     public MavenAggregatedReport createAggregatedAction(final MavenModuleSetBuild build, final Map<MavenModule, List<MavenBuild>> moduleBuilds) {
-        return new MavenDryResultAction(build, getHealthDescriptor(), defaultEncoding);
+        return new MavenDryResultAction(build, getHealthDescriptor(), defaultEncoding,
+                new DryResult(build, defaultEncoding, new ParserResult(), false));
     }
 
     /** {@inheritDoc} */

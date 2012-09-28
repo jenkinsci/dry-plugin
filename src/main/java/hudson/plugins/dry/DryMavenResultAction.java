@@ -42,7 +42,7 @@ public class DryMavenResultAction extends MavenResultAction<DryResult> {
     /** {@inheritDoc} */
     public MavenAggregatedReport createAggregatedAction(final MavenModuleSetBuild build, final Map<MavenModule, List<MavenBuild>> moduleBuilds) {
         return new DryMavenResultAction(build, getHealthDescriptor(), getDisplayName(),
-                new DryResult(build, getDefaultEncoding(), new ParserResult()));
+                new DryResult(build, getDefaultEncoding(), new ParserResult(), false));
     }
 
     /** {@inheritDoc} */
@@ -57,7 +57,8 @@ public class DryMavenResultAction extends MavenResultAction<DryResult> {
 
     @Override
     protected DryResult createResult(final DryResult existingResult, final DryResult additionalResult) {
-        return new DryReporterResult(getOwner(), additionalResult.getDefaultEncoding(), aggregate(existingResult, additionalResult));
+        return new DryReporterResult(getOwner(), additionalResult.getDefaultEncoding(),
+                aggregate(existingResult, additionalResult), existingResult.useOnlyStableBuildsAsReference());
     }
 }
 

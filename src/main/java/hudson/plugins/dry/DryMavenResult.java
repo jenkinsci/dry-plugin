@@ -29,7 +29,7 @@ public class DryMavenResult extends DryResult {
     @SuppressWarnings("deprecation")
     public DryMavenResult(final AbstractBuild<?, ?> build, final String defaultEncoding,
             final ParserResult result) {
-        super(build, defaultEncoding, result, MavenDryResultAction.class);
+        super(build, defaultEncoding, result, false, MavenDryResultAction.class);
     }
 
     /** {@inheritDoc} */

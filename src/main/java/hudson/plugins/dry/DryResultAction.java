@@ -1,9 +1,9 @@
 package hudson.plugins.dry;
 
 import hudson.model.AbstractBuild;
-import hudson.plugins.analysis.core.AbstractResultAction;
 import hudson.plugins.analysis.core.HealthDescriptor;
 import hudson.plugins.analysis.core.PluginDescriptor;
+import hudson.plugins.analysis.core.AbstractResultAction;
 
 /**
  * Controls the live cycle of the DRY results. This action persists the
@@ -29,18 +29,6 @@ public class DryResultAction extends AbstractResultAction<DryResult> {
      */
     public DryResultAction(final AbstractBuild<?, ?> owner, final HealthDescriptor healthDescriptor, final DryResult result) {
         super(owner, new DryHealthDescriptor(healthDescriptor), result);
-    }
-
-    /**
-     * Creates a new instance of <code>PmdResultAction</code>.
-     *
-     * @param owner
-     *            the associated build of this action
-     * @param healthDescriptor
-     *            health descriptor to use
-     */
-    public DryResultAction(final AbstractBuild<?, ?> owner, final HealthDescriptor healthDescriptor) {
-        super(owner, new DryHealthDescriptor(healthDescriptor));
     }
 
     /** {@inheritDoc} */
