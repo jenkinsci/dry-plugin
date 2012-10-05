@@ -39,7 +39,7 @@ public class CpdParser extends AbstractDryParser {
     public boolean accepts(final InputStream file) {
         try {
             Digester digester = new Digester();
-            digester.setValidating(true);
+            digester.setValidating(false);
             digester.setClassLoader(CpdParser.class.getClassLoader());
 
             String duplicationXPath = "*/pmd-cpd";
