@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.xerces.parsers.SAXParser;
 
 import com.google.common.collect.Sets;
 
@@ -33,7 +34,10 @@ public class DuplicationParserRegistry implements AnnotationParser {
     private String workspacePath;
     private final String defaultEncoding;
 
-    /**
+    /** Property of SAX parser factory. */
+    private static final String SAX_DRIVER_PROPERTY = "org.xml.sax.driver";
+
+   /**
      * Creates a new instance of {@link DuplicationParserRegistry}.
      *
      * @param highThreshold
@@ -70,6 +74,11 @@ public class DuplicationParserRegistry implements AnnotationParser {
 
     /** {@inheritDoc} */
     public Collection<FileAnnotation> parse(final File file, final String moduleName) throws InvocationTargetException {
+        String oldProperty = System.getProperty(SAX_DRIVER_PROPERTY);
+        if (oldProperty != null) {
+            System.setProperty(SAX_DRIVER_PROPERTY, SAXParser.class.getName());
+        }
+
         FileInputStream inputStream = null;
         try {
             for (AbstractDryParser parser : parsers) {
@@ -97,6 +106,9 @@ public class DuplicationParserRegistry implements AnnotationParser {
         }
         finally {
             IOUtils.closeQuietly(inputStream);
+            if (oldProperty != null) {
+                System.setProperty(SAX_DRIVER_PROPERTY, oldProperty);
+            }
         }
     }
 
