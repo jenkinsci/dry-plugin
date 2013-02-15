@@ -10,7 +10,7 @@ import hudson.plugins.dry.Messages;
 
 import java.io.File;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 
