@@ -41,7 +41,7 @@ public class DryMavenResultAction extends MavenResultAction<DryResult> {
 
     /** {@inheritDoc} */
     public MavenAggregatedReport createAggregatedAction(final MavenModuleSetBuild build, final Map<MavenModule, List<MavenBuild>> moduleBuilds) {
-        return new DryMavenResultAction(build, getHealthDescriptor(), getDisplayName(),
+        return new DryMavenResultAction(build, getHealthDescriptor(), getDefaultEncoding(),
                 new DryResult(build, getDefaultEncoding(), new ParserResult(), false));
     }
 
