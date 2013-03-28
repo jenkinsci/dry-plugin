@@ -1,8 +1,6 @@
 package hudson.plugins.dry.parser.simian;
 
 import static org.junit.Assert.*;
-import hudson.plugins.dry.parser.AbstractDuplicationParserTest;
-import hudson.plugins.dry.parser.DuplicateCode;
 
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -10,6 +8,9 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.junit.Test;
+
+import hudson.plugins.dry.parser.AbstractDuplicationParserTest;
+import hudson.plugins.dry.parser.DuplicateCode;
 
 /**
  *  Tests the extraction of PMD's CPD analysis results.
@@ -203,6 +204,3 @@ public class SimianParserTest extends AbstractDuplicationParserTest {
         assertFalse("Parser does accept invalid Simian file.", acceptsFile("other.xml"));
     }
 }
-
-
-/* Copyright (c) Avaloq Evolution AG */
