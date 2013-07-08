@@ -168,7 +168,7 @@ public class SimianParserTest extends AbstractDuplicationParserTest {
      *             Signals a test failure
      */
     @Test
-    public void scanNewSimianParser() throws InvocationTargetException {
+    public void scanNewSimianParser2331() throws InvocationTargetException {
         String fileName = "simian-2.3.31.xml";
         assertTrue(VALID_SIMIAN_FILE, acceptsFile(fileName));
 

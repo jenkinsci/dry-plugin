@@ -1,9 +1,5 @@
 package hudson.plugins.dry.parser;
 
-import hudson.plugins.analysis.core.AnnotationParser;
-import hudson.plugins.analysis.util.model.FileAnnotation;
-import hudson.plugins.analysis.util.model.Priority;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,6 +11,10 @@ import java.util.Set;
 import org.apache.commons.io.IOUtils;
 
 import com.google.common.collect.Sets;
+
+import hudson.plugins.analysis.core.AnnotationParser;
+import hudson.plugins.analysis.util.model.FileAnnotation;
+import hudson.plugins.analysis.util.model.Priority;
 
 /**
  * A base class for duplicate code parsers. Use this class as a starting point
