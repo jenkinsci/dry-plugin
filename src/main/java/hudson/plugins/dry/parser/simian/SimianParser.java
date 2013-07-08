@@ -1,9 +1,5 @@
 package hudson.plugins.dry.parser.simian;
 
-import hudson.plugins.analysis.util.PackageDetectors;
-import hudson.plugins.dry.parser.AbstractDryParser;
-import hudson.plugins.dry.parser.DuplicateCode;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -12,7 +8,12 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.digester.Digester;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import hudson.plugins.analysis.util.PackageDetectors;
+import hudson.plugins.dry.parser.AbstractDryParser;
+import hudson.plugins.dry.parser.DuplicateCode;
 
 /**
  * A parser for Simian XML files.
@@ -45,7 +46,10 @@ public class SimianParser extends AbstractDryParser {
             String duplicationXPath = "*/simian";
             digester.addObjectCreate(duplicationXPath, String.class);
 
-            Object result = digester.parse(file);
+            InputSource inputSource = new InputSource(file);
+            inputSource.setEncoding("UTF-8");
+
+            Object result = digester.parse(inputSource);
             if (result instanceof String) {
                 return true;
             }
