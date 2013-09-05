@@ -7,7 +7,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import hudson.plugins.dry.parser.AbstractDuplicationParserTest;
@@ -125,7 +124,7 @@ public class CpdParserTest extends AbstractDuplicationParserTest {
             assertDuplication(PUBLISHER_LINE, PUBLISHER, first);
         }
         else {
-            Assert.fail("No annotation has the correct line number.");
+            fail("No annotation has the correct line number.");
         }
     }
 
