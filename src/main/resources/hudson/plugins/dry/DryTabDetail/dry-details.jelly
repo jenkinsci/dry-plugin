@@ -1,32 +1,35 @@
 <?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
-  xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form"
-  xmlns:i="jelly:fmt" xmlns:local="local" xmlns:u="/util">
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+  xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt" xmlns:local="local" xmlns:u="/util">
   <st:header name="Content-Type" value="text/html;charset=UTF-8" />
-  <j:forEach var="warning" items="${annotations.sortedAnnotations}">
-    <j:if test="${!warning.isDerived()}">
-      <table class="pane" id="details">
-        <tr>
-          <td class="pane-header">
-            <u:sourceLink it="${it}" warning="${warning}" />
-            ,
-            ${warning.type}, ${%Priority}: ${warning.priority.localizedString}
-            <j:if test="${h.size2(warning.category) > 0}">
-              , ${%Category}: ${warning.category}
-            </j:if>
-          </td>
-        </tr>
-        <tr>
-          <td style="white-space: normal">
-            <p>
-              <b><j:out value="${warning.message}"/></b> 
-            </p>
-            <p>
-              <j:out value="${warning.toolTip}"/>
-            </p>
-          </td>
-        </tr>
-      </table>
-    </j:if>
+  <j:invokeStatic var="filtered" className="hudson.plugins.dry.parser.DuplicateCode"
+    method="filter">
+    <j:arg type="java.util.Set" value="${annotations.sortedAnnotations}" />
+  </j:invokeStatic>
+  <j:forEach var="warning" items="${filtered}">
+    <table class="pane" id="details">
+      <tr>
+        <td class="pane-header">
+          <u:sourceLink it="${it}" warning="${warning}" />
+          ,
+          ${warning.type}, ${%Priority}: ${warning.priority.localizedString}
+          <j:if test="${h.size2(warning.category) > 0}">
+            , ${%Category}: ${warning.category}
+          </j:if>
+        </td>
+      </tr>
+      <tr>
+        <td style="white-space: normal">
+          <p>
+            <b>
+              <j:out value="${warning.message}" />
+            </b>
+          </p>
+          <p>
+            <j:out value="${warning.toolTip}" />
+          </p>
+        </td>
+      </tr>
+    </table>
   </j:forEach>
 </j:jelly>

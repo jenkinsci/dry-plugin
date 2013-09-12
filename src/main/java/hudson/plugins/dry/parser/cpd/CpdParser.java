@@ -1,18 +1,19 @@
 package hudson.plugins.dry.parser.cpd;
 
-import hudson.plugins.analysis.util.PackageDetectors;
-import hudson.plugins.dry.parser.AbstractDryParser;
-import hudson.plugins.dry.parser.DuplicateCode;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.commons.digester3.Digester;
 import org.xml.sax.SAXException;
+
+import hudson.plugins.analysis.util.PackageDetectors;
+import hudson.plugins.dry.parser.AbstractDryParser;
+import hudson.plugins.dry.parser.DuplicateCode;
 
 /**
  * A parser for PMD's CPD XML files.
@@ -108,23 +109,24 @@ public class CpdParser extends AbstractDryParser {
     private Collection<DuplicateCode> convert(final List<Duplication> duplications, final String moduleName) {
         List<DuplicateCode> annotations = new ArrayList<DuplicateCode>();
 
+        Random random = new Random();
+        int number = random.nextInt();
         for (Duplication duplication : duplications) {
             List<DuplicateCode> codeBlocks = new ArrayList<DuplicateCode>();
-            boolean isDerived = false;
             for (SourceFile file : duplication.getFiles()) {
                 // TODO: check why PMD reports a length + 1
-                DuplicateCode annotation = new DuplicateCode(getPriority(duplication.getLines()), file.getLine(), duplication.getLines(), file.getPath(), isDerived);
+                DuplicateCode annotation = new DuplicateCode(getPriority(duplication.getLines()), file.getLine(), duplication.getLines(), file.getPath());
                 annotation.setSourceCode(duplication.getCodeFragment());
                 annotation.setModuleName(moduleName);
                 codeBlocks.add(annotation);
-                isDerived = true;
             }
             for (DuplicateCode block : codeBlocks) {
                 block.linkTo(codeBlocks);
-
+                block.setNumber(number);
                 block.setPackageName(PackageDetectors.detectPackageName(block.getFileName()));
             }
             annotations.addAll(codeBlocks);
+            number++;
         }
         return annotations;
     }

@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.commons.digester3.Digester;
 import org.xml.sax.InputSource;
@@ -111,22 +112,23 @@ public class SimianParser extends AbstractDryParser {
     private Collection<DuplicateCode> convert(final List<Set> duplications, final String moduleName) {
         List<DuplicateCode> annotations = new ArrayList<DuplicateCode>();
 
+        Random random = new Random();
+        int number = random.nextInt();
         for (Set duplication : duplications) {
             List<DuplicateCode> codeBlocks = new ArrayList<DuplicateCode>();
-            boolean isDerived = false;
             for (Block file : duplication.getBlocks()) {
-                DuplicateCode annotation = new DuplicateCode(getPriority(duplication.getLineCount()), file.getStartLineNumber(), duplication.getLineCount(), file.getSourceFile(), isDerived);
+                DuplicateCode annotation = new DuplicateCode(getPriority(duplication.getLineCount()), file.getStartLineNumber(), duplication.getLineCount(), file.getSourceFile());
                 annotation.setModuleName(moduleName);
                 codeBlocks.add(annotation);
-                isDerived = true;
             }
             for (DuplicateCode block : codeBlocks) {
                 block.linkTo(codeBlocks);
-
+                block.setNumber(number);
                 String packageName = PackageDetectors.detectPackageName(block.getFileName());
                 block.setPackageName(packageName);
             }
             annotations.addAll(codeBlocks);
+            number++;
         }
         return annotations;
     }

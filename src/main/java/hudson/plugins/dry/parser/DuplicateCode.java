@@ -1,10 +1,5 @@
 package hudson.plugins.dry.parser;
 
-import hudson.plugins.analysis.util.model.AbstractAnnotation;
-import hudson.plugins.analysis.util.model.FileAnnotation;
-import hudson.plugins.analysis.util.model.Priority;
-import hudson.plugins.dry.Messages;
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -14,15 +9,23 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.SortedSet;
 
 import org.apache.commons.lang.StringUtils;
+
+import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.collect.Sets;
 
 import de.java2html.converter.JavaSource2HTMLConverter;
 import de.java2html.javasource.JavaSource;
 import de.java2html.javasource.JavaSourceParser;
 import de.java2html.options.JavaSourceConversionOptions;
 import de.java2html.util.IllegalConfigurationException;
-import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+
+import hudson.plugins.analysis.util.model.AbstractAnnotation;
+import hudson.plugins.analysis.util.model.FileAnnotation;
+import hudson.plugins.analysis.util.model.Priority;
+import hudson.plugins.dry.Messages;
 
 /**
  * A serializable Java Bean class representing a duplicate code warning.
@@ -38,17 +41,35 @@ public class DuplicateCode extends AbstractAnnotation {
     /** Origin of the annotation. */
     public static final String ORIGIN = "dry";
 
+    /**
+     * Removes duplicates from the specified set of duplicate code warnings. All warnings that belong to the same
+     * duplication are duplicate.
+     *
+     * @param allAnnotations the annotations to filter
+     * @return only one warning per duplication
+     */
+    public static SortedSet<FileAnnotation> filter(final Set<FileAnnotation> allAnnotations) {
+        Set<Integer> numbers = Sets.newHashSet();
+        Set<FileAnnotation> filtered = Sets.newHashSet();
+
+        for (FileAnnotation fileAnnotation : allAnnotations) {
+            DuplicateCode duplication = (DuplicateCode)fileAnnotation;
+            int id = duplication.getNumber();
+            if (!numbers.contains(id)) {
+                filtered.add(fileAnnotation);
+                numbers.add(id);
+            }
+        }
+        return ImmutableSortedSet.copyOf(filtered);
+    }
+
     /** The links to the other code duplications. */
     @SuppressWarnings("Se")
     private final Set<DuplicateCode> links = new HashSet<DuplicateCode>();
     /** The duplicate source code fragment. */
     private String sourceCode;
-    /**
-     * Marks this duplication as derived. Derived duplications will not be shown in the user interface.
-     *
-     * @since 2.31
-     */
-    private boolean isDerived;
+    private int number;
+    private static int oldFormat;
 
     /**
      * Creates a new instance of {@link DuplicateCode}.
@@ -63,43 +84,20 @@ public class DuplicateCode extends AbstractAnnotation {
      *            name of the file that contains the duplication
      */
     public DuplicateCode(final Priority priority, final int firstLine, final int numberOfLines, final String fileName) {
-        super(priority, Messages.DRY_Warning_Message(numberOfLines),
-                firstLine, firstLine +  numberOfLines - 1, StringUtils.EMPTY, Messages.DRY_Warning_Type());
+        super(priority, Messages.DRY_Warning_Message(numberOfLines), firstLine, firstLine + numberOfLines - 1,
+                StringUtils.EMPTY, Messages.DRY_Warning_Type());
 
         setOrigin(ORIGIN);
         setFileName(fileName);
     }
 
-    /**
-     * Creates a new instance of {@link DuplicateCode}.
-     *
-     * @param priority
-     *            the priority of the warning
-     * @param firstLine
-     *            the starting line of the duplication
-     * @param numberOfLines
-     *            total number of duplicate lines
-     * @param fileName
-     *            name of the file that contains the duplication
-     * @param isDerived
-     *            determines if this duplication is derived. Derived
-     *            duplications will not be shown in the user interface
-     */
-    public DuplicateCode(final Priority priority, final int firstLine, final int numberOfLines, final String fileName, final boolean isDerived) {
-        this(priority, firstLine, numberOfLines, fileName);
+    private Object readResolve() {
+        superReadResolve();
 
-        this.isDerived = isDerived;
-    }
-
-    /**
-     * Returns whether this duplication as derived. Derived duplications will
-     * not be shown in the user interface.
-     *
-     * @return <code>true</code> if this duplication as derived, false if it is
-     *         the master duplication
-     */
-    public boolean isDerived() {
-        return isDerived;
+        if (number == 0) {
+            number = oldFormat++;
+        }
+        return this;
     }
 
     @Override
@@ -147,9 +145,8 @@ public class DuplicateCode extends AbstractAnnotation {
         message.append("<ul>");
         for (DuplicateCode duplication : links) {
             message.append("<li>");
-            message.append(String.format("<a href=\"link.%s.%s/#%s\">%s (%s)</a>",
-                    getKey(), duplication.getKey(), duplication.getPrimaryLineNumber(),
-                    duplication.getLinkName(), duplication.getPrimaryLineNumber()));
+            message.append(String.format("<a href=\"link.%s.%s/#%s\">%s (%s)</a>", getKey(), duplication.getKey(),
+                    duplication.getPrimaryLineNumber(), duplication.getLinkName(), duplication.getPrimaryLineNumber()));
             message.append("</li>");
         }
         message.append("</ul>");
@@ -160,7 +157,8 @@ public class DuplicateCode extends AbstractAnnotation {
     /**
      * Creates links to the specified collection of other code blocks.
      *
-     * @param codeBlocks the code blocks to links to
+     * @param codeBlocks
+     *            the code blocks to links to
      */
     public void linkTo(final List<DuplicateCode> codeBlocks) {
         links.addAll(codeBlocks);
@@ -176,7 +174,7 @@ public class DuplicateCode extends AbstractAnnotation {
         return Collections.unmodifiableCollection(links);
     }
 
-   /**
+    /**
      * Returns the duplicate source code fragment.
      *
      * @return the duplicate source code fragment
@@ -213,7 +211,8 @@ public class DuplicateCode extends AbstractAnnotation {
     /**
      * Sets the duplicate source code fragment to the specified value.
      *
-     * @param sourceCode the duplicate code fragment
+     * @param sourceCode
+     *            the duplicate code fragment
      */
     public void setSourceCode(final String sourceCode) {
         this.sourceCode = sourceCode;
@@ -265,5 +264,28 @@ public class DuplicateCode extends AbstractAnnotation {
         }
         throw new NoSuchElementException("Linked annotation not found: key=" + linkHashCode);
     }
-}
 
+    /**
+     * Sets the duplication number this warning belongs to.
+     *
+     * @param number
+     *            the duplication number
+     */
+    public void setNumber(final int number) {
+        this.number = 1 + number;
+    }
+
+    /**
+     * Returns the duplication number this warning belongs to.
+     *
+     * @return the duplication number
+     */
+    public int getNumber() {
+        return number;
+    }
+
+    /** Backward compatibility. @deprecated do not remove */
+    @SuppressWarnings({"unused", "PMD.UnusedPrivateField"})
+    @Deprecated
+    private boolean isDerived;
+}

@@ -1,7 +1,7 @@
 <?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
-  xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:u="/util" xmlns:f="/lib/form"
-  xmlns:i="jelly:fmt" xmlns:local="local" xmlns:dry="/dry">
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+  xmlns:t="/lib/hudson" xmlns:u="/util" xmlns:f="/lib/form" xmlns:i="jelly:fmt" xmlns:local="local"
+  xmlns:dry="/dry">
   <st:header name="Content-Type" value="text/html;charset=UTF-8" />
 
   <table class="pane sortable" id="warnings">
@@ -11,47 +11,47 @@
       <td class="pane-header">${%Duplicated in}</td>
     </tr>
     <tbody>
-      <j:forEach var="warning" items="${it.container.sortedAnnotations}">
-        <j:if test="${!warning.isDerived()}">
-          <tr>
-            <td class="pane">
+      <j:invokeStatic var="filtered" className="hudson.plugins.dry.parser.DuplicateCode"
+        method="filter">
+        <j:arg type="java.util.Set" value="${it.container.sortedAnnotations}" />
+      </j:invokeStatic>
+      <j:forEach var="warning" items="${filtered}">
+        <tr>
+          <td class="pane">
+            <j:choose>
+              <j:when test="${warning.size() &lt; 40}">
+                <div tooltip="${warning.formattedSourceCode}" nodismiss="">
+                  <u:sourceLink it="${it}" warning="${warning}" />
+                </div>
+              </j:when>
+              <j:otherwise>
+                <u:sourceLink it="${it}" warning="${warning}" />
+              </j:otherwise>
+            </j:choose>
+          </td>
+          <td class="pane">
+            ${warning.numberOfLines}
+          </td>
+          <td class="pane">
+            <j:set var="linkCount" value="${0}" />
+            <j:forEach var="link" items="${warning.links}">
               <j:choose>
                 <j:when test="${warning.size() &lt; 40}">
-                  <div tooltip="${warning.formattedSourceCode}"
-                    nodismiss="">
-                    <u:sourceLink it="${it}" warning="${warning}" />
+                  <div tooltip="${warning.formattedSourceCode}" nodismiss="">
+                    <dry:link />
                   </div>
                 </j:when>
                 <j:otherwise>
-                  <u:sourceLink it="${it}" warning="${warning}" />
+                  <j:if test="${linkCount > 0}">
+                    <br />
+                  </j:if>
+                  <dry:link />
                 </j:otherwise>
               </j:choose>
-            </td>
-            <td class="pane">
-              ${warning.numberOfLines}
-            </td>
-            <td class="pane">
-              <j:set var="linkCount" value="${0}" />
-              <j:forEach var="link" items="${warning.links}">
-                <j:choose>
-                  <j:when test="${warning.size() &lt; 40}">
-                    <div tooltip="${warning.formattedSourceCode}"
-                      nodismiss="">
-                      <dry:link />
-                    </div>
-                  </j:when>
-                  <j:otherwise>
-                    <j:if test="${linkCount > 0}">
-                      <br />
-                    </j:if>
-                    <dry:link />
-                  </j:otherwise>
-                </j:choose>
-                <j:set var="linkCount" value="${linkCount + 1}" />
-              </j:forEach>
-            </td>
-          </tr>
-        </j:if>
+              <j:set var="linkCount" value="${linkCount + 1}" />
+            </j:forEach>
+          </td>
+        </tr>
       </j:forEach>
     </tbody>
   </table>

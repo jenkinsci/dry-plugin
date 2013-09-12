@@ -9,13 +9,12 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
-import hudson.plugins.dry.parser.AbstractDuplicationParserTest;
 import hudson.plugins.dry.parser.DuplicateCode;
 
 /**
- *  Tests the extraction of PMD's CPD analysis results.
+ *  Tests the extraction of Simian's analysis results.
  */
-public class SimianParserTest extends AbstractDuplicationParserTest {
+public class SimianParserTest  {
     private static final String MATRIX_RUN = "c:/java/hudson/matrix/MatrixRun.java";
     private static final String MAVEN_BUILD = "c:/java/hudson/maven/MavenBuild.java";
 
@@ -73,8 +72,6 @@ public class SimianParserTest extends AbstractDuplicationParserTest {
         Iterator<DuplicateCode> iterator = annotations.iterator();
         assertDuplication(93, 98, MAVEN_BUILD, iterator.next());
         assertDuplication(76, 81, MAVEN_BUILD, iterator.next());
-
-        verifyDerivedDuplications(annotations, 1);
     }
 
     /**
@@ -94,8 +91,6 @@ public class SimianParserTest extends AbstractDuplicationParserTest {
         Iterator<DuplicateCode> iterator = annotations.iterator();
         assertDuplication(92, 97, MAVEN_BUILD, iterator.next());
         assertDuplication(61, 66, MATRIX_RUN, iterator.next());
-
-        verifyDerivedDuplications(annotations, 1);
     }
 
     /**
@@ -130,8 +125,6 @@ public class SimianParserTest extends AbstractDuplicationParserTest {
         warning = iterator.next();
         assertDuplication(76, 81, MAVEN_BUILD, warning);
         assertEquals("Wrong other file", MAVEN_BUILD, getFileName(warning));
-
-        verifyDerivedDuplications(annotations, 2);
     }
 
     private String getFileName(final DuplicateCode warning) {
@@ -157,8 +150,6 @@ public class SimianParserTest extends AbstractDuplicationParserTest {
         assertDuplication(21, 26, "c:/java/foo2.java", iterator.next());
         assertDuplication(31, 36, "c:/java/foo3.java", iterator.next());
         assertDuplication(41, 46, "c:/java/foo4.java", iterator.next());
-
-        verifyDerivedDuplications(annotations, 3);
     }
 
     /**
