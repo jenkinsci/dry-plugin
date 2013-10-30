@@ -149,4 +149,10 @@ public class CpdParserTest {
     public void scanOtherFile() {
         assertFalse("Parser does accept invalid CPD file.", acceptsFile("otherfile.xml"));
     }
+
+    @Test
+    public void assertCanReadWindowsFile() throws InvocationTargetException {
+        String fileName = "pmd-cpd.xml";
+        assertTrue(VALID_CPD_FILE, acceptsFile(fileName));
+    }
 }

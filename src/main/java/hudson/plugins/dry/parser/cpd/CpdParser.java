@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.digester3.Digester;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import hudson.plugins.analysis.util.PackageDetectors;
@@ -45,8 +46,10 @@ public class CpdParser extends AbstractDryParser {
 
             String duplicationXPath = "*/pmd-cpd";
             digester.addObjectCreate(duplicationXPath, String.class);
+            InputSource inputSource = new InputSource(file);
+            inputSource.setEncoding("UTF-8");
 
-            Object result = digester.parse(file);
+            Object result = digester.parse(inputSource);
             if (result instanceof String) {
                 return true;
             }
