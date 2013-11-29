@@ -4,6 +4,7 @@ import hudson.plugins.analysis.core.AnnotationParser;
 import hudson.plugins.analysis.util.ContextHashCode;
 import hudson.plugins.analysis.util.model.FileAnnotation;
 import hudson.plugins.dry.parser.cpd.CpdParser;
+import hudson.plugins.dry.parser.dupfinder.DupFinderParser;
 import hudson.plugins.dry.parser.simian.SimianParser;
 
 import java.io.File;
@@ -51,6 +52,7 @@ public class DuplicationParserRegistry implements AnnotationParser {
         this.defaultEncoding = defaultEncoding;
         parsers.add(new CpdParser(highThreshold, normalThreshold));
         parsers.add(new SimianParser(highThreshold, normalThreshold));
+        parsers.add(new DupFinderParser(highThreshold, normalThreshold));
     }
 
     /**
