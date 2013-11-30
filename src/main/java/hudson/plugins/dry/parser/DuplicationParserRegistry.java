@@ -1,5 +1,6 @@
 package hudson.plugins.dry.parser;
 
+import hudson.FilePath;
 import hudson.plugins.analysis.core.AnnotationParser;
 import hudson.plugins.analysis.util.ContextHashCode;
 import hudson.plugins.analysis.util.model.FileAnnotation;
@@ -94,8 +95,12 @@ public class DuplicationParserRegistry implements AnnotationParser {
                     warnings.addAll(result);
                     ContextHashCode hashCode = new ContextHashCode();
                     for (FileAnnotation duplication : warnings) {
-                        duplication.setContextHashCode(hashCode.create(duplication.getFileName(), duplication.getPrimaryLineNumber(),
-                                defaultEncoding));
+                        String fullPath = getFullPath(duplication);
+                        long hashcode = hashCode.create(
+                                fullPath,
+                                duplication.getPrimaryLineNumber(),
+                                defaultEncoding);
+                        duplication.setContextHashCode(hashcode);
                     }
 
                     return warnings;
@@ -111,6 +116,26 @@ public class DuplicationParserRegistry implements AnnotationParser {
             if (oldProperty != null) {
                 System.setProperty(SAX_DRIVER_PROPERTY, oldProperty);
             }
+        }
+    }
+
+    /**
+     * Gets full file path
+     * @param annotation the annotation
+     * @return results full file path
+     */
+    private String getFullPath(final FileAnnotation annotation) {
+        String fileName = annotation.getFileName();
+        File file = new File(fileName);
+        if(file.isAbsolute())
+        {
+            return fileName;
+        }
+        else
+        {
+            FilePath filePath = new FilePath(new File(workspacePath));
+            FilePath fullPath = filePath.child(fileName);
+            return fullPath.getRemote();
         }
     }
 
