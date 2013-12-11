@@ -6,13 +6,9 @@ package hudson.plugins.dry.parser.dupfinder;
  * @author Rafal Jasica
  */
 public class Fragment {
-    /** The file name. */
     private String fileName;
-    /** The text. */
     private String text;
-    /** The line range */
     private Range lineRange;
-    /** The offset range */
     private Range offsetRange;
 
     /**

@@ -36,16 +36,28 @@ public class DupFinderParserTest {
     /** Error message. */
     private static final String WRONG_WARNING_PROPERTY = "Wrong warning property";
 
+    /**
+     * Checks whether we accept a file with Windows encoding.
+     */
     @Test
-    public void assertCanReadWindowsFile() throws InvocationTargetException {
+    public void assertCanReadWindowsFile() {
         assertTrue(INVALID_CPD_FILE, acceptsFile("sorucecode.xml"));
     }
 
+    /**
+     * Checks whether we accept a file with normal encoding.
+     */
     @Test
     public void scanOtherFile() {
         assertFalse(INVALID_CPD_FILE, acceptsFile("otherfile.xml"));
     }
 
+    /**
+     * Checks whether we can parse a file with source code snippet.
+     *
+     * @throws InvocationTargetException
+     *             Signals a test failure
+     */
     @Test
     public void scanFileWithSourceCode() throws InvocationTargetException {
         String fileName = "sorucecode.xml";
@@ -74,6 +86,12 @@ public class DupFinderParserTest {
         }
     }
 
+    /**
+     * Checks whether we can parse a file without source code snippet.
+     *
+     * @throws InvocationTargetException
+     *             Signals a test failure
+     */
     @Test
     public void scanFileWithoutSourceCode() throws InvocationTargetException {
         String fileName = "withoutsourcode.xml";

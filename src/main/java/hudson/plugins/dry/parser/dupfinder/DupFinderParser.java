@@ -64,7 +64,8 @@ public class DupFinderParser extends AbstractDryParser {
     }
 
     @Override
-    public Collection<DuplicateCode> parse(final InputStream file, final String moduleName) throws InvocationTargetException {
+    public Collection<DuplicateCode> parse(final InputStream file, final String moduleName)
+            throws InvocationTargetException {
         try {
             Digester digester = new Digester();
 
@@ -98,7 +99,7 @@ public class DupFinderParser extends AbstractDryParser {
             digester.addSetNext(offsetRangeXPath, "setOffsetRange", Range.class.getName());
 
             Object result = digester.parse(file);
-            if (result != duplications) {
+            if (result != duplications) { // NOPMD
                 throw new SAXException("Input stream is not a valid Reshaper DupFinder file.");
             }
 
@@ -129,18 +130,13 @@ public class DupFinderParser extends AbstractDryParser {
         for (Duplicate duplication : duplications) {
             List<DuplicateCode> codeBlocks = new ArrayList<DuplicateCode>();
             Collection<Fragment> fragments = duplication.getFragments();
-            for (Fragment fragment : fragments)
-            {
+            for (Fragment fragment : fragments) {
                 Range lineRange = fragment.getLineRange();
                 int count = lineRange.getEnd() - lineRange.getStart() + 1;
-                DuplicateCode annotation = new DuplicateCode(
-                        getPriority(count),
-                        lineRange.getStart(),
-                        count,
+                DuplicateCode annotation = new DuplicateCode(getPriority(count), lineRange.getStart(), count,
                         fragment.getFileName());
                 String text = fragment.getText();
-                if(text != null)
-                {
+                if (text != null) {
                     annotation.setSourceCode(text);
                 }
                 annotation.setModuleName(moduleName);

@@ -139,7 +139,7 @@ public class DuplicateCode extends AbstractAnnotation {
 
     /** {@inheritDoc} */
     public String getToolTip() {
-        StringBuilder message = new StringBuilder();
+        StringBuilder message = new StringBuilder(512);
         message.append("<p>");
         message.append(Messages.DRY_Duplications_Header());
         message.append("<ul>");

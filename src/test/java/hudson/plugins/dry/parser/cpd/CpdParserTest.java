@@ -150,8 +150,11 @@ public class CpdParserTest {
         assertFalse("Parser does accept invalid CPD file.", acceptsFile("otherfile.xml"));
     }
 
+    /**
+     * Checks whether we accept a file with Windows encoding.
+     */
     @Test
-    public void assertCanReadWindowsFile() throws InvocationTargetException {
+    public void assertCanReadWindowsFile() {
         String fileName = "pmd-cpd.xml";
         assertTrue(VALID_CPD_FILE, acceptsFile(fileName));
     }

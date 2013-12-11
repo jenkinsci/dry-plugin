@@ -6,9 +6,7 @@ package hudson.plugins.dry.parser.dupfinder;
  * @author Rafal Jasica
  */
 public class Range {
-    /** The start */
     private int start;
-    /** The end */
     private int end;
 
     /**

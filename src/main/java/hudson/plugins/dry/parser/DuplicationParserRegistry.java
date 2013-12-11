@@ -1,13 +1,5 @@
 package hudson.plugins.dry.parser;
 
-import hudson.FilePath;
-import hudson.plugins.analysis.core.AnnotationParser;
-import hudson.plugins.analysis.util.ContextHashCode;
-import hudson.plugins.analysis.util.model.FileAnnotation;
-import hudson.plugins.dry.parser.cpd.CpdParser;
-import hudson.plugins.dry.parser.dupfinder.DupFinderParser;
-import hudson.plugins.dry.parser.simian.SimianParser;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,6 +15,14 @@ import org.apache.xerces.parsers.SAXParser;
 import com.google.common.collect.Sets;
 
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+import hudson.FilePath;
+
+import hudson.plugins.analysis.core.AnnotationParser;
+import hudson.plugins.analysis.util.ContextHashCode;
+import hudson.plugins.analysis.util.model.FileAnnotation;
+import hudson.plugins.dry.parser.cpd.CpdParser;
+import hudson.plugins.dry.parser.dupfinder.DupFinderParser;
+import hudson.plugins.dry.parser.simian.SimianParser;
 
 /**
  * Registry for duplication parsers.
@@ -120,19 +120,19 @@ public class DuplicationParserRegistry implements AnnotationParser {
     }
 
     /**
-     * Gets full file path
-     * @param annotation the annotation
+     * Gets full file path.
+     *
+     * @param annotation
+     *            the annotation
      * @return results full file path
      */
     private String getFullPath(final FileAnnotation annotation) {
         String fileName = annotation.getFileName();
         File file = new File(fileName);
-        if(file.isAbsolute())
-        {
+        if (file.isAbsolute()) {
             return fileName;
         }
-        else
-        {
+        else {
             FilePath filePath = new FilePath(new File(workspacePath));
             FilePath fullPath = filePath.child(fileName);
             return fullPath.getRemote();
