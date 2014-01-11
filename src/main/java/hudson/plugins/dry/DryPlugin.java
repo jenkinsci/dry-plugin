@@ -1,6 +1,8 @@
 package hudson.plugins.dry;
 
 import hudson.Plugin;
+
+import hudson.plugins.analysis.core.PluginDescriptor;
 import hudson.plugins.analysis.views.DetailFactory;
 
 /**
@@ -13,6 +15,8 @@ public class DryPlugin extends Plugin {
     public void start() {
         DryDetailBuilder detailBuilder = new DryDetailBuilder();
         DetailFactory.addDetailBuilder(DryResultAction.class, detailBuilder);
-        DetailFactory.addDetailBuilder(DryMavenResultAction.class, detailBuilder);
+        if (PluginDescriptor.isMavenPluginInstalled()) {
+            MavenInitialization.run(detailBuilder);
+        }
     }
 }
