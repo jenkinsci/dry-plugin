@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import hudson.plugins.analysis.util.SaxSetup;
 import org.apache.commons.io.IOUtils;
 import org.apache.xerces.parsers.SAXParser;
 
@@ -35,9 +36,6 @@ public class DuplicationParserRegistry implements AnnotationParser {
     private final List<AbstractDryParser> parsers = new ArrayList<AbstractDryParser>();
     private String workspacePath;
     private final String defaultEncoding;
-
-    /** Property of SAX parser factory. */
-    private static final String SAX_DRIVER_PROPERTY = "org.xml.sax.driver";
 
    /**
      * Creates a new instance of {@link DuplicationParserRegistry}.
@@ -77,11 +75,7 @@ public class DuplicationParserRegistry implements AnnotationParser {
 
     /** {@inheritDoc} */
     public Collection<FileAnnotation> parse(final File file, final String moduleName) throws InvocationTargetException {
-        String oldProperty = System.getProperty(SAX_DRIVER_PROPERTY);
-        if (oldProperty != null) {
-            System.setProperty(SAX_DRIVER_PROPERTY, SAXParser.class.getName());
-        }
-
+        SaxSetup sax = new SaxSetup();
         FileInputStream inputStream = null;
         try {
             for (AbstractDryParser parser : parsers) {
@@ -112,10 +106,8 @@ public class DuplicationParserRegistry implements AnnotationParser {
             throw new InvocationTargetException(exception);
         }
         finally {
+            sax.cleanup();
             IOUtils.closeQuietly(inputStream);
-            if (oldProperty != null) {
-                System.setProperty(SAX_DRIVER_PROPERTY, oldProperty);
-            }
         }
     }
 
