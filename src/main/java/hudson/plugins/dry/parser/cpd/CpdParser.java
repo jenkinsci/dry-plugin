@@ -1,5 +1,11 @@
 package hudson.plugins.dry.parser.cpd;
 
+import hudson.plugins.analysis.util.PackageDetectors;
+import hudson.plugins.dry.parser.AbstractDigesterParser;
+import hudson.plugins.dry.parser.DuplicateCode;
+import org.apache.commons.digester3.Digester;
+import org.xml.sax.SAXException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -8,20 +14,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.digester3.Digester;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
-import hudson.plugins.analysis.util.PackageDetectors;
-import hudson.plugins.dry.parser.AbstractDryParser;
-import hudson.plugins.dry.parser.DuplicateCode;
-
 /**
  * A parser for PMD's CPD XML files.
  *
  * @author Ulli Hafner
  */
-public class CpdParser extends AbstractDryParser {
+public class CpdParser extends AbstractDigesterParser {
     /** Unique ID of this class. */
     private static final long serialVersionUID = 6507147028628714706L;
 
@@ -38,30 +36,8 @@ public class CpdParser extends AbstractDryParser {
     }
 
     @Override
-    public boolean accepts(final InputStream file) {
-        try {
-            Digester digester = new Digester();
-            digester.setValidating(false);
-            digester.setClassLoader(CpdParser.class.getClassLoader());
-
-            String duplicationXPath = "*/pmd-cpd";
-            digester.addObjectCreate(duplicationXPath, String.class);
-            InputSource inputSource = new InputSource(file);
-            inputSource.setEncoding("UTF-8");
-
-            Object result = digester.parse(inputSource);
-            if (result instanceof String) {
-                return true;
-            }
-
-        }
-        catch (IOException exception) {
-            // ignore and return false
-        }
-        catch (SAXException exception) {
-            // ignore and return false
-        }
-        return false;
+    protected String getMatchingPattern() {
+        return "*/pmd-cpd";
     }
 
     @Override

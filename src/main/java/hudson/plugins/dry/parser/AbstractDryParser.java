@@ -35,10 +35,8 @@ public abstract class AbstractDryParser implements AnnotationParser {
     /**
      * Creates a new instance of {@link AbstractDryParser}.
      *
-     * @param highThreshold
-     *            minimum number of duplicate lines for high priority warnings
-     * @param normalThreshold
-     *            minimum number of duplicate lines for normal priority warnings
+     * @param highThreshold   minimum number of duplicate lines for high priority warnings
+     * @param normalThreshold minimum number of duplicate lines for normal priority warnings
      */
     public AbstractDryParser(final int highThreshold, final int normalThreshold) {
         this.highThreshold = highThreshold;
