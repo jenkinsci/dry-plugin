@@ -1,5 +1,17 @@
 package hudson.plugins.dry.parser;
 
+import com.google.common.collect.Sets;
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+import hudson.FilePath;
+import hudson.plugins.analysis.core.AnnotationParser;
+import hudson.plugins.analysis.util.ContextHashCode;
+import hudson.plugins.analysis.util.SaxSetup;
+import hudson.plugins.analysis.util.model.FileAnnotation;
+import hudson.plugins.dry.parser.cpd.CpdParser;
+import hudson.plugins.dry.parser.dupfinder.DupFinderParser;
+import hudson.plugins.dry.parser.simian.SimianParser;
+import org.apache.commons.io.IOUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -9,28 +21,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import hudson.plugins.analysis.util.SaxSetup;
-import org.apache.commons.io.IOUtils;
-import org.apache.xerces.parsers.SAXParser;
-
-import com.google.common.collect.Sets;
-
-import edu.umd.cs.findbugs.annotations.SuppressWarnings;
-import hudson.FilePath;
-
-import hudson.plugins.analysis.core.AnnotationParser;
-import hudson.plugins.analysis.util.ContextHashCode;
-import hudson.plugins.analysis.util.model.FileAnnotation;
-import hudson.plugins.dry.parser.cpd.CpdParser;
-import hudson.plugins.dry.parser.dupfinder.DupFinderParser;
-import hudson.plugins.dry.parser.simian.SimianParser;
-
 /**
  * Registry for duplication parsers.
  *
  * @author Ulli Hafner
  */
+// CHECKSTYLE:COUPLING-OFF
 public class DuplicationParserRegistry implements AnnotationParser {
+// CHECKSTYLE:COUPLING-ON
     private static final long serialVersionUID = -8114361417348412242L;
     @SuppressWarnings("SE")
     private final List<AbstractDryParser> parsers = new ArrayList<AbstractDryParser>();
@@ -90,11 +88,9 @@ public class DuplicationParserRegistry implements AnnotationParser {
                     ContextHashCode hashCode = new ContextHashCode();
                     for (FileAnnotation duplication : warnings) {
                         String fullPath = getFullPath(duplication);
-                        long hashcode = hashCode.create(
-                                fullPath,
-                                duplication.getPrimaryLineNumber(),
-                                defaultEncoding);
-                        duplication.setContextHashCode(hashcode);
+                        long value = hashCode.create(fullPath,
+                                duplication.getPrimaryLineNumber(), defaultEncoding);
+                        duplication.setContextHashCode(value);
                     }
 
                     return warnings;
