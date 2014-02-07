@@ -1,25 +1,22 @@
 package hudson.plugins.dry.parser.cpd;
 
-import hudson.plugins.analysis.util.PackageDetectors;
-import hudson.plugins.dry.parser.AbstractDigesterParser;
-import hudson.plugins.dry.parser.DuplicateCode;
-import org.apache.commons.digester3.Digester;
-import org.xml.sax.SAXException;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
+
+import org.apache.commons.digester3.Digester;
+
+import hudson.plugins.analysis.util.PackageDetectors;
+import hudson.plugins.dry.parser.AbstractDigesterParser;
+import hudson.plugins.dry.parser.DuplicateCode;
 
 /**
  * A parser for PMD's CPD XML files.
  *
  * @author Ulli Hafner
  */
-public class CpdParser extends AbstractDigesterParser {
+public class CpdParser extends AbstractDigesterParser<Duplication> {
     /** Unique ID of this class. */
     private static final long serialVersionUID = 6507147028628714706L;
 
@@ -41,51 +38,21 @@ public class CpdParser extends AbstractDigesterParser {
     }
 
     @Override
-    public Collection<DuplicateCode> parse(final InputStream file, final String moduleName) throws InvocationTargetException {
-        try {
-            Digester digester = new Digester();
-            digester.setValidating(false);
-            digester.setClassLoader(CpdParser.class.getClassLoader());
+    protected void configureParser(final Digester digester) {
+        String duplicationXPath = "*/pmd-cpd/duplication";
+        digester.addObjectCreate(duplicationXPath, Duplication.class);
+        digester.addSetProperties(duplicationXPath);
+        digester.addCallMethod(duplicationXPath + "/codefragment", "setCodeFragment", 0);
+        digester.addSetNext(duplicationXPath, "add");
 
-            ArrayList<Duplication> duplications = new ArrayList<Duplication>();
-            digester.push(duplications);
-
-            String duplicationXPath = "*/pmd-cpd/duplication";
-            digester.addObjectCreate(duplicationXPath, Duplication.class);
-            digester.addSetProperties(duplicationXPath);
-            digester.addCallMethod(duplicationXPath + "/codefragment", "setCodeFragment", 0);
-            digester.addSetNext(duplicationXPath, "add");
-
-            String fileXPath = duplicationXPath + "/file";
-            digester.addObjectCreate(fileXPath, SourceFile.class);
-            digester.addSetProperties(fileXPath);
-            digester.addSetNext(fileXPath, "addFile", SourceFile.class.getName());
-
-            Object result = digester.parse(file);
-            if (result != duplications) { // NOPMD
-                throw new SAXException("Input stream is not a valid CPD file.");
-            }
-
-            return convert(duplications, moduleName);
-        }
-        catch (IOException exception) {
-            throw new InvocationTargetException(exception);
-        }
-        catch (SAXException exception) {
-            throw new InvocationTargetException(exception);
-        }
+        String fileXPath = duplicationXPath + "/file";
+        digester.addObjectCreate(fileXPath, SourceFile.class);
+        digester.addSetProperties(fileXPath);
+        digester.addSetNext(fileXPath, "addFile", SourceFile.class.getName());
     }
 
-    /**
-     * Converts the internal structure to the annotations API.
-     *
-     * @param duplications
-     *            the internal maven module
-     * @param moduleName
-     *            name of the maven module
-     * @return a maven module of the annotations API
-     */
-    private Collection<DuplicateCode> convert(final List<Duplication> duplications, final String moduleName) {
+    @Override
+    protected Collection<DuplicateCode> convertWarnings(final List<Duplication> duplications, final String moduleName) {
         List<DuplicateCode> annotations = new ArrayList<DuplicateCode>();
 
         Random random = new Random();

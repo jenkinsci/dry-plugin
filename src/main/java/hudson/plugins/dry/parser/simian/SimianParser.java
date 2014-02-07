@@ -1,25 +1,22 @@
 package hudson.plugins.dry.parser.simian;
 
-import hudson.plugins.analysis.util.PackageDetectors;
-import hudson.plugins.dry.parser.AbstractDigesterParser;
-import hudson.plugins.dry.parser.DuplicateCode;
-import org.apache.commons.digester3.Digester;
-import org.xml.sax.SAXException;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
+
+import org.apache.commons.digester3.Digester;
+
+import hudson.plugins.analysis.util.PackageDetectors;
+import hudson.plugins.dry.parser.AbstractDigesterParser;
+import hudson.plugins.dry.parser.DuplicateCode;
 
 /**
  * A parser for Simian XML files.
  *
  * @author Ulli Hafner
  */
-public class SimianParser extends AbstractDigesterParser {
+public class SimianParser extends AbstractDigesterParser<Set> {
     /** Unique ID of this class. */
     private static final long serialVersionUID = 6507147028628714706L;
 
@@ -41,50 +38,20 @@ public class SimianParser extends AbstractDigesterParser {
     }
 
     @Override
-    public Collection<DuplicateCode> parse(final InputStream file, final String moduleName) throws InvocationTargetException {
-        try {
-            Digester digester = new Digester();
-            digester.setValidating(false);
-            digester.setClassLoader(SimianParser.class.getClassLoader());
+    protected void configureParser(final Digester digester) {
+        String duplicationXPath = "*/simian/check/set";
+        digester.addObjectCreate(duplicationXPath, Set.class);
+        digester.addSetProperties(duplicationXPath);
+        digester.addSetNext(duplicationXPath, "add");
 
-            ArrayList<Set> duplications = new ArrayList<Set>();
-            digester.push(duplications);
-
-            String duplicationXPath = "*/simian/check/set";
-            digester.addObjectCreate(duplicationXPath, Set.class);
-            digester.addSetProperties(duplicationXPath);
-            digester.addSetNext(duplicationXPath, "add");
-
-            String fileXPath = duplicationXPath + "/block";
-            digester.addObjectCreate(fileXPath, Block.class);
-            digester.addSetProperties(fileXPath);
-            digester.addSetNext(fileXPath, "addBlock", Block.class.getName());
-
-            Object result = digester.parse(file);
-            if (result != duplications) { // NOPMD
-                throw new SAXException("Input stream is not a valid Simian file.");
-            }
-
-            return convert(duplications, moduleName);
-        }
-        catch (IOException exception) {
-            throw new InvocationTargetException(exception);
-        }
-        catch (SAXException exception) {
-            throw new InvocationTargetException(exception);
-        }
+        String fileXPath = duplicationXPath + "/block";
+        digester.addObjectCreate(fileXPath, Block.class);
+        digester.addSetProperties(fileXPath);
+        digester.addSetNext(fileXPath, "addBlock", Block.class.getName());
     }
 
-    /**
-     * Converts the internal structure to the annotations API.
-     *
-     * @param duplications
-     *            the internal maven module
-     * @param moduleName
-     *            name of the maven module
-     * @return a maven module of the annotations API
-     */
-    private Collection<DuplicateCode> convert(final List<Set> duplications, final String moduleName) {
+    @Override
+    protected Collection<DuplicateCode> convertWarnings(final List<Set> duplications, final String moduleName) {
         List<DuplicateCode> annotations = new ArrayList<DuplicateCode>();
 
         Random random = new Random();
