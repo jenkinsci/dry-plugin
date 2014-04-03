@@ -1,17 +1,5 @@
 package hudson.plugins.dry.parser;
 
-import com.google.common.collect.Sets;
-import edu.umd.cs.findbugs.annotations.SuppressWarnings;
-import hudson.FilePath;
-import hudson.plugins.analysis.core.AnnotationParser;
-import hudson.plugins.analysis.util.ContextHashCode;
-import hudson.plugins.analysis.util.SaxSetup;
-import hudson.plugins.analysis.util.model.FileAnnotation;
-import hudson.plugins.dry.parser.cpd.CpdParser;
-import hudson.plugins.dry.parser.dupfinder.DupFinderParser;
-import hudson.plugins.dry.parser.simian.SimianParser;
-import org.apache.commons.io.IOUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -20,6 +8,21 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.commons.io.IOUtils;
+
+import com.google.common.collect.Sets;
+
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+
+import hudson.FilePath;
+import hudson.plugins.analysis.core.AnnotationParser;
+import hudson.plugins.analysis.util.ContextHashCode;
+import hudson.plugins.analysis.util.SaxSetup;
+import hudson.plugins.analysis.util.model.FileAnnotation;
+import hudson.plugins.dry.parser.cpd.CpdParser;
+import hudson.plugins.dry.parser.dupfinder.DupFinderParser;
+import hudson.plugins.dry.parser.simian.SimianParser;
 
 /**
  * Registry for duplication parsers.
@@ -48,6 +51,7 @@ public class DuplicationParserRegistry implements AnnotationParser {
     public DuplicationParserRegistry(final int normalThreshold, final int highThreshold, final String defaultEncoding) {
         this.defaultEncoding = defaultEncoding;
         parsers.add(new CpdParser(highThreshold, normalThreshold));
+        parsers.add(new CpdParser(highThreshold, normalThreshold, false));
         parsers.add(new SimianParser(highThreshold, normalThreshold));
         parsers.add(new DupFinderParser(highThreshold, normalThreshold));
     }

@@ -1,13 +1,13 @@
 package hudson.plugins.dry.parser.cpd;
 
-import static org.junit.Assert.*;
-
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Iterator;
 
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 import hudson.plugins.dry.parser.DuplicateCode;
 
@@ -29,6 +29,7 @@ public class CpdParserTest {
     private static final String ERROR_MESSAGE = "Wrong number of warnings detected.";
     /** Error message. */
     private static final String VALID_CPD_FILE = "Parser does not accept valid CPD file.";
+    public static final CpdParser CPD_PARSER_DEFAULT_ENCODING = new CpdParser(50, 25, false);
 
     /**
      * Parses the specified file.
@@ -76,6 +77,22 @@ public class CpdParserTest {
         Collection<DuplicateCode> annotations = parseFile(fileName);
 
         assertEquals(ERROR_MESSAGE, 2, annotations.size());
+    }
+
+    /**
+     * Checks whether we correctly detect a duplication.
+     *
+     * @throws InvocationTargetException
+     *             Signals a test failure
+     */
+    @Test
+    public void issue22356() throws InvocationTargetException {
+        String fileName = "issue22356.xml";
+        CpdParser parser = CPD_PARSER_DEFAULT_ENCODING;
+        assertTrue(VALID_CPD_FILE, parser.accepts(getResource(fileName)));
+        Collection<DuplicateCode> annotations = parser.parse(getResource(fileName), "module");
+
+        assertEquals(ERROR_MESSAGE, 8, annotations.size());
     }
 
     /**

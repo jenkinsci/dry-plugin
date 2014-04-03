@@ -33,13 +33,9 @@ public abstract class AbstractDigesterParser<T> extends AbstractDryParser {
             Digester digester = new Digester();
             digester.setValidating(false);
             digester.setClassLoader(getClass().getClassLoader());
-
-            InputSource inputSource = new InputSource(file);
-            inputSource.setEncoding("UTF-8");
-
             digester.addObjectCreate(getMatchingPattern(), String.class);
 
-            Object result = digester.parse(inputSource);
+            Object result = digester.parse(createInputSource(file));
             if (result instanceof String) {
                 return true;
             }
@@ -55,6 +51,18 @@ public abstract class AbstractDigesterParser<T> extends AbstractDryParser {
     }
 
     /**
+     * Creates the input source that is used by the SAX parser. Default encoding is set to UTF8.
+     *
+     * @param file the input stream
+     * @return the input source
+     */
+    protected InputSource createInputSource(final InputStream file) {
+        InputSource inputSource = new InputSource(file);
+        inputSource.setEncoding("UTF-8");
+        return inputSource;
+    }
+
+    /**
      * Returns the pattern that must match the input file in order to be accepted as valid.
      *
      * @return the pattern to match
@@ -66,7 +74,6 @@ public abstract class AbstractDigesterParser<T> extends AbstractDryParser {
             throws InvocationTargetException {
         try {
             Digester digester = new Digester();
-
             digester.setValidating(false);
             digester.setClassLoader(getClass().getClassLoader());
 
@@ -75,7 +82,7 @@ public abstract class AbstractDigesterParser<T> extends AbstractDryParser {
             List<T> duplications = new ArrayList<T>();
             digester.push(duplications);
 
-            Object result = digester.parse(file);
+            Object result = digester.parse(createInputSource(file));
             if (result != duplications) { // NOPMD
                 throw new SAXException("Input stream is not a valid duplications file.");
             }

@@ -1,11 +1,13 @@
 package hudson.plugins.dry.parser.cpd;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.digester3.Digester;
+import org.xml.sax.InputSource;
 
 import hudson.plugins.analysis.util.PackageDetectors;
 import hudson.plugins.dry.parser.AbstractDigesterParser;
@@ -19,6 +21,7 @@ import hudson.plugins.dry.parser.DuplicateCode;
 public class CpdParser extends AbstractDigesterParser<Duplication> {
     /** Unique ID of this class. */
     private static final long serialVersionUID = 6507147028628714706L;
+    private final boolean forceUtf8;
 
     /**
      * Creates a new instance of {@link CpdParser}.
@@ -29,7 +32,29 @@ public class CpdParser extends AbstractDigesterParser<Duplication> {
      *            minimum number of duplicate lines for normal priority warnings
      */
     public CpdParser(final int highThreshold, final int normalThreshold) {
+        this(highThreshold, normalThreshold, true);
+    }
+
+    /**
+     * Creates a new instance of {@link CpdParser}.
+     *
+     * @param highThreshold   minimum number of duplicate lines for high priority warnings
+     * @param normalThreshold minimum number of duplicate lines for normal priority warnings
+     * @param forceUtf8       forces the parser to use UTF8 encoding
+     */
+    public CpdParser(final int highThreshold, final int normalThreshold, final boolean forceUtf8) {
         super(highThreshold, normalThreshold);
+        this.forceUtf8 = forceUtf8;
+    }
+
+    @Override
+    protected InputSource createInputSource(final InputStream file) {
+        if (forceUtf8) {
+            return super.createInputSource(file);
+        }
+        else {
+            return new InputSource(file);
+        }
     }
 
     @Override
