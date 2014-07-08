@@ -186,7 +186,7 @@ public class DryPublisher extends HealthAwarePublisher {
         return (DryDescriptor)super.getDescriptor();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public MatrixAggregator createAggregator(final MatrixBuild build, final Launcher launcher,
             final BuildListener listener) {
         return new DryAnnotationsAggregator(build, launcher, listener, this, getDefaultEncoding(), useOnlyStableBuildsAsReference());

@@ -31,7 +31,7 @@ public class DryResultAction extends AbstractResultAction<DryResult> {
         super(owner, new DryHealthDescriptor(healthDescriptor), result);
     }
 
-    /** {@inheritDoc} */
+    @Override
     public String getDisplayName() {
         return Messages.DRY_ProjectAction_Name();
     }

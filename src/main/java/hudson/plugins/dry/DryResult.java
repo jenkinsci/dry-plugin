@@ -91,7 +91,7 @@ public class DryResult extends BuildResult {
         return "dry-warnings.xml";
     }
 
-    /** {@inheritDoc} */
+    @Override
     public String getDisplayName() {
         return Messages.DRY_ProjectAction_Name();
     }

@@ -43,7 +43,7 @@ public abstract class AbstractDryParser implements AnnotationParser {
         this.normalThreshold = normalThreshold;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public Collection<FileAnnotation> parse(final File file, final String moduleName) throws InvocationTargetException {
         FileInputStream inputStream = null;
         try {

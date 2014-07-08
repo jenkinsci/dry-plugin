@@ -32,7 +32,6 @@ public class DryMavenResult extends DryResult {
         super(build, defaultEncoding, result, false, MavenDryResultAction.class);
     }
 
-    /** {@inheritDoc} */
     @SuppressWarnings("deprecation")
     @Override
     protected Class<? extends ResultAction<? extends BuildResult>> getResultActionType() {

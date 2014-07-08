@@ -39,13 +39,13 @@ public class DryMavenResultAction extends MavenResultAction<DryResult> {
         super(new DryResultAction(owner, healthDescriptor, result), defaultEncoding, "DRY");
     }
 
-    /** {@inheritDoc} */
+    @Override
     public MavenAggregatedReport createAggregatedAction(final MavenModuleSetBuild build, final Map<MavenModule, List<MavenBuild>> moduleBuilds) {
         return new DryMavenResultAction(build, getHealthDescriptor(), getDefaultEncoding(),
                 new DryResult(build, getDefaultEncoding(), new ParserResult(), false));
     }
 
-    /** {@inheritDoc} */
+    @Override
     public Action getProjectAction(final MavenModuleSet moduleSet) {
         return new DryProjectAction(moduleSet, DryMavenResultAction.class);
     }

@@ -75,7 +75,7 @@ public class DuplicationParserRegistry implements AnnotationParser {
         this.workspacePath = workspacePath;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public Collection<FileAnnotation> parse(final File file, final String moduleName) throws InvocationTargetException {
         SaxSetup sax = new SaxSetup();
         FileInputStream inputStream = null;

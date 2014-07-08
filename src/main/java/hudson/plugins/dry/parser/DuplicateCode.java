@@ -137,7 +137,7 @@ public class DuplicateCode extends AbstractAnnotation {
         return getNumberOfLines();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public String getToolTip() {
         StringBuilder message = new StringBuilder(512);
         message.append("<p>");
