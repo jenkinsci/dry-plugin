@@ -94,7 +94,7 @@ public class DuplicationParserRegistry implements AnnotationParser {
                         String fullPath = getFullPath(duplication);
                         long value = hashCode.create(fullPath,
                                 duplication.getPrimaryLineNumber(), defaultEncoding);
-                        duplication.setContextHashCode(value);
+                        duplication.setContextHashCode(value * 31 + (((DuplicateCode)duplication).getNumberOfLines()));
                     }
 
                     return warnings;
