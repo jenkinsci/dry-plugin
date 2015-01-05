@@ -30,20 +30,26 @@ public class DryAnnotationsAggregator extends AnnotationsAggregator {
      *            health descriptor
      * @param defaultEncoding
      *            the default encoding to be used when reading and parsing files
+     * @param usePreviousBuildAsReference
+     *            determines whether the previous build should be used as the
+     *            reference build
      * @param useStableBuildAsReference
      *            determines whether only stable builds should be used as
      *            reference builds or not
      */
     public DryAnnotationsAggregator(final MatrixBuild build, final Launcher launcher,
             final BuildListener listener, final HealthDescriptor healthDescriptor, final String defaultEncoding,
-            final boolean useStableBuildAsReference) {
-        super(build, launcher, listener, healthDescriptor, defaultEncoding, useStableBuildAsReference);
+            final boolean usePreviousBuildAsReference, final boolean useStableBuildAsReference) {
+        super(build, launcher, listener, healthDescriptor, defaultEncoding,
+                usePreviousBuildAsReference, useStableBuildAsReference);
     }
 
     @Override
-    protected Action createAction(final HealthDescriptor healthDescriptor, final String defaultEncoding, final ParserResult aggregatedResult) {
+    protected Action createAction(final HealthDescriptor healthDescriptor, final String defaultEncoding,
+            final ParserResult aggregatedResult) {
         return new DryResultAction(build, healthDescriptor,
-                new DryResult(build, defaultEncoding, aggregatedResult, useOnlyStableBuildsAsReference()));
+                new DryResult(build, defaultEncoding, aggregatedResult,
+                        usePreviousBuildAsReference(), useOnlyStableBuildsAsReference()));
     }
 
     @Override

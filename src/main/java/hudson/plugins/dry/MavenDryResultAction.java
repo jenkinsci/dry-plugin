@@ -1,18 +1,18 @@
 package hudson.plugins.dry;
 
+import java.util.List;
+import java.util.Map;
+
 import hudson.maven.AggregatableAction;
 import hudson.maven.MavenAggregatedReport;
 import hudson.maven.MavenBuild;
 import hudson.maven.MavenModule;
 import hudson.maven.MavenModuleSet;
 import hudson.maven.MavenModuleSetBuild;
-import hudson.model.Action;
 import hudson.model.AbstractBuild;
+import hudson.model.Action;
 import hudson.plugins.analysis.core.HealthDescriptor;
 import hudson.plugins.analysis.core.ParserResult;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * A {@link DryResultAction} for native maven jobs. This action
@@ -48,7 +48,7 @@ public class MavenDryResultAction extends DryResultAction implements Aggregatabl
     @Override
     public MavenAggregatedReport createAggregatedAction(final MavenModuleSetBuild build, final Map<MavenModule, List<MavenBuild>> moduleBuilds) {
         return new MavenDryResultAction(build, getHealthDescriptor(), defaultEncoding,
-                new DryResult(build, defaultEncoding, new ParserResult(), false));
+                new DryResult(build, defaultEncoding, new ParserResult(), false, false));
     }
 
     @Override
