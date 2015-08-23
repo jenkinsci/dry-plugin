@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.jvnet.hudson.plugins</groupId>
     <artifactId>analysis-pom</artifactId>
-    <version>1.59</version>
+    <version>1.63</version>
   </parent>
 
   <artifactId>dry</artifactId>
@@ -14,6 +14,10 @@
   <url>http://wiki.jenkins-ci.org/x/X4IuAg</url>
   <description>This plug-in generates reports of duplicated code in a project.</description>
 
+  <properties>
+    <workflow-jenkins-plugin.version>1.4</workflow-jenkins-plugin.version>
+  </properties>
+
   <licenses>
     <license>
       <name>MIT license</name>
@@ -21,9 +25,7 @@
     </license>
     <license>
       <name>LGPL</name>
-      <comments>All icons are made by Carlitus (Carles Carbonell
-        Bernado) and are under the LGPL.
-      </comments>
+      <comments>All icons are made by Carlitus (Carles Carbonell Bernado) and are under the LGPL.</comments>
     </license>
   </licenses>
 
@@ -31,9 +33,9 @@
     <dependency>
       <groupId>org.jvnet.hudson.plugins</groupId>
       <artifactId>analysis-core</artifactId>
-      <version>1.73-SNAPSHOT</version>
+      <version>1.73-beta-SNAPSHOT</version><!-- TODO: change to 1.73 before release -->
     </dependency>
-    <dependency>
+    <!--<dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-digester3</artifactId>
       <version>3.2</version>
@@ -42,7 +44,7 @@
       <groupId>xerces</groupId>
       <artifactId>xercesImpl</artifactId>
       <version>2.11.0</version>
-    </dependency>
+    </dependency>-->
     <dependency>
       <groupId>de.java2html</groupId>
       <artifactId>java2html</artifactId>
@@ -52,6 +54,12 @@
       <groupId>org.jvnet.hudson.plugins</groupId>
       <artifactId>analysis-test</artifactId>
       <version>1.12</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins.workflow</groupId>
+      <artifactId>workflow-aggregator</artifactId>
+      <version>${workflow-jenkins-plugin.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -2,13 +2,14 @@ package hudson.plugins.dry;
 
 import java.io.IOException;
 
+import hudson.FilePath;
+import hudson.model.Run;
 import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 import hudson.Launcher;
 import hudson.matrix.MatrixAggregator;
 import hudson.matrix.MatrixBuild;
-import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.Action;
 import hudson.model.BuildListener;
@@ -18,6 +19,7 @@ import hudson.plugins.analysis.core.HealthAwarePublisher;
 import hudson.plugins.analysis.core.ParserResult;
 import hudson.plugins.analysis.util.PluginLogger;
 import hudson.plugins.dry.parser.DuplicationParserRegistry;
+import org.kohsuke.stapler.DataBoundSetter;
 
 /**
  * Publishes the results of the duplicate code analysis (freestyle project type).
@@ -35,12 +37,12 @@ public class DryPublisher extends HealthAwarePublisher {
 
     private static final String DEFAULT_DRY_PATTERN = "**/cpd.xml";
     /** Ant file-set pattern of files to work with. */
-    private final String pattern;
+    private String pattern;
 
     /** Minimum number of duplicate lines for high priority warnings. @since 2.5 */
-    private final int highThreshold;
+    private int highThreshold;
     /** Minimum number of duplicate lines for normal priority warnings. @since 2.5 */
-    private final int normalThreshold;
+    private int normalThreshold;
 
     /**
      * Creates a new instance of <code>PmdPublisher</code>.
@@ -109,10 +111,12 @@ public class DryPublisher extends HealthAwarePublisher {
      *            minimum number of duplicate lines for high priority warnings
      * @param normalThreshold
      *            minimum number of duplicate lines for normal priority warnings
+     *
+     * @deprecated see {@link #DryPublisher(int, int)}
      */
     // CHECKSTYLE:OFF
     @SuppressWarnings("PMD.ExcessiveParameterList")
-    @DataBoundConstructor
+    @Deprecated
     public DryPublisher(final String healthy, final String unHealthy, final String thresholdLimit,
             final String defaultEncoding, final boolean useDeltaValues,
             final String unstableTotalAll, final String unstableTotalHigh, final String unstableTotalNormal, final String unstableTotalLow,
@@ -134,6 +138,13 @@ public class DryPublisher extends HealthAwarePublisher {
         this.normalThreshold = normalThreshold;
     }
     // CHECKSTYLE:ON
+
+    @DataBoundConstructor
+    public DryPublisher(final int highThreshold, final int normalThreshold) {
+        super(PLUGIN_NAME);
+        this.highThreshold = highThreshold;
+        this.normalThreshold = normalThreshold;
+    }
 
     /**
      * Returns the minimum number of duplicate lines for high priority warnings.
@@ -162,25 +173,36 @@ public class DryPublisher extends HealthAwarePublisher {
         return pattern;
     }
 
+    /**
+     * Sets the Ant file-set pattern of files to work with.
+     */
+    @DataBoundSetter
+    public void setPattern(final String pattern) {
+        this.pattern = pattern;
+    }
+
     @Override
     public Action getProjectAction(final AbstractProject<?, ?> project) {
         return new DryProjectAction(project);
     }
 
     @Override
-    public BuildResult perform(final AbstractBuild<?, ?> build, final PluginLogger logger) throws InterruptedException, IOException {
+    public BuildResult perform(final Run<?, ?> build, final FilePath workspace, final PluginLogger logger) throws
+            InterruptedException,
+            IOException {
         logger.log("Collecting duplicate code analysis files...");
 
-        FilesParser dryCollector = new FilesParser(PLUGIN_NAME, StringUtils.defaultIfEmpty(getPattern(), DEFAULT_DRY_PATTERN),
-                    new DuplicationParserRegistry(getNormalThreshold(), getHighThreshold(), build.getWorkspace().getRemote(),
-                            getDefaultEncoding()),
-                    shouldDetectModules(), isMavenBuild(build));
+        FilesParser dryCollector = new FilesParser(PLUGIN_NAME, StringUtils.defaultIfEmpty(getPattern(),
+                DEFAULT_DRY_PATTERN),
+                new DuplicationParserRegistry(getNormalThreshold(), getHighThreshold(), workspace.getRemote(),
+                        getDefaultEncoding()),
+                shouldDetectModules(), isMavenBuild(build));
 
-        ParserResult project = build.getWorkspace().act(dryCollector);
+        ParserResult project = workspace.act(dryCollector);
         logger.logLines(project.getLogMessages());
 
-        DryResult result = new DryResult(build, getDefaultEncoding(), project,
-                usePreviousBuildAsReference(), useOnlyStableBuildsAsReference());
+        DryResult result = new DryResult(build, getDefaultEncoding(), project, usePreviousBuildAsReference(),
+                useOnlyStableBuildsAsReference());
         build.addAction(new DryResultAction(build, this, result));
 
         return result;
