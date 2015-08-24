@@ -55,7 +55,7 @@ public class DryReporterResult extends DryResult {
      *            reference builds or not
      */
     public DryReporterResult(final Run<?, ?> build, final String defaultEncoding, final ParserResult result,
-                             final boolean usePreviousBuildAsReference, final boolean useStableBuildAsReference) {
+            final boolean usePreviousBuildAsReference, final boolean useStableBuildAsReference) {
         super(build, defaultEncoding, result, usePreviousBuildAsReference, useStableBuildAsReference,
                 DryMavenResultAction.class);
     }

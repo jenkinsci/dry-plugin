@@ -35,7 +35,7 @@ public class DryResult extends BuildResult {
      *            determines whether only stable builds should be used as
      *            reference builds or not
      *
-     * @deprecated see {@link }
+     * @deprecated see {@link #DryResult(Run, String, ParserResult, boolean, boolean, Class)}
      */
     @Deprecated
     public DryResult(final AbstractBuild<?, ?> build, final String defaultEncoding, final ParserResult result,
@@ -60,7 +60,7 @@ public class DryResult extends BuildResult {
      *            reference builds or not
      */
     public DryResult(final Run<?, ?> build, final String defaultEncoding, final ParserResult result,
-                     final boolean usePreviousBuildAsReference, final boolean useStableBuildAsReference) {
+            final boolean usePreviousBuildAsReference, final boolean useStableBuildAsReference) {
         this(build, defaultEncoding, result, usePreviousBuildAsReference, useStableBuildAsReference,
                 DryResultAction.class);
     }
@@ -111,21 +111,20 @@ public class DryResult extends BuildResult {
      *            the type of the result action
      */
     protected DryResult(final Run<?, ?> build, final String defaultEncoding, final ParserResult result,
-                        final boolean usePreviousBuildAsReference, final boolean useStableBuildAsReference,
-                        final Class<? extends ResultAction<DryResult>> actionType) {
-        this(build, new BuildHistory(build, actionType, usePreviousBuildAsReference,
-                        useStableBuildAsReference),
-                result, defaultEncoding, true);
+            final boolean usePreviousBuildAsReference, final boolean useStableBuildAsReference,
+            final Class<? extends ResultAction<DryResult>> actionType) {
+        this(build, new BuildHistory(build, actionType, usePreviousBuildAsReference, useStableBuildAsReference), result,
+                defaultEncoding, true);
     }
 
     @Deprecated
-    DryResult(final AbstractBuild<?, ?> build, final BuildHistory history,
-            final ParserResult result, final String defaultEncoding, final boolean canSerialize) {
+    DryResult(final AbstractBuild<?, ?> build, final BuildHistory history, final ParserResult result,
+            final String defaultEncoding, final boolean canSerialize) {
         this((Run<?, ?>) build, history, result, defaultEncoding, canSerialize);
     }
 
-    DryResult(final Run<?, ?> build, final BuildHistory history,
-              final ParserResult result, final String defaultEncoding, final boolean canSerialize) {
+    DryResult(final Run<?, ?> build, final BuildHistory history, final ParserResult result,
+            final String defaultEncoding, final boolean canSerialize) {
         super(build, history, result, defaultEncoding);
 
         if (canSerialize) {

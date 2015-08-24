@@ -188,8 +188,7 @@ public class DryPublisher extends HealthAwarePublisher {
 
     @Override
     public BuildResult perform(final Run<?, ?> build, final FilePath workspace, final PluginLogger logger) throws
-            InterruptedException,
-            IOException {
+            InterruptedException, IOException {
         logger.log("Collecting duplicate code analysis files...");
 
         FilesParser dryCollector = new FilesParser(PLUGIN_NAME, StringUtils.defaultIfEmpty(getPattern(),

@@ -31,7 +31,8 @@ public class DryResultAction extends AbstractResultAction<DryResult> {
      * @deprecated see {@link #DryResultAction(Run, HealthDescriptor, DryResult)}
      */
     @Deprecated
-    public DryResultAction(final AbstractBuild<?, ?> owner, final HealthDescriptor healthDescriptor, final DryResult result) {
+    public DryResultAction(final AbstractBuild<?, ?> owner, final HealthDescriptor healthDescriptor,
+            final DryResult result) {
         this((Run<?, ?>) owner, healthDescriptor, result);
     }
 

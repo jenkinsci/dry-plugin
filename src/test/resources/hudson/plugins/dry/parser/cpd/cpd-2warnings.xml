@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd-cpd>
+   <duplication lines="9" tokens="65">
+      <file line="36"
+            path="/Users/recena/Development/projects/maven-helloworld/src/main/java/com/cloudbees/manticore/App.java"/>
+      <file line="46"
+            path="/Users/recena/Development/projects/maven-helloworld/src/main/java/com/cloudbees/manticore/App.java"/>
+      <codefragment><![CDATA[    private void quickSort(int arr[], int left, int right) {
+        int index = partition(arr, left, right);
+        if (left < index - 1) {
+            this.quickSort(arr, left, index - 1);
+        }
+        if (index < right) {
+            this.quickSort(arr, index, right);
+        }
+    }]]></codefragment>
+   </duplication>
+</pmd-cpd>
