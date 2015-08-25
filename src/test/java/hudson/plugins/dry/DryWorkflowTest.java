@@ -33,7 +33,7 @@ public class DryWorkflowTest {
     public void dryPublisherWorkflowStep() throws Exception {
         WorkflowJob job = jenkinsRule.jenkins.createProject(WorkflowJob.class, "dryPublisherWorkflowStep");
         FilePath workspace = jenkinsRule.jenkins.getWorkspaceFor(job);
-        workspace.unzipFrom(getClass().getResourceAsStream("./maven-project1.zip"));
+        workspace.unzipFrom(DryWorkflowTest.class.getResourceAsStream("./maven-project1.zip"));
         job.setDefinition(new CpsFlowDefinition(""
                         + "node {\n"
                         + "  def mvnHome = tool '" + mavenInstallation.getName() + "'\n"
@@ -53,7 +53,7 @@ public class DryWorkflowTest {
     public void dryPublisherWorkflowStepSetLimits() throws Exception {
         WorkflowJob job = jenkinsRule.jenkins.createProject(WorkflowJob.class, "dryPublisherWorkflowStepSetLimits");
         FilePath workspace = jenkinsRule.jenkins.getWorkspaceFor(job);
-        workspace.unzipFrom(getClass().getResourceAsStream("./maven-project1.zip"));
+        workspace.unzipFrom(DryWorkflowTest.class.getResourceAsStream("./maven-project1.zip"));
         job.setDefinition(new CpsFlowDefinition(""
                         + "node {\n"
                         + "  def mvnHome = tool '" + mavenInstallation.getName() + "'\n"
@@ -74,7 +74,7 @@ public class DryWorkflowTest {
     public void dryPublisherWorkflowStepFailure() throws Exception {
         WorkflowJob job = jenkinsRule.jenkins.createProject(WorkflowJob.class, "dryPublisherWorkflowStepFailure");
         FilePath workspace = jenkinsRule.jenkins.getWorkspaceFor(job);
-        workspace.unzipFrom(getClass().getResourceAsStream("./maven-project1.zip"));
+        workspace.unzipFrom(DryWorkflowTest.class.getResourceAsStream("./maven-project1.zip"));
         job.setDefinition(new CpsFlowDefinition(""
                         + "node {\n"
                         + "  def mvnHome = tool '" + mavenInstallation.getName() + "'\n"
