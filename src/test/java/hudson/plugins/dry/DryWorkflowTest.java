@@ -2,18 +2,31 @@ package hudson.plugins.dry;
 
 import hudson.FilePath;
 import hudson.model.Result;
+import hudson.tasks.Maven;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.jvnet.hudson.test.JenkinsRule;
+
+import java.io.File;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * In this test suite we initialize the Job workspaces with a resource (maven-project1.zip) that contains a Maven
+ * project with pmd-cpd configured.
+ */
 public class DryWorkflowTest {
 
-    @Rule
-    public JenkinsRule jenkinsRule = new JenkinsRule();
+    @ClassRule
+    public static JenkinsRule jenkinsRule = new JenkinsRule();
+
+    private static Maven.MavenInstallation mavenInstallation;
+
+    @BeforeClass
+    public static void init() throws Exception {
+        mavenInstallation = jenkinsRule.configureMaven3();
+    }
 
     /**
      * Run a workflow job using {@link DryPublisher} and check for success.
@@ -22,10 +35,11 @@ public class DryWorkflowTest {
     public void dryPublisherWorkflowStep() throws Exception {
         WorkflowJob job = jenkinsRule.jenkins.createProject(WorkflowJob.class, "dryPublisherWorkflowStep");
         FilePath workspace = jenkinsRule.jenkins.getWorkspaceFor(job);
-        FilePath report = workspace.child("target").child("cpd.xml");
-        report.copyFrom(getClass().getResourceAsStream("./parser/cpd/cpd-2warnings.xml"));
+        workspace.unzipFrom(getClass().getResourceAsStream("./maven-project1.zip"));
         job.setDefinition(new CpsFlowDefinition(""
                         + "node {\n"
+                        + "  def mvnHome = tool '" + mavenInstallation.getName() + "'\n"
+                        + "  sh \"${mvnHome}/bin/mvn clean install\"\n"
                         + "  step([$class: 'DryPublisher', highThreshold: 50, normalThreshold: 25])\n"
                         + "}\n", true)
         );
@@ -35,17 +49,17 @@ public class DryWorkflowTest {
     }
 
     /**
-     * Run a workflow job using {@link DryPublisher} with a failing threshold of 0, so the given example file
-     * "/hudson/plugins/dry/parser/cpd/cpd-2warnings.xml" will make the build to fail.
+     * Run a workflow job using {@link DryPublisher} with a failing threshold of 0.
      */
     @Test
     public void dryPublisherWorkflowStepSetLimits() throws Exception {
         WorkflowJob job = jenkinsRule.jenkins.createProject(WorkflowJob.class, "dryPublisherWorkflowStepSetLimits");
         FilePath workspace = jenkinsRule.jenkins.getWorkspaceFor(job);
-        FilePath report = workspace.child("target").child("cpd.xml");
-        report.copyFrom(getClass().getResourceAsStream("./parser/cpd/cpd-2warnings.xml"));
+        workspace.unzipFrom(getClass().getResourceAsStream("./maven-project1.zip"));
         job.setDefinition(new CpsFlowDefinition(""
                         + "node {\n"
+                        + "  def mvnHome = tool '" + mavenInstallation.getName() + "'\n"
+                        + "  sh \"${mvnHome}/bin/mvn clean install\"\n"
                         + "  step([$class: 'DryPublisher', pattern: '**/cpd.xml', highThreshold: 50, normalThreshold:" +
                         " 25, failedTotalAll: '0', usePreviousBuildAsReference: false])\n"
                         + "}\n", true)
@@ -56,20 +70,20 @@ public class DryWorkflowTest {
     }
 
     /**
-     * Run a workflow job using {@link DryPublisher} with a unstable threshold of 0, so the given example file
-     * "/hudson/plugins/dry/parser/cpd/cpd-2warnings.xml" will make the build to fail.
+     * Run a workflow job using {@link DryPublisher} with a unstable threshold of 0.
      */
     @Test
     public void dryPublisherWorkflowStepFailure() throws Exception {
         WorkflowJob job = jenkinsRule.jenkins.createProject(WorkflowJob.class, "dryPublisherWorkflowStepFailure");
         FilePath workspace = jenkinsRule.jenkins.getWorkspaceFor(job);
-        FilePath report = workspace.child("target").child("cpd.xml");
-        report.copyFrom(getClass().getResourceAsStream("./parser/cpd/cpd-2warnings.xml"));
+        workspace.unzipFrom(getClass().getResourceAsStream("./maven-project1.zip"));
         job.setDefinition(new CpsFlowDefinition(""
                         + "node {\n"
+                        + "  def mvnHome = tool '" + mavenInstallation.getName() + "'\n"
+                        + "  sh \"${mvnHome}/bin/mvn clean install\"\n"
                         + "  step([$class: 'DryPublisher', pattern: '**/cpd.xml', highThreshold: 50, " +
                         "normalThreshold: 25, unstableTotalAll: '0', usePreviousBuildAsReference: false])\n"
-                        + "}\n")
+                        + "}\n", true)
         );
         jenkinsRule.assertBuildStatus(Result.UNSTABLE, job.scheduleBuild2(0).get());
         DryResultAction result = job.getLastBuild().getAction(DryResultAction.class);
