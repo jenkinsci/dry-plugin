@@ -15,7 +15,7 @@
   <description>This plug-in generates reports of duplicated code in a project.</description>
 
   <properties>
-    <workflow-jenkins-plugin.version>1.4</workflow-jenkins-plugin.version>
+    <workflow-jenkins-plugin.version>1.7</workflow-jenkins-plugin.version>
   </properties>
 
   <licenses>
