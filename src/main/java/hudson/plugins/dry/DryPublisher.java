@@ -40,15 +40,13 @@ public class DryPublisher extends HealthAwarePublisher {
     private String pattern;
 
     /** Minimum number of duplicate lines for high priority warnings. @since 2.5 */
-    private int highThreshold;
+    private int highThreshold = 50;
     /** Minimum number of duplicate lines for normal priority warnings. @since 2.5 */
-    private int normalThreshold;
+    private int normalThreshold = 25;
 
     @DataBoundConstructor
-    public DryPublisher(final int highThreshold, final int normalThreshold) {
+    public DryPublisher() {
         super(PLUGIN_NAME);
-        this.highThreshold = highThreshold;
-        this.normalThreshold = normalThreshold;
     }
 
     /**
@@ -86,6 +84,16 @@ public class DryPublisher extends HealthAwarePublisher {
         this.pattern = pattern;
     }
 
+    @DataBoundSetter
+    public void setHighThreshold(final int highThreshold) {
+        this.highThreshold = highThreshold;
+    }
+
+    @DataBoundSetter
+    public void setNormalThreshold(final int normalThreshold) {
+        this.normalThreshold = normalThreshold;
+    }
+
     @Override
     public Action getProjectAction(final AbstractProject<?, ?> project) {
         return new DryProjectAction(project);
@@ -96,17 +104,16 @@ public class DryPublisher extends HealthAwarePublisher {
             InterruptedException, IOException {
         logger.log("Collecting duplicate code analysis files...");
 
-        FilesParser dryCollector = new FilesParser(PLUGIN_NAME, StringUtils.defaultIfEmpty(getPattern(),
-                DEFAULT_DRY_PATTERN),
-                new DuplicationParserRegistry(getNormalThreshold(), getHighThreshold(), workspace.getRemote(),
-                        getDefaultEncoding()),
-                shouldDetectModules(), isMavenBuild(build));
+        FilesParser dryCollector = new FilesParser(PLUGIN_NAME, StringUtils.defaultIfEmpty(getPattern(), DEFAULT_DRY_PATTERN),
+                    new DuplicationParserRegistry(getNormalThreshold(), getHighThreshold(), workspace.getRemote(),
+                            getDefaultEncoding()),
+                    shouldDetectModules(), isMavenBuild(build));
 
         ParserResult project = workspace.act(dryCollector);
         logger.logLines(project.getLogMessages());
 
-        DryResult result = new DryResult(build, getDefaultEncoding(), project, usePreviousBuildAsReference(),
-                useOnlyStableBuildsAsReference());
+        DryResult result = new DryResult(build, getDefaultEncoding(), project,
+                usePreviousBuildAsReference(), useOnlyStableBuildsAsReference());
         build.addAction(new DryResultAction(build, this, result));
 
         return result;

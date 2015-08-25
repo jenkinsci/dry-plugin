@@ -1,6 +1,5 @@
 package hudson.plugins.dry;
 
-import hudson.model.AbstractBuild;
 import hudson.model.Run;
 import hudson.plugins.analysis.core.ParserResult;
 import hudson.plugins.analysis.core.ResultAction;

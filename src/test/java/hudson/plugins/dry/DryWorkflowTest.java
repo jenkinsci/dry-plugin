@@ -38,7 +38,7 @@ public class DryWorkflowTest {
                         + "node {\n"
                         + "  def mvnHome = tool '" + mavenInstallation.getName() + "'\n"
                         + "  sh \"${mvnHome}/bin/mvn clean install\"\n"
-                        + "  step([$class: 'DryPublisher', highThreshold: 50, normalThreshold: 25])\n"
+                        + "  step([$class: 'DryPublisher'])\n"
                         + "}\n", true)
         );
         jenkinsRule.assertBuildStatusSuccess(job.scheduleBuild2(0));
