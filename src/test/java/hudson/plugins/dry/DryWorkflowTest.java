@@ -8,8 +8,6 @@ import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.junit.*;
 import org.jvnet.hudson.test.JenkinsRule;
 
-import java.io.File;
-
 import static org.junit.Assert.assertEquals;
 
 /**

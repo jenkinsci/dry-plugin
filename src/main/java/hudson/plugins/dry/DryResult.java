@@ -2,7 +2,6 @@ package hudson.plugins.dry;
 
 import com.thoughtworks.xstream.XStream;
 
-import hudson.model.AbstractBuild;
 import hudson.model.Run;
 import hudson.plugins.analysis.core.BuildHistory;
 import hudson.plugins.analysis.core.BuildResult;
@@ -18,30 +17,6 @@ import hudson.plugins.dry.parser.DuplicateCode;
  */
 public class DryResult extends BuildResult {
     private static final long serialVersionUID = 2768250056765266658L;
-
-    /**
-     * Creates a new instance of {@link DryResult}.
-     *
-     * @param build
-     *            the current build as owner of this action
-     * @param defaultEncoding
-     *            the default encoding to be used when reading and parsing files
-     * @param result
-     *            the parsed result with all annotations
-     * @param usePreviousBuildAsReference
-     *            determines whether to use the previous build as the reference
-     *            build
-     * @param useStableBuildAsReference
-     *            determines whether only stable builds should be used as
-     *            reference builds or not
-     *
-     * @deprecated see {@link #DryResult(Run, String, ParserResult, boolean, boolean, Class)}
-     */
-    @Deprecated
-    public DryResult(final AbstractBuild<?, ?> build, final String defaultEncoding, final ParserResult result,
-            final boolean usePreviousBuildAsReference, final boolean useStableBuildAsReference) {
-        this((Run<?, ?>) build, defaultEncoding, result, usePreviousBuildAsReference, useStableBuildAsReference);
-    }
 
     /**
      * Creates a new instance of {@link DryResult}.
@@ -82,45 +57,12 @@ public class DryResult extends BuildResult {
      *            reference builds or not
      * @param actionType
      *            the type of the result action
-     *
-     * @deprecated {@link #DryResult(Run, String, ParserResult, boolean, boolean, Class)}
-     */
-    @Deprecated
-    protected DryResult(final AbstractBuild<?, ?> build, final String defaultEncoding, final ParserResult result,
-            final boolean usePreviousBuildAsReference, final boolean useStableBuildAsReference,
-            final Class<? extends ResultAction<DryResult>> actionType) {
-        this((Run<?, ?>) build, defaultEncoding, result, usePreviousBuildAsReference, useStableBuildAsReference, actionType);
-    }
-
-    /**
-     * Creates a new instance of {@link DryResult}.
-     *
-     * @param build
-     *            the current build as owner of this action
-     * @param defaultEncoding
-     *            the default encoding to be used when reading and parsing files
-     * @param result
-     *            the parsed result with all annotations
-     * @param usePreviousBuildAsReference
-     *            determines whether to use the previous build as the reference
-     *            build
-     * @param useStableBuildAsReference
-     *            determines whether only stable builds should be used as
-     *            reference builds or not
-     * @param actionType
-     *            the type of the result action
      */
     protected DryResult(final Run<?, ?> build, final String defaultEncoding, final ParserResult result,
             final boolean usePreviousBuildAsReference, final boolean useStableBuildAsReference,
             final Class<? extends ResultAction<DryResult>> actionType) {
         this(build, new BuildHistory(build, actionType, usePreviousBuildAsReference, useStableBuildAsReference), result,
                 defaultEncoding, true);
-    }
-
-    @Deprecated
-    DryResult(final AbstractBuild<?, ?> build, final BuildHistory history, final ParserResult result,
-            final String defaultEncoding, final boolean canSerialize) {
-        this((Run<?, ?>) build, history, result, defaultEncoding, canSerialize);
     }
 
     DryResult(final Run<?, ?> build, final BuildHistory history, final ParserResult result,

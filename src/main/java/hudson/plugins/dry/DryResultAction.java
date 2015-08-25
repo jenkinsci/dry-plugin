@@ -18,23 +18,6 @@ import hudson.plugins.analysis.core.AbstractResultAction;
  * @author Ulli Hafner
  */
 public class DryResultAction extends AbstractResultAction<DryResult> {
-    /**
-     * Creates a new instance of <code>PmdResultAction</code>.
-     *
-     * @param owner
-     *            the associated build of this action
-     * @param healthDescriptor
-     *            health descriptor to use
-     * @param result
-     *            the result in this build
-     *
-     * @deprecated see {@link #DryResultAction(Run, HealthDescriptor, DryResult)}
-     */
-    @Deprecated
-    public DryResultAction(final AbstractBuild<?, ?> owner, final HealthDescriptor healthDescriptor,
-            final DryResult result) {
-        this((Run<?, ?>) owner, healthDescriptor, result);
-    }
 
     /**
      * Creates a new instance of <code>PmdResultAction</code>.
