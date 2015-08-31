@@ -2,24 +2,24 @@ package hudson.plugins.dry;
 
 import java.io.IOException;
 
-import hudson.FilePath;
-import hudson.model.Run;
 import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
 
+import hudson.FilePath;
 import hudson.Launcher;
 import hudson.matrix.MatrixAggregator;
 import hudson.matrix.MatrixBuild;
 import hudson.model.AbstractProject;
 import hudson.model.Action;
 import hudson.model.BuildListener;
+import hudson.model.Run;
 import hudson.plugins.analysis.core.BuildResult;
 import hudson.plugins.analysis.core.FilesParser;
 import hudson.plugins.analysis.core.HealthAwarePublisher;
 import hudson.plugins.analysis.core.ParserResult;
 import hudson.plugins.analysis.util.PluginLogger;
 import hudson.plugins.dry.parser.DuplicationParserRegistry;
-import org.kohsuke.stapler.DataBoundSetter;
 
 /**
  * Publishes the results of the duplicate code analysis (freestyle project type).
@@ -78,17 +78,29 @@ public class DryPublisher extends HealthAwarePublisher {
 
     /**
      * Sets the Ant file-set pattern of files to work with.
+     *
+     * @param pattern the file pattern
      */
     @DataBoundSetter
     public void setPattern(final String pattern) {
         this.pattern = pattern;
     }
 
+    /**
+     * Sets the minimum number of duplicate lines for high priority warnings.
+     *
+     * @param highThreshold the number of lines for priority high
+     */
     @DataBoundSetter
     public void setHighThreshold(final int highThreshold) {
         this.highThreshold = highThreshold;
     }
 
+    /**
+     * Sets the minimum number of duplicate lines for normal priority warnings.
+     *
+     * @param normalThreshold the number of lines for priority normal
+     */
     @DataBoundSetter
     public void setNormalThreshold(final int normalThreshold) {
         this.normalThreshold = normalThreshold;
