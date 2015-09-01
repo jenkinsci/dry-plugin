@@ -22,6 +22,7 @@ import hudson.plugins.analysis.core.ParserResult;
  * @author Ulli Hafner
  * @deprecated not used anymore
  */
+@SuppressWarnings("deprecation")
 @Deprecated
 public class MavenDryResultAction extends DryResultAction implements AggregatableAction, MavenAggregatedReport {
     /** The default encoding to be used when reading and parsing files. */
@@ -79,7 +80,7 @@ public class MavenDryResultAction extends DryResultAction implements Aggregatabl
     }
 
     /** Backward compatibility. @deprecated */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings("UUF")
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings("UUF")
     @SuppressWarnings("PMD")
     @Deprecated
     private transient String height;

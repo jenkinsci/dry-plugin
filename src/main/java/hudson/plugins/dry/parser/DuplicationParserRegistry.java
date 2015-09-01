@@ -13,7 +13,7 @@ import org.apache.commons.io.IOUtils;
 
 import com.google.common.collect.Sets;
 
-import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import hudson.FilePath;
 import hudson.plugins.analysis.core.AnnotationParser;

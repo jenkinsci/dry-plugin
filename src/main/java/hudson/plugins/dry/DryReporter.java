@@ -157,7 +157,7 @@ public class DryReporter extends HealthAwareReporter<DryResult> {
     @Override
     protected DryResult createResult(final MavenBuild build, final ParserResult project) {
         return new DryReporterResult(build, getDefaultEncoding(), project,
-                usePreviousBuildAsStable(), useOnlyStableBuildsAsReference());
+                usePreviousBuildAsReference(), useOnlyStableBuildsAsReference());
     }
 
     @Override

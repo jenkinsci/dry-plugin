@@ -1,11 +1,11 @@
 package hudson.plugins.dry;
 
-import hudson.model.AbstractBuild;
+import java.util.Collection;
+
+import hudson.model.Run;
 import hudson.plugins.analysis.util.model.FileAnnotation;
 import hudson.plugins.analysis.views.DetailFactory;
 import hudson.plugins.analysis.views.TabDetail;
-
-import java.util.Collection;
 
 /**
  * Detail view for the DRY plug-in: uses different table visualization.
@@ -30,7 +30,7 @@ public class DryTabDetail extends TabDetail {
      * @param defaultEncoding
      *            the default encoding to be used when reading and parsing files
      */
-    public DryTabDetail(final AbstractBuild<?, ?> owner, final DetailFactory detailFactory, final Collection<FileAnnotation> annotations, final String url, final String defaultEncoding) {
+    public DryTabDetail(final Run<?, ?> owner, final DetailFactory detailFactory, final Collection<FileAnnotation> annotations, final String url, final String defaultEncoding) {
         super(owner, detailFactory, annotations, url, defaultEncoding);
     }
 

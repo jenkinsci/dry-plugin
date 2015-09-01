@@ -1,5 +1,6 @@
 package hudson.plugins.dry;
 
+import javax.annotation.CheckForNull;
 import java.io.IOException;
 
 import org.apache.commons.lang.StringUtils;
@@ -50,28 +51,11 @@ public class DryPublisher extends HealthAwarePublisher {
     }
 
     /**
-     * Returns the minimum number of duplicate lines for high priority warnings.
-     *
-     * @return the minimum number of duplicate lines for high priority warnings
-     */
-    public int getHighThreshold() {
-        return THRESHOLD_VALIDATION.getHighThreshold(normalThreshold, highThreshold);
-    }
-
-    /**
-     * Returns the minimum number of duplicate lines for normal warnings.
-     *
-     * @return the minimum number of duplicate lines for normal warnings
-     */
-    public int getNormalThreshold() {
-        return THRESHOLD_VALIDATION.getNormalThreshold(normalThreshold, highThreshold);
-    }
-
-    /**
      * Returns the Ant file-set pattern of files to work with.
      *
      * @return Ant file-set pattern of files to work with
      */
+    @CheckForNull
     public String getPattern() {
         return pattern;
     }
@@ -87,6 +71,15 @@ public class DryPublisher extends HealthAwarePublisher {
     }
 
     /**
+     * Returns the minimum number of duplicate lines for high priority warnings.
+     *
+     * @return the minimum number of duplicate lines for high priority warnings
+     */
+    public int getHighThreshold() {
+        return THRESHOLD_VALIDATION.getHighThreshold(normalThreshold, highThreshold);
+    }
+
+    /**
      * Sets the minimum number of duplicate lines for high priority warnings.
      *
      * @param highThreshold the number of lines for priority high
@@ -94,6 +87,15 @@ public class DryPublisher extends HealthAwarePublisher {
     @DataBoundSetter
     public void setHighThreshold(final int highThreshold) {
         this.highThreshold = highThreshold;
+    }
+
+    /**
+     * Returns the minimum number of duplicate lines for normal warnings.
+     *
+     * @return the minimum number of duplicate lines for normal warnings
+     */
+    public int getNormalThreshold() {
+        return THRESHOLD_VALIDATION.getNormalThreshold(normalThreshold, highThreshold);
     }
 
     /**
