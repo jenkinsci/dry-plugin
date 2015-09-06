@@ -4,7 +4,6 @@ import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
@@ -19,7 +18,6 @@ import hudson.tasks.Maven;
  * project with pmd-cpd configured.
  */
 public class DryWorkflowTest {
-
     @ClassRule
     public static JenkinsRule jenkinsRule = new JenkinsRule();
 
@@ -33,7 +31,7 @@ public class DryWorkflowTest {
     /**
      * Run a workflow job using {@link DryPublisher} and check for success.
      */
-    @Test @Ignore("not compatible with workflow 1.5")
+    @Test
     public void dryPublisherWorkflowStep() throws Exception {
         WorkflowJob job = jenkinsRule.jenkins.createProject(WorkflowJob.class, "dryPublisherWorkflowStep");
         FilePath workspace = jenkinsRule.jenkins.getWorkspaceFor(job);
@@ -53,7 +51,7 @@ public class DryWorkflowTest {
     /**
      * Run a workflow job using {@link DryPublisher} with a failing threshold of 0.
      */
-    @Test @Ignore("not compatible with workflow 1.5")
+    @Test
     public void dryPublisherWorkflowStepSetLimits() throws Exception {
         WorkflowJob job = jenkinsRule.jenkins.createProject(WorkflowJob.class, "dryPublisherWorkflowStepSetLimits");
         FilePath workspace = jenkinsRule.jenkins.getWorkspaceFor(job);
@@ -74,7 +72,7 @@ public class DryWorkflowTest {
     /**
      * Run a workflow job using {@link DryPublisher} with a unstable threshold of 0.
      */
-    @Test @Ignore("not compatible with workflow 1.5")
+    @Test
     public void dryPublisherWorkflowStepFailure() throws Exception {
         WorkflowJob job = jenkinsRule.jenkins.createProject(WorkflowJob.class, "dryPublisherWorkflowStepFailure");
         FilePath workspace = jenkinsRule.jenkins.getWorkspaceFor(job);
