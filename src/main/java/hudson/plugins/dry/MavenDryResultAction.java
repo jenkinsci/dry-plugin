@@ -3,6 +3,8 @@ package hudson.plugins.dry;
 import java.util.List;
 import java.util.Map;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import hudson.maven.AggregatableAction;
 import hudson.maven.MavenAggregatedReport;
 import hudson.maven.MavenBuild;
@@ -80,7 +82,7 @@ public class MavenDryResultAction extends DryResultAction implements Aggregatabl
     }
 
     /** Backward compatibility. @deprecated */
-    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings("UUF")
+    @SuppressFBWarnings("UUF")
     @SuppressWarnings("PMD")
     @Deprecated
     private transient String height;
