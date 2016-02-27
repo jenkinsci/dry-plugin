@@ -16,7 +16,6 @@ import com.google.common.collect.Sets;
 import hudson.FilePath;
 import hudson.plugins.analysis.core.AnnotationParser;
 import hudson.plugins.analysis.util.ContextHashCode;
-import hudson.plugins.analysis.util.SaxSetup;
 import hudson.plugins.analysis.util.model.FileAnnotation;
 import hudson.plugins.dry.parser.cpd.CpdParser;
 import hudson.plugins.dry.parser.dupfinder.DupFinderParser;
@@ -75,7 +74,6 @@ public class DuplicationParserRegistry implements AnnotationParser {
 
     @Override
     public Collection<FileAnnotation> parse(final File file, final String moduleName) throws InvocationTargetException {
-        SaxSetup sax = new SaxSetup();
         FileInputStream inputStream = null;
         try {
             for (AbstractDryParser parser : parsers) {
@@ -104,7 +102,6 @@ public class DuplicationParserRegistry implements AnnotationParser {
             throw new InvocationTargetException(exception);
         }
         finally {
-            sax.cleanup();
             IOUtils.closeQuietly(inputStream);
         }
     }
