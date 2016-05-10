@@ -1,8 +1,11 @@
 package hudson.plugins.dry;
 
+import java.util.List;
+
 import hudson.model.AbstractProject;
-import hudson.plugins.analysis.core.ResultAction;
 import hudson.plugins.analysis.core.AbstractProjectAction;
+import hudson.plugins.analysis.core.ResultAction;
+import hudson.plugins.analysis.graph.BuildResultGraph;
 
 /**
  * Entry point to visualize the DRY trend graph in the project screen. Drawing
@@ -32,6 +35,13 @@ public class DryProjectAction extends AbstractProjectAction<ResultAction<DryResu
     public DryProjectAction(final AbstractProject<?, ?> project, final Class<? extends ResultAction<DryResult>> type) {
         super(project, type, Messages._DRY_ProjectAction_Name(), Messages._DRY_Trend_Name(),
                 DryDescriptor.PLUGIN_ID, DryDescriptor.ICON_URL, DryDescriptor.RESULT_URL);
+    }
+
+    @Override
+    protected List<BuildResultGraph> getAvailableGraphs() {
+        List<BuildResultGraph> availableGraphs = super.getAvailableGraphs();
+        availableGraphs.add(0, new DuplicatedLinesGraph());
+        return availableGraphs;
     }
 }
 

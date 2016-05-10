@@ -7,6 +7,7 @@ import hudson.plugins.analysis.core.BuildHistory;
 import hudson.plugins.analysis.core.BuildResult;
 import hudson.plugins.analysis.core.ParserResult;
 import hudson.plugins.analysis.core.ResultAction;
+import hudson.plugins.analysis.util.model.FileAnnotation;
 import hudson.plugins.dry.parser.DuplicateCode;
 
 /**
@@ -17,6 +18,8 @@ import hudson.plugins.dry.parser.DuplicateCode;
  */
 public class DryResult extends BuildResult {
     private static final long serialVersionUID = 2768250056765266658L;
+
+    private int totalNumberOfDuplicatedLines;
 
     /**
      * Creates a new instance of {@link DryResult}.
@@ -69,6 +72,13 @@ public class DryResult extends BuildResult {
             final String defaultEncoding, final boolean canSerialize) {
         super(build, history, result, defaultEncoding);
 
+        for (FileAnnotation annotation : result.getAnnotations()) {
+            if (annotation instanceof DuplicateCode) {
+                DuplicateCode dry = (DuplicateCode) annotation;
+                totalNumberOfDuplicatedLines += dry.getNumberOfLines();
+            }
+        }
+
         if (canSerialize) {
             serializeAnnotations(result.getAnnotations());
         }
@@ -108,5 +118,14 @@ public class DryResult extends BuildResult {
     @Override
     protected Class<? extends ResultAction<? extends BuildResult>> getResultActionType() {
         return DryResultAction.class;
+    }
+
+    /**
+     * Returns the total number of duplicated lines. Each duplication in each file is counted once.
+     *
+     * @return total number of duplicated lines
+     */
+    public int getTotalNumberOfDuplicatedLines() {
+        return totalNumberOfDuplicatedLines;
     }
 }
