@@ -27,7 +27,7 @@ public class DuplicatedLinesGraph extends CategoryBuildResultGraph {
 
     @Override
     public String getLabel() {
-        return Messages.Trend_type_duplicated_lines();
+        return Messages.Trend_Type_duplicated_lines();
     }
 
     // FIXME: analysis-core 2.0: use real type
@@ -42,7 +42,7 @@ public class DuplicatedLinesGraph extends CategoryBuildResultGraph {
 
     @Override
     protected JFreeChart createChart(final CategoryDataset dataSet) {
-        return createLineGraph(dataSet, false);
+        return  createLineGraph(dataSet, false, Messages.Trend_duplicated_lines_yAxisLabel());
     }
 
     @Override
