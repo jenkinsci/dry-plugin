@@ -15,6 +15,7 @@ import hudson.model.AbstractProject;
 import hudson.model.Action;
 import hudson.model.BuildListener;
 import hudson.model.Run;
+import hudson.model.TaskListener;
 import hudson.plugins.analysis.core.BuildResult;
 import hudson.plugins.analysis.core.FilesParser;
 import hudson.plugins.analysis.core.HealthAwarePublisher;
@@ -118,7 +119,8 @@ public class DryPublisher extends HealthAwarePublisher {
             InterruptedException, IOException {
         logger.log("Collecting duplicate code analysis files...");
 
-        FilesParser dryCollector = new FilesParser(PLUGIN_NAME, StringUtils.defaultIfEmpty(getPattern(), DEFAULT_DRY_PATTERN),
+        FilesParser dryCollector = new FilesParser(PLUGIN_NAME,
+                StringUtils.defaultIfEmpty(expandFilePattern(getPattern(), build.getEnvironment(TaskListener.NULL)), DEFAULT_DRY_PATTERN),
                     new DuplicationParserRegistry(getNormalThreshold(), getHighThreshold(), workspace.getRemote(),
                             getDefaultEncoding()),
                     shouldDetectModules(), isMavenBuild(build));
