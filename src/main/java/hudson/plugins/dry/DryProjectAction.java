@@ -2,7 +2,7 @@ package hudson.plugins.dry;
 
 import java.util.List;
 
-import hudson.model.AbstractProject;
+import hudson.model.Job;
 import hudson.plugins.analysis.core.AbstractProjectAction;
 import hudson.plugins.analysis.core.ResultAction;
 import hudson.plugins.analysis.graph.BuildResultGraph;
@@ -17,23 +17,23 @@ public class DryProjectAction extends AbstractProjectAction<ResultAction<DryResu
     /**
      * Instantiates a new {@link DryProjectAction}.
      *
-     * @param project
-     *            the project that owns this action
+     * @param job
+     *            the job that owns this action
      */
-    public DryProjectAction(final AbstractProject<?, ?> project) {
-        this(project, DryResultAction.class);
+    public DryProjectAction(final Job<?, ?> job) {
+        this(job, DryResultAction.class);
     }
 
     /**
      * Instantiates a new {@link DryProjectAction}.
      *
-     * @param project
-     *            the project that owns this action
+     * @param job
+     *            the job that owns this action
      * @param type
      *            the result action type
      */
-    public DryProjectAction(final AbstractProject<?, ?> project, final Class<? extends ResultAction<DryResult>> type) {
-        super(project, type, Messages._DRY_ProjectAction_Name(), Messages._DRY_Trend_Name(),
+    public DryProjectAction(final Job<?, ?> job, final Class<? extends ResultAction<DryResult>> type) {
+        super(job, type, Messages._DRY_ProjectAction_Name(), Messages._DRY_Trend_Name(),
                 DryDescriptor.PLUGIN_ID, DryDescriptor.ICON_URL, DryDescriptor.RESULT_URL);
     }
 

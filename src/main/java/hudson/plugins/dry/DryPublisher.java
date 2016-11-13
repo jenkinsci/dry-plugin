@@ -11,8 +11,6 @@ import hudson.FilePath;
 import hudson.Launcher;
 import hudson.matrix.MatrixAggregator;
 import hudson.matrix.MatrixBuild;
-import hudson.model.AbstractProject;
-import hudson.model.Action;
 import hudson.model.BuildListener;
 import hudson.model.Run;
 import hudson.model.TaskListener;
@@ -107,11 +105,6 @@ public class DryPublisher extends HealthAwarePublisher {
     @DataBoundSetter
     public void setNormalThreshold(final int normalThreshold) {
         this.normalThreshold = normalThreshold;
-    }
-
-    @Override
-    public Action getProjectAction(final AbstractProject<?, ?> project) {
-        return new DryProjectAction(project);
     }
 
     @Override

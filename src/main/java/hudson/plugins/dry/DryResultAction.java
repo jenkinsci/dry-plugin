@@ -1,10 +1,12 @@
 package hudson.plugins.dry;
 
-import hudson.model.AbstractBuild;
+import java.util.Collection;
+
+import hudson.model.Action;
 import hudson.model.Run;
+import hudson.plugins.analysis.core.AbstractResultAction;
 import hudson.plugins.analysis.core.HealthDescriptor;
 import hudson.plugins.analysis.core.PluginDescriptor;
-import hudson.plugins.analysis.core.AbstractResultAction;
 
 /**
  * Controls the live cycle of the DRY results. This action persists the
@@ -41,5 +43,10 @@ public class DryResultAction extends AbstractResultAction<DryResult> {
     @Override
     protected PluginDescriptor getDescriptor() {
         return new DryDescriptor();
+    }
+
+    @Override
+    public Collection<? extends Action> getProjectActions() {
+        return asSet(new DryProjectAction(getJob()));
     }
 }
