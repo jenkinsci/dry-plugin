@@ -1,10 +1,11 @@
 package hudson.plugins.dry;
 
+import org.jenkinsci.Symbol;
+import org.kohsuke.stapler.QueryParameter;
+
 import hudson.Extension;
 import hudson.plugins.analysis.core.PluginDescriptor;
 import hudson.util.FormValidation;
-
-import org.kohsuke.stapler.QueryParameter;
 
 /**
  * Descriptor for the class {@link DryPublisher}. Used as a singleton. The
@@ -12,7 +13,7 @@ import org.kohsuke.stapler.QueryParameter;
  *
  * @author Ulli Hafner
  */
-@Extension(ordinal = 100)
+@Extension(ordinal = 100) @Symbol("dry")
 public final class DryDescriptor extends PluginDescriptor {
     /** The ID of this plug-in is used as URL. */
     static final String PLUGIN_ID = "dry";
