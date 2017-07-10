@@ -121,6 +121,8 @@ public class DryPublisher extends HealthAwarePublisher {
         ParserResult project = workspace.act(dryCollector);
         logger.logLines(project.getLogMessages());
 
+        blame(project.getAnnotations(), build, workspace);
+
         DryResult result = new DryResult(build, getDefaultEncoding(), project,
                 usePreviousBuildAsReference(), useOnlyStableBuildsAsReference());
         build.addAction(new DryResultAction(build, this, result));
