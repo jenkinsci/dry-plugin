@@ -1,12 +1,12 @@
 package hudson.plugins.dry.parser;
 
-import hudson.plugins.analysis.core.AnnotationDifferencer;
+import hudson.plugins.analysis.core.IssueDifference;
 import hudson.plugins.analysis.test.AnnotationDifferencerTest;
 import hudson.plugins.analysis.util.model.FileAnnotation;
 import hudson.plugins.analysis.util.model.Priority;
 
 /**
- * Tests the {@link AnnotationDifferencer} for {@link DuplicateCode} instances.
+ * Tests the {@link IssueDifference} for {@link DuplicateCode} instances.
  */
 public class DuplicationDifferencerTest extends AnnotationDifferencerTest {
     @Override
