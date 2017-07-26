@@ -22,11 +22,11 @@
         <td style="white-space: normal">
           <p>
             <b>
-              <j:out value="${warning.message}" />
+              <j:out value="${it.sanitize(warning.message)}" />
             </b>
           </p>
           <p>
-            <j:out value="${warning.toolTip}" />
+            <j:out value="${it.sanitize(warning.toolTip)}" />
           </p>
         </td>
       </tr>
