@@ -35,15 +35,17 @@ public class DryMavenResultAction extends MavenResultAction<DryResult> {
      *            the result in this build
      */
     public DryMavenResultAction(final AbstractBuild<?, ?> owner, final HealthDescriptor healthDescriptor,
-            final String defaultEncoding, final DryResult result) {
-        super(new DryResultAction(owner, healthDescriptor, result), defaultEncoding, "DRY");
+            final String defaultEncoding, final DryResult result, final boolean usePreviousBuildAsReference, final boolean useStableBuildAsReference) {
+        super(new DryResultAction(owner, healthDescriptor, result), defaultEncoding, "DRY",
+                usePreviousBuildAsReference, useStableBuildAsReference);
     }
 
     @Override
     public MavenAggregatedReport createAggregatedAction(final MavenModuleSetBuild build, final Map<MavenModule, List<MavenBuild>> moduleBuilds) {
         return new DryMavenResultAction(build, getHealthDescriptor(), getDefaultEncoding(),
                 new DryResult(build, getDefaultEncoding(), new ParserResult(),
-                        usePreviousBuildAsStable(), useOnlyStableBuildsAsReference()));
+                        usePreviousBuildAsStable(), useOnlyStableBuildsAsReference()),
+                usePreviousBuildAsStable(), useOnlyStableBuildsAsReference());
     }
 
     @Override
@@ -60,8 +62,7 @@ public class DryMavenResultAction extends MavenResultAction<DryResult> {
     protected DryResult createResult(final DryResult existingResult, final DryResult additionalResult) {
         return new DryReporterResult(getOwner(), additionalResult.getDefaultEncoding(),
                 aggregate(existingResult, additionalResult),
-                existingResult.usePreviousBuildAsStable(),
-                existingResult.useOnlyStableBuildsAsReference());
+                usePreviousBuildAsStable(), useOnlyStableBuildsAsReference());
     }
 }
 
