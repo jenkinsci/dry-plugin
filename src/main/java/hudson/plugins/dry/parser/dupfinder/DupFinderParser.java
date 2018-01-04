@@ -5,9 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.digester3.Digester;
-
 import hudson.plugins.analysis.util.PackageDetectors;
+import hudson.plugins.analysis.util.SecureDigester;
 import hudson.plugins.dry.parser.AbstractDigesterParser;
 import hudson.plugins.dry.parser.DuplicateCode;
 
@@ -38,7 +37,7 @@ public class DupFinderParser extends AbstractDigesterParser<Duplicate> {
     }
 
     @Override
-    protected void configureParser(final Digester digester) {
+    protected void configureParser(final SecureDigester digester) {
         String duplicationXPath = "*/DuplicatesReport/Duplicates/Duplicate";
         digester.addObjectCreate(duplicationXPath, Duplicate.class);
         digester.addSetProperties(duplicationXPath, "Cost", "cost");

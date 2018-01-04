@@ -6,10 +6,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.digester3.Digester;
 import org.xml.sax.InputSource;
 
 import hudson.plugins.analysis.util.PackageDetectors;
+import hudson.plugins.analysis.util.SecureDigester;
 import hudson.plugins.dry.parser.AbstractDigesterParser;
 import hudson.plugins.dry.parser.DuplicateCode;
 
@@ -63,7 +63,7 @@ public class CpdParser extends AbstractDigesterParser<Duplication> {
     }
 
     @Override
-    protected void configureParser(final Digester digester) {
+    protected void configureParser(final SecureDigester digester) {
         String duplicationXPath = "*/pmd-cpd/duplication";
         digester.addObjectCreate(duplicationXPath, Duplication.class);
         digester.addSetProperties(duplicationXPath);

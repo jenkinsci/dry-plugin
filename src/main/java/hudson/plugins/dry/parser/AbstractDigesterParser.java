@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.digester3.Digester;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import hudson.plugins.analysis.util.SecureDigester;
 
 /**
  * A duplication parser template for Digester based parsers.
@@ -30,9 +31,7 @@ public abstract class AbstractDigesterParser<T> extends AbstractDryParser {
     @Override
     public final boolean accepts(final InputStream file) {
         try {
-            Digester digester = new Digester();
-            digester.setValidating(false);
-            digester.setClassLoader(getClass().getClassLoader());
+            SecureDigester digester = new SecureDigester(getClass());
             digester.addObjectCreate(getMatchingPattern(), String.class);
 
             Object result = digester.parse(createInputSource(file));
@@ -73,10 +72,7 @@ public abstract class AbstractDigesterParser<T> extends AbstractDryParser {
     public final Collection<DuplicateCode> parse(final InputStream file, final String moduleName)
             throws InvocationTargetException {
         try {
-            Digester digester = new Digester();
-            digester.setValidating(false);
-            digester.setClassLoader(getClass().getClassLoader());
-
+            SecureDigester digester = new SecureDigester(getClass());
             configureParser(digester);
 
             List<T> duplications = new ArrayList<T>();
@@ -102,7 +98,7 @@ public abstract class AbstractDigesterParser<T> extends AbstractDryParser {
      *
      * @param digester the parser to configure
      */
-    protected abstract void configureParser(final Digester digester);
+    protected abstract void configureParser(SecureDigester digester);
 
     /**
      * Converts the parsed warnings from the original format to the format of the dry plug-in.
