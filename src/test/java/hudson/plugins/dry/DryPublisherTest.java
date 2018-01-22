@@ -23,12 +23,16 @@
  */
 package hudson.plugins.dry;
 
+import hudson.Extension;
+import hudson.Launcher;
+import hudson.model.AbstractBuild;
+import hudson.model.AbstractProject;
+import hudson.model.BuildListener;
 import hudson.model.FreeStyleProject;
 import hudson.model.Result;
 import hudson.model.UnprotectedRootAction;
-import hudson.plugins.dry.parser.DuplicateCode;
-import hudson.plugins.dry.parser.cpd.CpdParser;
-import hudson.tasks.Shell;
+import hudson.tasks.BuildStepDescriptor;
+import hudson.tasks.Builder;
 import hudson.util.HttpResponses;
 import org.apache.commons.io.FileUtils;
 import org.junit.Rule;
@@ -36,29 +40,21 @@ import org.junit.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.TestExtension;
-import org.jvnet.hudson.test.WithoutJenkins;
 import org.kohsuke.stapler.HttpResponse;
 
 import java.io.File;
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.Iterator;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class DryPublisherTest {
     @Rule
     public JenkinsRule j = new JenkinsRule();
-
+    
     @Test
     @Issue("SECURITY-657")
     public void testXxe() throws Exception {
-        String xxeInUserContentLink = j.getURL() + "userContent/xxe.xml";
         String oobInUserContentLink = j.getURL() + "userContent/oob.xml";
         String triggerLink = j.getURL() + "triggerMe";
         
@@ -71,12 +67,12 @@ public class DryPublisherTest {
         String adaptedOobFileContent = oobFileContent.replace("$TARGET_URL$", triggerLink);
         
         File userContentDir = new File(j.jenkins.getRootDir(), "userContent");
-        FileUtils.writeStringToFile(new File(userContentDir, "xxe.xml"), adaptedXxeFileContent);
         FileUtils.writeStringToFile(new File(userContentDir, "oob.xml"), adaptedOobFileContent);
         
         FreeStyleProject project = j.createFreeStyleProject();
-        Shell copyToWorkspace = new Shell("curl \"" + xxeInUserContentLink + "\" > xxe.xml");
-        project.getBuildersList().add(copyToWorkspace);
+        DownloadBuilder builder = new DownloadBuilder();
+        builder.fileContent = adaptedXxeFileContent;
+        project.getBuildersList().add(builder);
         
         DryPublisher publisher = new DryPublisher();
         publisher.setPattern("xxe.xml");
@@ -86,6 +82,34 @@ public class DryPublisherTest {
         
         YouCannotTriggerMe urlHandler = j.jenkins.getExtensionList(UnprotectedRootAction.class).get(YouCannotTriggerMe.class);
         assertEquals(0, urlHandler.triggerCount);
+    }
+    
+    public static class DownloadBuilder extends Builder {
+        String fileContent;
+        
+        @Override
+        public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener) {
+            try {
+                FileUtils.writeStringToFile(new File(build.getWorkspace().getRemote(), "xxe.xml"), fileContent);
+            } catch (IOException e) {
+                return false;
+            }
+            
+            return true;
+        }
+        
+        @Extension
+        public static class DescriptorImpl extends BuildStepDescriptor<Builder> {
+            @Override
+            public boolean isApplicable(Class<? extends AbstractProject> jobType) {
+                return true;
+            }
+            
+            @Override
+            public String getDisplayName() {
+                return null;
+            }
+        }
     }
     
     @TestExtension("testXxe")
