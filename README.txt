@@ -1,11 +1,8 @@
-  This Jenkins plug-in collects the duplicate code analysis
-  results of the project modules and visualizes the found warnings.
-  Supported duplicate code analysis tools:
-  - PMD's Copy Paste Detector (CPD): http://pmd.sourceforge.net/cpd.html
-  - Simian: http://www.harukizaemon.com/simian/
+This plug-in is not supported anymore. It has been incorporated into "Jenkins Warnings Plug-in" and the 
+associated "Static Analysis Model and Parsers" library.
 
-  See: http://wiki.jenkins-ci.org/x/X4IuAg
+References:
+- https://github.com/jenkinsci/analysis-model
+- https://github.com/jenkinsci/warnings-plugin
 
-  All source code is licensed under the MIT license.
 
-  Maintainer: Dr. Ullrich Hafner
