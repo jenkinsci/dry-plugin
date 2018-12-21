@@ -11,7 +11,7 @@
   <artifactId>dry</artifactId>
   <packaging>hpi</packaging>
   <name>DRY Plug-in</name>
-  <version>3.0.0-beta3-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
   <url>http://wiki.jenkins-ci.org/x/X4IuAg</url>
   <description>This plug-in generates reports of duplicated code in a project.</description>
 
